@@ -1,0 +1,44 @@
+	@import url('https://fonts.googleapis.com/css?family=Dosis|Parisienne&display=swap');
+	body { 
+		background-color: Black; 
+		color: White;
+	}
+	
+	h1 { 
+		padding-top: 15px;
+		padding-bottom: 2em;
+		/* color: #09F; ftb */
+		font-size : 2em;
+		font-family : comic sans ms,Verdana,Arial,Geneva,Helvetica,sans-serif;
+		font-family:'Parisienne',sans-serif;font-weight:normal;margin-top:0;
+		line-height: 1;
+	}
+	h2 { 
+		/* color: #09F; ftb */
+		/* border-bottom: 1px dashed white; */
+		color: Grey;
+		font-size : 1.5em;
+		font-family:'Doris',sans-serif;font-weight:normal;margin-top:0;
+		font-family : comic sans ms,Verdana,Arial,Geneva,Helvetica,sans-serif;
+		line-height: 1;
+	}
+	ul { 
+		font-size : 1.2em;
+		font-family : comic sans ms,Verdana,Arial,Geneva,Helvetica,sans-serif;
+		font-family:'Dosis',sans-serif;font-weight:normal;margin-top:0;
+		line-height: 1;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+	li {
+		margin-left: 1em;
+		margin-bottom:1em;
+	}
+	a:link { 
+		text-decoration:none; 
+		color: White;
+	} 
+	a:visited { 
+		color: #00ff00; 
+	}

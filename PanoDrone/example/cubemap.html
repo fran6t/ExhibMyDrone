@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoSphereViewer - cubemap demo</title>
+
+  <link rel="stylesheet" href="../dist/photo-sphere-viewer.css">
+  <link rel="stylesheet" href="../dist/plugins/markers.css">
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+
+    .psv-button.custom-button {
+      font-size: 22px;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="photosphere"></div>
+
+<script src="../node_modules/three/build/three.js"></script>
+<script src="../node_modules/promise-polyfill/dist/polyfill.js"></script>
+<script src="../node_modules/uevent/browser.js"></script>
+<script src="../node_modules/nosleep.js/dist/NoSleep.js"></script>
+<script src="../dist/photo-sphere-viewer.js"></script>
+<script src="../dist/adapters/cubemap.js"></script>
+<script src="../dist/plugins/markers.js"></script>
+
+<script>
+  var panos = [
+    {
+      url : {
+        left  : 'cubemap/px.jpg',
+        front : 'cubemap/nz.jpg',
+        right : 'cubemap/nx.jpg',
+        back  : 'cubemap/pz.jpg',
+        top   : 'cubemap/py.jpg',
+        bottom: 'cubemap/ny.jpg'
+      },
+      desc: 'Parc national du Mercantour <b>&copy; Damien Sorel</b>',
+    },
+    {
+      url : [
+        'test-cubemap/1.png',
+        'test-cubemap/2.png',
+        'test-cubemap/3.png',
+        'test-cubemap/4.png',
+        'test-cubemap/5.png',
+        'test-cubemap/6.png'
+      ],
+      desc: 'Test cubemap',
+    },
+  ];
+
+  var PSV = new PhotoSphereViewer.Viewer({
+    container : 'photosphere',
+    adapter   : PhotoSphereViewer.CubemapAdapter,
+    panorama  : panos[0].url,
+    caption   : panos[0].desc,
+    loadingImg: 'assets/photosphere-logo.gif',
+    navbar    : [
+      'autorotate', 'zoom', 'move',
+      {
+        title    : 'Change image',
+        className: 'custom-button',
+        content  : '🔄',
+        onClick  : (function () {
+          var i = 0;
+
+          return function () {
+            i = 1 - i;
+            markers.clearMarkers();
+
+            PSV.setPanorama(panos[i].url, { longitude: 0, latitude: 0, zoom: 50 })
+              .then(function () {
+                PSV.navbar.setCaption(panos[i].desc);
+              }, function () {});
+          };
+        }()),
+      },
+      {
+        title    : 'Random position',
+        className: 'custom-button',
+        content  : '🔀',
+        onClick  : function () {
+          PSV.animate({
+            longitude: (Math.random() - 0.5) * 2 * Math.PI,
+            latitude : (Math.random() - 0.5) * 3 / 4 * Math.PI,
+            zoom     : Math.random() * 60 + 20,
+            speed    : 1500,
+          });
+        },
+      },
+      'caption', 'fullscreen',
+    ],
+    plugins   : [
+      [PhotoSphereViewer.MarkersPlugin, {
+        markers: (function () {
+          var a = [];
+          for (var i = 0; i < Math.PI * 2; i += Math.PI / 4) {
+            for (var j = -Math.PI / 2 + Math.PI / 4; j < Math.PI / 2; j += Math.PI / 4) {
+              a.push({
+                id       : '#' + a.length,
+                tooltip  : '#' + a.length,
+                latitude : j,
+                longitude: i,
+                image    : 'assets/pin-red.png',
+                width    : 32,
+                height   : 32,
+                anchor   : 'bottom center',
+                data     : {
+                  deletable: true,
+                },
+              });
+            }
+          }
+
+          a.push({
+            id         : 'polygon',
+            svgStyle   : {
+              fill: 'rgba(255, 0, 111, 0.26)',
+            },
+            polylineRad: [
+              [6.2208, 0.0906],
+              [0.0443, 0.1028],
+              [0.2322, 0.0849],
+              [0.4531, 0.0387],
+              [0.5022, -0.0056],
+              [0.4587, -0.0396],
+              [0.2520, -0.0453],
+              [0.0434, -0.0575],
+              [6.1302, -0.0623],
+              [6.0094, -0.0169],
+              [6.0471, 0.0320],
+              [6.2208, 0.0906],
+            ],
+            tooltip    : {
+              content : 'This is a mountain',
+              position: 'right bottom',
+            },
+          });
+
+          return a;
+        }())
+      }]
+    ]
+  });
+
+  var markers = PSV.getPlugin(PhotoSphereViewer.MarkersPlugin);
+</script>
+</body>
+</html>

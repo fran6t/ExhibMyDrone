@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<pano>
+<titre><![CDATA[B&acirc;timent Le Signal &agrave; Soulac sur mer]]></titre>
+<legende><![CDATA[B&acirc;timent bient&ocirc;t en d&eacute;molition car rattrap&eacute; par l'&eacute;rosion]]></legende>
+<marker>
+<titre>Bâtiment Le signal</titre>
+<couleur>red</couleur>
+<latitude>-0.5836246389169322</latitude>
+<longitude>1.997977137964854</longitude>
+<descmarqueur><![CDATA[
+Permis de construire et bâtiment construit au moment d'une période d'ensablement qui malheureusement n'a pas duré !!!<br />
+<i>Source</i> :<a href="https://www.mairie-soulac.fr/wp-content/uploads/2019/07/05_M.-Fr%C3%A9d%C3%A9ric-Boudeau-Signal.pdf">Fichier PDF</a> site <a href="https://www.marie-soulac.fr">marie de Soulac sur mer</a>
+]]></descmarqueur>
+</marker>
+</pano>

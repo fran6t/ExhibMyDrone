@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoSphereViewer - visible range demo</title>
+
+  <link rel="stylesheet" href="../dist/photo-sphere-viewer.css">
+  <link rel="stylesheet" href="../dist/plugins/markers.css">
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+
+    .custom-button {
+      font-family: sans-serif;
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div id="photosphere"></div>
+
+<script src="../node_modules/three/build/three.js"></script>
+<script src="../node_modules/promise-polyfill/dist/polyfill.js"></script>
+<script src="../node_modules/uevent/browser.js"></script>
+<script src="../dist/photo-sphere-viewer.js"></script>
+<script src="../dist/plugins/visible-range.js"></script>
+
+<script>
+
+  const ranges = {
+    longitudeRange: [-Math.PI / 2, Math.PI / 2],
+    latitudeRange : [-Math.PI / 3, Math.PI / 3],
+  };
+
+  const viewer = new PhotoSphereViewer.Viewer({
+    container : 'photosphere',
+    panorama  : 'sphere_cropped.jpg',
+    caption   : 'Parc national du Mercantour <b>&copy; Damien Sorel</b>',
+    loadingImg: 'assets/photosphere-logo.gif',
+    panoData  : {
+      fullWidth: 6000,
+      fullHeight: 3000,
+      croppedX: 700,
+      croppedY: 700,
+      croppedWidth: 4000,
+      croppedHeight: 1260,
+    },
+    navbar    : [
+      'autorotate',
+      {
+        content  : 'Clear range',
+        className: 'custom-button',
+        onClick  : function () {
+          visibleRange.setLongitudeRange(null);
+          visibleRange.setLatitudeRange(null);
+        },
+      },
+      {
+        content  : 'Set range',
+        className: 'custom-button',
+        onClick  : function () {
+          visibleRange.setLongitudeRange(ranges.longitudeRange);
+          visibleRange.setLatitudeRange(ranges.latitudeRange);
+        },
+      },
+      {
+        content  : 'Set range from panoData',
+        className: 'custom-button',
+        onClick  : function () {
+          visibleRange.setRangesFromPanoData();
+        },
+      },
+      'caption',
+      'fullscreen',
+    ],
+    plugins   : [
+      [PhotoSphereViewer.VisibleRangePlugin, ranges],
+    ],
+  });
+
+  const visibleRange = viewer.getPlugin(PhotoSphereViewer.VisibleRangePlugin);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoSphereViewer - equirectangular tiles demo</title>
+
+  <link rel="stylesheet" href="../dist/photo-sphere-viewer.css">
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="photosphere"></div>
+
+<script src="../node_modules/three/build/three.js"></script>
+<script src="../node_modules/promise-polyfill/dist/polyfill.js"></script>
+<script src="../node_modules/uevent/browser.js"></script>
+<script src="../dist/photo-sphere-viewer.js"></script>
+<script src="../dist/adapters/equirectangular-tiles.js"></script>
+<script src="../dist/plugins/gyroscope.js"></script>
+
+<script>
+  const base = 'https://photo-sphere-viewer-data.netlify.app/assets/';
+
+  var panos = [
+    {
+      desc    : 'Parc national du Mercantour <b>&copy; Damien Sorel</b>',
+      minFov  : 30,
+      base    : `${base}sphere-small.jpg`,
+      position: { longitude: 0, latitude: 0, zoom: 50, },
+      config  : {
+        width  : 6656,
+        cols   : 16,
+        rows   : 8,
+        tileUrl: (col, row) => {
+          if (col === 8 && row === 4) {
+            return 'error.jpg';
+          }
+          const num = row * 16 + col + 1;
+          return `${base}sphere-tiles/image_part_${('000' + num).slice(-3)}.jpg`;
+        },
+      },
+    },
+    {
+      desc    : 'Simon\'s Town <b>&copy;  Greg Zall (HDRI Haven)</b>',
+      minFov  : 10,
+      base    : `${base}sphere-tiles-24k/base.jpg`,
+      position: { longitude: '52deg', latitude: 0, zoom: 70 },
+      config  : {
+        width  : 24576,
+        cols   : 64,
+        rows   : 32,
+        tileUrl: (col, row) => {
+          const num = row * 64 + col;
+          return `${base}sphere-tiles-24k/tile_${('0000' + num).slice(-4)}.jpg`;
+        },
+      },
+    }
+  ];
+
+  var viewer = new PhotoSphereViewer.Viewer({
+    container : 'photosphere',
+    adapter   : [PhotoSphereViewer.EquirectangularTilesAdapter, {
+      showErrorTile: true,
+    }],
+    plugins: [
+      PhotoSphereViewer.GyroscopePlugin,
+    ],
+    loadingImg: 'assets/photosphere-logo.gif',
+    navbar    : [
+      'autorotate', 'zoom',
+      {
+        id       : 'custom',
+        title    : 'Change image',
+        className: 'custom-button',
+        content  : '🔄',
+        onClick  : (function () {
+          var i = 0;
+
+          return function () {
+            i = 1 - i;
+            loadPanorama(panos[i]);
+          };
+        }()),
+      },
+      'caption', 'gyroscope', 'fullscreen',
+    ],
+  });
+
+  loadPanorama(panos[0]);
+
+  // wash out the base image
+  // for demonstration purpose only
+  function loadPanorama(pano) {
+    const loader = new THREE.ImageLoader();
+
+    viewer.loader.show();
+
+    return new Promise((resolve, reject) => loader.load(pano.base, resolve, undefined, reject))
+      .then(image => {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        return canvas.toDataURL('image/png');
+      })
+      .then(baseUrl => {
+        return viewer.setPanorama({
+          ...pano.config,
+          baseUrl: baseUrl,
+        }, pano.position);
+      })
+      .then(() => {
+        viewer.navbar.setCaption(pano.desc);
+        viewer.setOption('minFov', pano.minFov);
+      });
+  }
+</script>
+</body>
+</html>
