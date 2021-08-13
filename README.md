@@ -1,10 +1,10 @@
 # PortailDrone
 Visualisation sphères et placement de points d'intérets
-Visualisation des droonies et rush d'un drone
+Visualisation des droonies et rushs d'un drone
 
-__But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rush videos du drone
+__But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rushs videos du drone
 
-Pour ce faire, deux logiciels sont utilisés :
+Pour ce faire, trois logiciels sont utilisés :
 
 - [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) de Damien Sorel pour l'affichage et le marquage de point d'intérêt
 - [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) de Nick Anastasov pour parcourir les photos
