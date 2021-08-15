@@ -1,4 +1,4 @@
-# PortailDrone
+# ExhibMyDrone
 Visualisation sphères et placement de points d'intérets
 Visualisation des droonies et rushs d'un drone
 
@@ -31,7 +31,8 @@ __Reste à faire__:
 Améliorer la création d'un marqueur  
 
 ## Démo ##
-[Démonstration](http://www.wse.fr/PortailDrone/) Juste côté affichage l'administration est laissée protégée
+[Démonstration](http://www.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
 
 __Change log__:
+- 15/08/2021 Changement nom du projet
 - 12/08/2021 Fusion de deux projets pour faire un portail de présentation de ses prises de vues de drone
