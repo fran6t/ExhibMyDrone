@@ -1,3 +1,8 @@
+<?php
+if (isset($_GET['c'])){
+  header('Location:PanoDrone/pano.php?c='.$_GET['c']);
+}
+?>
 <!DOCTYPE html>
 <html>
 <head lang="en">

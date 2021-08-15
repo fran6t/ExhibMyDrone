@@ -1,12 +1,21 @@
 <?php
-
 include('inc-lib.php');
-
-if (!isset($_GET["p"])){
-	echo "Parametres manquants !!!!";
-	return;
-}
-$quelfic = urldecode($_GET["p"]);	
+if (isset($_GET['c'])){
+  // Sommes en presence d'une url courte on redirige directement au bon endroit
+  $statement = $db->prepare('SELECT fichier FROM lespanos WHERE short_code = :short_code LIMIT 1;');
+  $statement->bindValue(':short_code', rtrim($_GET['c']), SQLITE3_TEXT);
+  $result = $statement->execute();
+  $fichier="";
+  while ($row = $result->fetchArray()) {
+    $quelfic = $row['fichier'];
+  }
+} else {
+  if (!isset($_GET["p"])){
+    echo "Parametres manquants !!!!";
+    return;
+  }
+  $quelfic = urldecode($_GET["p"]);
+} 	
 
 // On test si le fichier existe 
 if (!file_exists($quelfic)){

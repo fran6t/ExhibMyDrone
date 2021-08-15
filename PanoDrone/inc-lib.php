@@ -41,6 +41,20 @@ if ($tableCheck->fetchArray() === false){
     $db->exec($SqlString);
 }
 
+// Partie pour faire evoluer la bdd dans version initiale le champs short_cut existe pas
+// On teste si le champs short_code existe sinon on l'ajoute
+$res = $db->query('PRAGMA table_info([lespanos])');
+$tmp_short_code="";
+while ($col = $res->fetchArray(SQLITE3_ASSOC)) {
+	if ($col['name'] == "short_code") $tmp_short_code = $col['name'];
+}
+if (rtrim($tmp_short_code)==""){
+	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [short_code] VARCHAR(25)";
+	$db->exec($SqlString);
+	$SqlString = "CREATE INDEX [IDX_lespanos_short_code] ON [lespanos]([short_code]  ASC);";
+    $db->exec($SqlString);
+}
+
 
 // Cette foncion faisait partie au départ de scan.php
 // This function scans the files folder recursively, and builds a large array
@@ -106,5 +120,23 @@ function scan($dir){
 	}
 
 	return $files;
+}
+
+
+function generateRandomString($length){
+	$chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
+	$sets = explode('|', $chars);
+	$all = '';
+	$randString = '';
+	foreach($sets as $set){
+		$randString .= $set[array_rand(str_split($set))];
+		$all .= $set;
+	}
+	$all = str_split($all);
+	for($i = 0; $i < $length - count($sets); $i++){
+		$randString .= $all[array_rand($all)];
+	}
+	$randString = str_shuffle($randString);
+	return $randString;
 }
 ?>

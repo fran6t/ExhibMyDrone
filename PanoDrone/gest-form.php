@@ -11,6 +11,7 @@ if (!isset($_SESSION[FM_SESSION_ID]['logged'])){
 header('Location: tinyfilemanagergest/tinyfilemanager.php');
 exit;
 }
+include('inc-config.php');
 include('inc-lib.php');
 
 $p_cnt = 0;     //Nombre de marqueurs
@@ -69,15 +70,16 @@ if (isset($_POST["v"])){
 }		
 
 // On recupere les elements eventuel pour les marqueur
-//echo "<br />SELECT titre,legende FROM lespanos WHERE fichier = ".$quelfic." LIMIT 1";
-$statement = $db->prepare('SELECT titre,legende,hashfic FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+//echo "<br />SELECT titre,legende,short_code FROM lespanos WHERE fichier = ".$quelfic." LIMIT 1";
+$statement = $db->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
 $result = $statement->execute();
-$hashfic=$titre=$legende="";
+$hashfic=$titre=$legende=$short_code="";
 while ($row = $result->fetchArray()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
+  $short_code = $row['short_code'];
 }
 
 // On calcul le Hash du fichier pour avoir les mêmes infos marqueur pour un fichier
@@ -87,6 +89,15 @@ if (rtrim($hashfic) == ""){
   // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
   $stmt = $db->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
   $stmt->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
+  $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
+  $result = $stmt->execute();
+}
+
+if (rtrim($short_code)==""){ // Idem si $short_code est vide on en calcul un
+  $short_code = generateRandomString(6); 
+  // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
+  $stmt = $db->prepare('UPDATE lespanos SET short_code = :short_code WHERE fichier = :fichier');
+  $stmt->bindValue(':short_code', $short_code, SQLITE3_TEXT);
   $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
   $result = $stmt->execute();
 }
@@ -120,7 +131,6 @@ while ($row = $result->fetchArray()) {
   $jmarqueur.="\t anchor   : 'bottom center',\n";
   $jmarqueur.="});\n";
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -244,6 +254,7 @@ while ($row = $result->fetchArray()) {
     <fieldset>
       <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending">Sauvegarder</button>
     </fieldset>
+    <?php echo "<br />Url de partage : <br />".$shortURL_Prefix.$short_code; ?>
   </form>
 
 </div> 
