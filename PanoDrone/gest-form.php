@@ -114,7 +114,7 @@ while ($row = $result->fetchArray()) {
   $couleur[$nb_marqueur] = $row['couleur'];
   $latitude[$nb_marqueur] = $row['latitude'];
   $longitude[$nb_marqueur] = $row['longitude'];
-  $descri[$nb_marqueur] = $row['descri'];
+  $descri[$nb_marqueur] = "<div class=\"lainner\">".$row['descri']."</div>";
   // On construit le tableau des marqueurs javascript
   $jmarqueur.="a.push({\n";
   $jmarqueur.="\t id       : 'Marker".$nb_marqueur."',\n";
@@ -171,6 +171,10 @@ while ($row = $result->fetchArray()) {
       padding: 5px;
       border: 1px solid white;
       background: rgba(0, 0, 0, 0.4);
+    }
+    .lainner a {
+      color: white;
+      font-weight: bold;
     }
   </style>
 </head>
