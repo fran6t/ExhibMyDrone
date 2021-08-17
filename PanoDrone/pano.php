@@ -168,6 +168,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
       }]
     ]
   });
+  var markers = PSV.getPlugin(PhotoSphereViewer.MarkersPlugin);
 </script>
 </body>
 </html>
