@@ -5,7 +5,7 @@ $dir = "Spheres";						// Important dans scan.php sert au debut et a la fin pour
 // Exemple les sphères sont sont visibles ou accessibles sous l'URL http://www.mondomaine.xx/PanoDrone/Spheres
 // Alors ont renseigne comme ci-dessous la variable $dir completea cette info
 $root_complement = "ExhibMyDrone/PanoDrone";
-
+$root_complement = "cportail/ExhibMyDrone/PanoDrone";
 
 
 // Login user name and password
