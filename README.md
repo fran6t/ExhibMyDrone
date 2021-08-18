@@ -40,4 +40,6 @@ __Change log__:
 
 __Captures écrans__:
 
+![2 marqueurs visibles](PanoDrone/wiki/Exemple-Marqueur.jpg "Exemple de marqueurs")
+
 
