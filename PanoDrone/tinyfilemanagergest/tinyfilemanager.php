@@ -131,6 +131,11 @@ $config_file = '../inc-config.php';        //$config_file = __DIR__.'/config.php
 if (is_readable($config_file)) {
     @include($config_file);
 }
+// On re ecrase par un supplementaire si il existe (le sous sous include en raison des chemins dans inc-config.php ne fonctionnant pas)
+$config_file = '../inc-config-perso.php';        //$config_file = __DIR__.'/config.php';
+if (is_readable($config_file)) {
+    @include($config_file);
+}
 
 // --- EDIT BELOW CAREFULLY OR DO NOT EDIT AT ALL ---
 
