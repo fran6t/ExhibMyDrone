@@ -173,6 +173,10 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
     ]
   });
   var markers = PSV.getPlugin(PhotoSphereViewer.MarkersPlugin);
+  
+  PSV.on('dblclick', function (e, data) {
+    history.back();
+  });
 </script>
 </body>
 </html>
