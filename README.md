@@ -40,6 +40,25 @@ __Change log__:
 
 __Captures écrans__:
 
+Ici deux marqueurs, 1 sur le bâtiment et 1 sur camping car
 ![2 marqueurs visibles](PanoDrone/wiki/Exemple-Marqueur.jpg "Exemple de marqueurs")
 
 
+Volet détail sur le marqueur ouvert
+![Volet détail](PanoDrone/wiki/Volet-Marqueur-Ouvert.jpg "Volet des détails du marqueur ouvert")
+
+
+Bar de navigation dans la sphère et vers marqueurs en bas et à droite
+![Selection des marqueurs](PanoDrone/wiki/Volet-Selection-Marqueurs.jpg "Bar et Volet de selection des marqueurs")
+
+
+Formulaire de saisie des marqueurs
+![Formulaire de saisie des marqueurs](PanoDrone/wiki/Formulaire-Saisie-Infos-Spheres.jpg "Formulaire de saisie des marqueurs")
+
+
+Gestionnaire des sphères
+![Gestionnaire des sphères](PanoDrone/wiki/Gestionnaire-des-spheres.jpg "Gestionnaire des sphères")
+
+
+Gestionnaire des fichiers
+![Gestionnaire des fichiers](PanoDrone/wiki/Gestionnaire-Fichiers.jpg "Gestionnaire des fichiers")
