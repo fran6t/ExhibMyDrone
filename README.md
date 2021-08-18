@@ -34,5 +34,10 @@ Améliorer la création d'un marqueur
 [Démonstration](http://www.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
 
 __Change log__:
+- 18/08/2021 Ajout double clique pour quitter une sphère
 - 15/08/2021 Changement nom du projet
 - 12/08/2021 Fusion de deux projets pour faire un portail de présentation de ses prises de vues de drone
+
+__Captures écrans__:
+
+
