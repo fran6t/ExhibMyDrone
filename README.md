@@ -51,8 +51,15 @@ Une fois dezippé sur votre ordi, effectuez le transfert du répertoire ExhibMyD
 Le transfet terminé si vous avez fait le transfert du répertoire à la racine de votre site alors http://mondomaine.xx/ExhibMyDrone doit fonctionner
 Dans le bas de l'écran en dessous des crédits vous avec le lien pour l'admin en cliquant le mot ici des sphères quand vous êtes dans les sphères et l'admin vidéos quand vous êtes dans les vidéos
 Le login mot de passe en dur dans l'appli est: admin avec le mot de passe admin@123  
-Il vous faudra changer le mot de passe rapidement pour cela vous avez un generateur de mot de passe dans la partie aide de tinyfilemanager vous entrez le mot de passe souhaité puis vous allez remplacer la clef obtenu dans les fichiers inc-config.php présents dans les sous-repertoires PanoDrone et VideoDrone 
+
+Il vous faudra changer le mot de passe rapidement pour cela vous avez un generateur de mot de passe dans la partie aide de tinyfilemanager vous entrez le mot de passe souhaité puis vous allez remplacer la clef obtenue dans les fichiers inc-config.php présents dans les sous-repertoires PanoDrone et VideoDrone 
 Oui il y a deux fichiers inc-config.php à mettre à jour car pour l'instant PanoDrone et VideoDrone sont 100% indépendant l'un de l'autre 
+
+Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de texte le principe est de remplacer les clefs qui sont dans le fond noir par vos clefs obtenus avec le formulaire (fond blanc) 
+
+![Changement mot de passe](PanoDrone/wiki/Changement-Mot-Passe.jpg "Changement mot de passe")
+
+N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Reste à faire :
 
