@@ -65,7 +65,7 @@ video {
 		</video>
 	</div>
   <div id="Dialog">
-    <div id="sDialog">centré verticalement ? <a href="javascript:history.back()">Retour</a></div>
+    <div id="sDialog"><a href="javascript:history.back()">Retour</a></div>
   </div>
   <script type='text/javascript'>
     var video = document.getElementsByTagName('video')[0];
