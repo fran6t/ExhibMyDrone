@@ -27,8 +27,37 @@ Base de données sqlite3 pour mémoriser les infos persistantes.
 
 La fonction de scan des fichiers sphères et vidéos est en php le reste en javascript.
 
+__Format des fichiers__
+
+
+- Sphères & panorama actuellement ont été testé uniquement les sphères natives obtenues en exportant depuis la galerie DJI. 
+Le DJI mini 2 produit un jpg directement exploitable.
+- Vidéos les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
+par un transcodage il est possible que ce soit juste une histoire d'entête mp4 l'idée serait alors de l'ajouter 
+à la volée en début de fichier mais je n'ai pas encore réussi.
+
+
+__Installation sur son serveur__
+En théorie n'importe quel serveur web disposant du langage PHP et sa librairie sqlite3 permettent le fonctionnement natif de l'appli. 
+
+La façon la plus simple et de télécharger le zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
+(Attention il est gros car il y a plusieurs sphères et 2 vidéos 155Mo au moment ou j'ecris cela)
+
+Attention le respect des minuscules majuscules est important
+Une fois dezippé sur votre ordi, effectuez le transfert du répertoire ExhibMyDrone et de ses sous repertoires sur votre hebergement avec filezilla par exemple.
+Le transfet terminé si vous avez fait le transfert du répertoire à la racine de votre site alors http://mondomaine.xx/ExhibMyDrone doit fonctionner
+Dans le bas de l'écran en dessous des crédits vous avec le lien pour l'admin en cliquant le mot ici des sphères quand vous êtes dans les sphères et l'admin vidéos quand vous êtes dans les vidéos
+Le login mot de passe en dur dans l'appli est: admin avec le mot de passe admin@123  
+Il vous faudra changer le mot de passe rapidement pour cela vous avez un generateur de mot de passe dans la partie aide de tinyfilemanager vous entrez le mot de passe souhaité puis vous allez remplacer la clef obtenu dans les fichiers inc-config.php présents dans les sous-repertoires PanoDrone et VideoDrone 
+Oui il y a deux fichiers inc-config.php à mettre à jour car pour l'instant PanoDrone et VideoDrone sont 100% indépendant l'un de l'autre 
+
 __Reste à faire__:
-Améliorer la création d'un marqueur  
+
+- Petit doc d'explications (wiki ou readme etendu..)
+- Ajouter un editeur html light aux descriptions des marqueurs
+- Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs
+- Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo
+- Ajouter un éditeur de sous titrage lors de la lecture d'une vidéo  
 
 ## Démo ##
 [Démonstration](http://www.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
