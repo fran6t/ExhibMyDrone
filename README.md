@@ -30,9 +30,9 @@ La fonction de scan des fichiers sphères et vidéos est en php le reste en java
 ## Format des fichiers :
 
 
-- Sphères & panorama actuellement ont été testé uniquement les sphères natives obtenues en exportant depuis la galerie DJI. 
+- Sphères & panorama : Actuellement ont été testés uniquement les sphères natives obtenues en exportant depuis la galerie DJI. 
 Le DJI mini 2 produit un jpg directement exploitable.
-- Vidéos les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
+- Vidéos : Les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
 par un transcodage il est possible que ce soit juste une histoire d'entête mp4 l'idée serait alors de l'ajouter 
 à la volée en début de fichier mais je n'ai pas encore réussi.
 
@@ -45,7 +45,8 @@ En théorie n'importe quel serveur web disposant du langage PHP et sa librairie 
 La façon la plus simple et de télécharger le zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
 (Attention il est gros car il y a plusieurs sphères et 2 vidéos 155Mo au moment ou j'ecris cela)
 
-Attention le respect des minuscules majuscules est important
+Nota: Le respect des minuscules majuscules est important.
+
 Une fois dezippé sur votre ordi, effectuez le transfert du répertoire ExhibMyDrone et de ses sous repertoires sur votre hebergement avec filezilla par exemple.
 Le transfet terminé si vous avez fait le transfert du répertoire à la racine de votre site alors http://mondomaine.xx/ExhibMyDrone doit fonctionner
 Dans le bas de l'écran en dessous des crédits vous avec le lien pour l'admin en cliquant le mot ici des sphères quand vous êtes dans les sphères et l'admin vidéos quand vous êtes dans les vidéos
