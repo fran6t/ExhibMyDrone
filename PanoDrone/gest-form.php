@@ -258,7 +258,11 @@ while ($row = $result->fetchArray()) {
     <fieldset>
       <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending">Sauvegarder</button>
     </fieldset>
-    <?php echo "<br />Url de partage : <br />".$shortURL_Prefix.$short_code; ?>
+    <h4>Lien direct de partage :</h4>
+    <fielset>
+      <input id="copyURL" type="text" value="<?php echo $monDomaine.'/'.$root_complement."/?c=".$short_code; ?>"/><br>
+      <button type="button" id="copyButton">Copier le lien</button>
+    </fieldset>
   </form>
 
 </div> 
@@ -281,6 +285,16 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 ?>
 
 <script>
+  
+  <?php // Mettre le lien court dans le press papier lors du clique sur le bouton copier le lien ?>
+  function copyPressPapier() {
+    var copyText = document.querySelector("#copyURL");
+    copyText.select();
+    document.execCommand("copy");
+    alert('Copier dans le presse papier fait');
+  }
+  document.querySelector("#copyButton").addEventListener("click", copyPressPapier);
+
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
     //panorama  : '../Panos/Lorient-pano.jpg',

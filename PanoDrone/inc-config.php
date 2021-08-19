@@ -1,6 +1,8 @@
 <?php
 $dir = "Spheres";						// Important dans scan.php sert au debut et a la fin pour le json
 
+$monDomaine = "http://www.wse.fr";      // Va servir pour construire un lien court vers la sphère directement
+
 // Pour tinyfilemanager il faut completer le chemin (c'est utilisé dans son config.php)
 // Exemple les sphères sont sont visibles ou accessibles sous l'URL http://www.mondomaine.xx/PanoDrone/Spheres
 // Alors ont renseigne comme ci-dessous la variable $dir completea cette info
@@ -24,18 +26,4 @@ $config_file = 'inc-config-perso.php';
 if (is_readable($config_file)) {
     @include($config_file);
 }
-/* Ci-dessous ne doit pas être modifié */
-
-// Prefix of the short URL 
-// $shortURL_Prefix = 'https://xyz.com/'; // with URL rewrite    Non implémenté
-$shortURL_Prefix = $_SERVER['SERVER_NAME'].'/'.$root_complement."/?c="; // without URL rewrite
-
-$root_complement .= "/".$dir;
-// $root_complement = "/cportail/PanoDrone/Spheres";
-$root_path = $_SERVER['DOCUMENT_ROOT'].'/'.$root_complement;
-
-// Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
-// Will not working if $root_path will be outside of server document root
-$root_url = $root_complement;
-
 ?>

@@ -138,6 +138,17 @@ if (is_readable($config_file)) {
 }
 
 // --- EDIT BELOW CAREFULLY OR DO NOT EDIT AT ALL ---
+// Prefix of the short URL 
+// $shortURL_Prefix = 'https://xyz.com/'; // with URL rewrite    Non implémenté
+$shortURL_Prefix = $_SERVER['SERVER_NAME'].'/'.$root_complement."/?c="; // without URL rewrite
+
+$root_complement .= "/".$dir;
+// $root_complement = "/cportail/PanoDrone/Spheres";
+$root_path = $_SERVER['DOCUMENT_ROOT'].'/'.$root_complement;
+
+// Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
+// Will not working if $root_path will be outside of server document root
+$root_url = $root_complement;
 
 // max upload file size
 define('MAX_UPLOAD_SIZE', $max_upload_size_bytes);

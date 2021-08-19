@@ -2,6 +2,8 @@
 // Renomez ce fichier in-config-perso-sample.php en in-config-perso.php  si ce fichier est trouvé par l'appli alors il aura la primeur sur les variables communes avec inc-config.php
 $dir = "Spheres";						// Important dans scan.php sert au debut et a la fin pour le json
 
+$monDomaine = "http://www.wse.fr";      // Va servir pour construire un lien court vers la sphère directement
+
 // Pour tinyfilemanager il faut completer le chemin (c'est utilisé dans son config.php)
 // Exemple les sphères sont sont visibles ou accessibles sous l'URL http://www.mondomaine.xx/PanoDrone/Spheres
 // Alors ont renseigne comme ci-dessous la variable $dir completea cette info

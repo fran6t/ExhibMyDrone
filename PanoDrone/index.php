@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET['c'])){
-  header('Location:PanoDrone/pano.php?c='.$_GET['c']);
+  header('Location:pano.php?c='.$_GET['c']);
 }
 ?>
 <!DOCTYPE html>
