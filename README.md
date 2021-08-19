@@ -4,11 +4,12 @@ Visualisation des droonies et rushs d'un drone
 
 __But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rushs videos du drone
 
-Pour ce faire, trois logiciels sont utilisés :
+Pour ce faire, les logiciels suivants sont utilisés :
 
 - [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) de Damien Sorel pour l'affichage et le marquage de point d'intérêt
 - [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) de Nick Anastasov pour parcourir les photos
 - [TinyFileManager](https://tinyfilemanager.github.io) de CCP Programmers pour gérer les fichiers devant être presentés
+- [CkEditor](https://ckeditor.com) de CKSource pour la saisie des du texte de description des points d'interêts (marqueurs)
 
 ## Principe de fonctionnement : 
 
