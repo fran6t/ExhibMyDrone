@@ -65,7 +65,6 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 ## Reste à faire :
 
 - Petit doc d'explications (wiki ou readme etendu..)
-- ~~Ajouter un editeur html light aux descriptions des marqueurs~~ Faire ménage pour diminuer le nombre de boutons
 - Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs
 - Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo
 - Ajouter un éditeur de sous titrage lors de la lecture d'une vidéo  
@@ -78,6 +77,7 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 ## divers
 
 __Change log__:
+- 20/08/2021 Ajout miniature et lien partage copiable depuis le formulaire gestion sphère
 - 19/08/2021 Ajout ckeditor pour saisir les descriptions des marqueurs
 - 18/08/2021 Ajout double clique pour quitter une sphère
 - 15/08/2021 Changement nom du projet
