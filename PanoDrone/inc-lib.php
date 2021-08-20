@@ -55,6 +55,14 @@ if (rtrim($tmp_short_code)==""){
     $db->exec($SqlString);
 }
 
+// Test si la chaine passée contient une definition x0000x
+function isMiniature($aTester){
+	if (strpos($aTester,"x",-5) && strpos($aTester,"x",-10)){
+		return true;
+	} else {
+		return false;
+	}
+}
 
 // Cette foncion faisait partie au départ de scan.php
 // This function scans the files folder recursively, and builds a large array
@@ -68,7 +76,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml") {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f)) {
 				continue; // Ignore hidden files
 			}
 

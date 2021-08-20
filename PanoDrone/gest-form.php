@@ -132,6 +132,16 @@ while ($row = $result->fetchArray()) {
   $jmarqueur.="});\n";
 }
 
+// On genere 2 versions une pour des vignettes et une pour affichage sur blog
+// La premiere est en 200px thumb, la deuxieme 600px medium
+// Les images avec x200x ou x600x dans leurs noms sont ignorées lors du scan
+$image = new Imagick($quelfic);
+$image->thumbnailImage(200, 0, false);
+$image->writeImage($quelfic.'.x0200x.jpg');
+$image = new Imagick($quelfic);
+$image->thumbnailImage(600, 0, false);
+$image->writeImage($quelfic.'.x0600x.jpg');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -255,10 +265,32 @@ while ($row = $result->fetchArray()) {
     <fieldset>
       <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending">Sauvegarder</button>
     </fieldset>
-    <h4>Lien direct de partage :</h4>
+    <h4>Liens pour partage :</h4>
+    <h4>Vers la sphère directement</h43>
     <fielset>
       <input id="copyURL" type="text" value="<?php echo $monDomaine.'/'.$root_complement."/?c=".$short_code; ?>"/><br>
       <button type="button" id="copyButton">Copier le lien</button>
+    </fieldset>
+    <h4>Vers la sphère avec une miniature de 200px</h4>
+    <?php
+    $nbrePixels = ".x0200x.jpg";
+    $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
+    $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic;
+    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
+    ?>
+    <fielset>
+      <input id="copyURL200" type="text" value="<?php echo $lienComplet; ?>"/><br>
+      <button type="button" id="copyButton200">Copier le lien</button>
+      <?php echo $lienComplet; ?>
+    </fieldset>
+    <h4>Vers la sphère avec une miniature de 600px</h4>
+    <?php
+    $nbrePixels = ".x0600x.jpg";
+    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
+    ?>
+    <fielset>
+      <input id="copyURL600" type="text" value="<?php echo $lienComplet; ?>"/><br>
+      <button type="button" id="copyButton600">Copier le lien</button>
     </fieldset>
   </form>
 
@@ -284,13 +316,34 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 <script>
   
   <?php // Mettre le lien court dans le press papier lors du clique sur le bouton copier le lien ?>
-  function copyPressPapier() {
-    var copyText = document.querySelector("#copyURL");
+  function copyPressPapier(quelBouton) {
+    switch(quelBouton){
+      case "copyButton":
+         var copyText = document.querySelector("#copyURL");
+         break;
+      case "copyButton200":
+         var copyText = document.querySelector("#copyURL200");
+         break;
+      case "copyButton600":
+         var copyText = document.querySelector("#copyURL600");
+         break;
+      default:
+        console.log("Désolé, nous n'avons plus de " + quelBouton + ".");
+    }  
     copyText.select();
     document.execCommand("copy");
     alert('Copier dans le presse papier fait');
   }
-  document.querySelector("#copyButton").addEventListener("click", copyPressPapier);
+
+  document.querySelector("#copyButton").addEventListener("click", function() {
+    copyPressPapier('copyButton');
+  });
+  document.querySelector("#copyButton200").addEventListener("click", function() {
+    copyPressPapier('copyButton200');
+  });
+  document.querySelector("#copyButton600").addEventListener("click", function() {
+    copyPressPapier('copyButton600');
+  }); 
 
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
