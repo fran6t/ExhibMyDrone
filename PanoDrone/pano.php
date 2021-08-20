@@ -28,10 +28,9 @@ $titre=$legende=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitu
 $statement = $db->prepare('SELECT hashfic,titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic);
 $result = $statement->execute();
-$row=$result->fetchArray(SQLITE3_ASSOC);
 
 $hashfic=$titre=$legende="";
-while ($row = $result->fetchArray()) {
+while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
   $titre = $row['titre'];
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
@@ -146,7 +145,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
     panorama   : '<?php echo $quelfic; ?>',
-    caption    : '<?php echo $queltit; ?>',
+    caption    : '<?php echo $titre; ?>',
     loadingImg: 'example/assets/photosphere-logo.gif',
     navbar    : [
       'autorotate', 'zoom', 'download', 'markers', 'markersList',
