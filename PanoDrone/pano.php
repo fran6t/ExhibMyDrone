@@ -50,6 +50,7 @@ $statement = $db->prepare('SELECT * FROM lespanos_details WHERE hashfic = :hashf
 $statement->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
 $result = $statement->execute();
 $nb_marqueur = $i = 0;
+$jmarqueur = "";
 while ($row = $result->fetchArray()) {
   $i = $i +1;
   $nb_marqueur = $i;
