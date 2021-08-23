@@ -57,6 +57,7 @@ if (rtrim($tmp_short_code)==""){
 
 // Test si la chaine passée contient une definition x0000x
 function isMiniature($aTester){
+	if (strlen($aTester)<=10) return false;
 	if (strpos($aTester,"x",-5) && strpos($aTester,"x",-10)){
 		return true;
 	} else {
