@@ -1,41 +1,28 @@
 <?php
-// On va se servir de la connection de tinyfilemanager pour savoir si on peu acceder
-// Attention tous ceux qui sont identifiés correctement dans tinyfilemanger accederons 
-if ( !defined( 'FM_SESSION_ID')) {
-  define('FM_SESSION_ID', 'filemanager');
-}
-session_name(FM_SESSION_ID );	// On pointe la session de tinyfilemanager
-session_start();
-if (!isset($_SESSION[FM_SESSION_ID]['logged'])){
-// On redirige vers tinyfilemanager pour se connecter
-header('Location: tinyfilemanagergest/tinyfilemanager.php');
-exit;
-}
 include('inc-config.php');
 include('inc-lib.php');
+include('inc-session.php');
 
 $p_cnt = 0;     //Nombre de marqueurs
 $jmarqueur="";  //A peupler pour javascript
 $contenu="";
-
-if (!isset($quelfic)) $quelfic = stripSlashes($_GET["p"]);
 
 // Si nous arrivons du formulaire
 if (isset($_POST["v"])){
   $quelfic = stripSlashes($_POST["p"]);
   // ON update avec la clef fichier ce qui permet d'avoir un titre et une legende differente en fonction
   // de l'endroit ou se trouve le fichier par contre les marqueurs eux seront communs
-  $stmt = $db->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic WHERE fichier = :fichier');
-  $stmt->bindValue(':titre', rtrim($_POST['titre']), SQLITE3_TEXT);
-  $stmt->bindValue(':legende', rtrim($_POST['legende']), SQLITE3_TEXT);
-  $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), SQLITE3_TEXT);
-  $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
+  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic WHERE fichier = :fichier');
+  $stmt->bindValue(':titre', rtrim($_POST['titre']), PDO::PARAM_STR);
+  $stmt->bindValue(':legende', rtrim($_POST['legende']), PDO::PARAM_STR);
+  $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), PDO::PARAM_STR);
+  $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 
 
   // On commence par effacer tous les marqueurs de cette sphère
-  $stmt = $db->prepare('DELETE FROM lespanos_details WHERE hashfic = :hashfic');
-  $stmt->bindValue(':hashfic', $_POST["hashfic"], SQLITE3_TEXT);
+  $stmt = $pdo->prepare('DELETE FROM lespanos_details WHERE hashfic = :hashfic');
+  $stmt->bindValue(':hashfic', $_POST["hashfic"], PDO::PARAM_STR);
   $result = $stmt->execute();
 
 
@@ -50,7 +37,7 @@ if (isset($_POST["v"])){
     if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //On insert que si un titre de marqueur est renseigné 
       if (rtrim($_POST['formu'][$a]['couleur']) == "") $_POST['formu'][$a]['couleur'] = 0;
       if (rtrim($_POST['formu'][$a]['longitude']) == "") $_POST['formu'][$a]['longitude'] = 0; 
-      $statement = $db->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri);');
+      $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri);');
 	    $statement->bindValue(':fichier', $quelfic);
       $statement->bindValue(':hashfic', $_POST['hashfic']);
       $statement->bindValue(':nom_marqueur', $_POST['formu'][$a]['nom_marqueur']);
@@ -67,15 +54,17 @@ if (isset($_POST["v"])){
     }
   }
 
+} else {
+  if (!isset($quelfic)) $quelfic = stripSlashes($_GET["p"]);
 }		
 
 // On recupere les elements eventuel pour les marqueur
 //echo "<br />SELECT titre,legende,short_code FROM lespanos WHERE fichier = ".$quelfic." LIMIT 1";
-$statement = $db->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');
-$statement->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
-$result = $statement->execute();
+$statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
+$statement->execute();
 $hashfic=$titre=$legende=$short_code="";
-while ($row = $result->fetchArray()) {
+while ($row = $statement->fetch()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
@@ -87,27 +76,27 @@ while ($row = $result->fetchArray()) {
 if (rtrim($hashfic) == ""){
   $hashfic = hash_file('md5', $quelfic, false);
   // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
-  $stmt = $db->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
-  $stmt->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
-  $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
+  $stmt = $pdo->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
+  $stmt->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+  $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 }
 
 if (rtrim($short_code)==""){ // Idem si $short_code est vide on en calcul un
   $short_code = generateRandomString(6); 
   // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
-  $stmt = $db->prepare('UPDATE lespanos SET short_code = :short_code WHERE fichier = :fichier');
-  $stmt->bindValue(':short_code', $short_code, SQLITE3_TEXT);
-  $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
+  $stmt = $pdo->prepare('UPDATE lespanos SET short_code = :short_code WHERE fichier = :fichier');
+  $stmt->bindValue(':short_code', $short_code, PDO::PARAM_STR);
+  $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 }
 
 // On memorise les marqueurs pour le formulaire et aussi pour l'affichage
-$statement = $db->prepare('SELECT nom_marqueur,couleur,latitude,longitude,descri FROM lespanos_details WHERE hashfic = :hashfic;');
-$statement->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
-$result = $statement->execute();
+$statement = $pdo->prepare('SELECT nom_marqueur,couleur,latitude,longitude,descri FROM lespanos_details WHERE hashfic = :hashfic;');
+$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+$statement->execute();
 $nb_marqueur = $i = 0;
-while ($row = $result->fetchArray()) {
+while ($row = $statement->fetch()) {
   $i = $i +1;
   $nb_marqueur = $i;
   $nom_marqueur[$nb_marqueur] = $row['nom_marqueur'];
@@ -132,15 +121,9 @@ while ($row = $result->fetchArray()) {
   $jmarqueur.="});\n";
 }
 
-// On genere 2 versions une pour des vignettes et une pour affichage sur blog
-// La premiere est en 200px thumb, la deuxieme 600px medium
-// Les images avec x200x ou x600x dans leurs noms sont ignorées lors du scan
-$image = new Imagick($quelfic);
-$image->thumbnailImage(200, 0, false);
-$image->writeImage($quelfic.'.x0200x.jpg');
-$image = new Imagick($quelfic);
-$image->thumbnailImage(600, 0, false);
-$image->writeImage($quelfic.'.x0600x.jpg');
+// On genere les images reduites pour les partages
+imageResize($quelfic,200);
+imageResize($quelfic,600);
 
 ?>
 <!DOCTYPE html>
@@ -273,7 +256,7 @@ $image->writeImage($quelfic.'.x0600x.jpg');
     </fieldset>
     <h4>Vers la sphère avec une miniature de 200px</h4>
     <?php
-    $nbrePixels = ".x0200x.jpg";
+    $nbrePixels = "-MinX0200.jpg";
     $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
     $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic;
     $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
@@ -285,7 +268,7 @@ $image->writeImage($quelfic.'.x0600x.jpg');
     </fieldset>
     <h4>Vers la sphère avec une miniature de 600px</h4>
     <?php
-    $nbrePixels = ".x0600x.jpg";
+    $nbrePixels = "-MinX0600.jpg";
     $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
     ?>
     <fielset>
@@ -350,7 +333,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
     //panorama  : '../Panos/Lorient-pano.jpg',
     //caption   : 'Parc national du Mercantour <b>&copy; Damien Sorel</b>',
     panorama   : '<?php echo $quelfic; ?>',
-    caption    : '<?php echo $queltit; ?>',
+    caption    : '<?php echo $titre; ?>',
     loadingImg: 'example/assets/photosphere-logo.gif',
     navbar    : [
       'autorotate', 'zoom', 'download', 'markers', 'markersList',

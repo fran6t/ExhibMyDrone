@@ -1,31 +1,21 @@
 <?php
 include('inc-config.php');
 include('inc-lib.php');
-
-// On va se servir de la connection de tinyfilemanager pour savoir si on peu acceder
-// Attention tous ceux qui sont identifiés correctement dans tinyfilemanger accederons 
-if ( !defined( 'FM_SESSION_ID')) {
-    define('FM_SESSION_ID', 'filemanager');
-}
-session_name(FM_SESSION_ID );	// On pointe la session de tinyfilemanager
-session_start();
-if (!isset($_SESSION[FM_SESSION_ID]['logged'])){
-	// On redirige vers tinyfilemanager pour se connecter
-	header('Location: tinyfilemanagergest/tinyfilemanager.php');
-	exit;
-}
+include('inc-session.php');
 
 if (isset($_POST['v'])){
 	for ($a = 1; $a <= $_POST['cpt']; $a++){
-		if ($_POST['C_'.$a]=="Ok"){
-			$quelfic = $_POST['FIC_'.$a];
-			$statement = $db->prepare('DELETE FROM lespanos WHERE fichier = :fichier;');
-	    	$statement->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
-			$result = $statement->execute();
-			$statement = $db->prepare('DELETE FROM lespanos_details WHERE fichier = :fichier;');
-	    	$statement->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
-			$result = $statement->execute();
-			$msg = "Suppression Ok !";			
+		if (isset($_POST['C_'.$a])){							// Seul les checkbox cochées remplissent cette variable
+			if ($_POST['C_'.$a]=="Ok"){
+				$quelfic = $_POST['FIC_'.$a];
+				$statement = $pdo->prepare('DELETE FROM lespanos WHERE fichier = :fichier;');
+	    		$statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
+				$result = $statement->execute();
+				$statement = $pdo->prepare('DELETE FROM lespanos_details WHERE fichier = :fichier;');
+	    		$statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
+				$result = $statement->execute();
+				$msg = "Suppression Ok !";			
+			}
 		}
 	}
 }
@@ -36,8 +26,8 @@ $reality = scan("../Public/Videos");
 // A l'issue de ce scan tous les fichiers réels présent sur le disque sont donc dans la bdd
 // On parcours donc la bdd maintenant pour remplir un tableau et marqer tous les fichiers qui n'existent plus
 
-$statement = $db->prepare('SELECT * FROM lespanos;');
-$result = $statement->execute();
+$statement = $pdo->prepare('SELECT * FROM lespanos;');
+$statement->execute();
 $hashfic=$titre=$legende="";
 
 $montab = "<table>\n";
@@ -49,7 +39,7 @@ $montab .= "        <th>Legende</th>";
 $montab .= "        <th>Hash</th>";
 $montab .= "</tr>\n";
 $i=0;
-while ($row = $result->fetchArray()) {
+while ($row = $statement->fetch()) {
 	$i = $i+1;
 	if (!file_exists($row['fichier'])){ 	
 		$backgroungColor = ' style="background-color:red;"';
@@ -186,7 +176,13 @@ $montab .= "</table>\n";
 <nav class="menu">
 	<ul>
 		<li><a href="index.php">Quitter gestion</a></li>
+		<?php
+		if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
+		?>
 		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des vidéos</a></li>
+		<?php 
+		} 
+		?>
 	</ul>
 </nav>
 <?php if(isset($msg)) echo '<p><span  style="background-color:green;">'.$msg.'</span></p>'; ?>
