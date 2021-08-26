@@ -64,6 +64,7 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Reste à faire :
 
+- Ajouter possibilité de partage lien pour que la sphère s'ouvre vers un point d'intérêt
 - Petit doc d'explications (wiki ou readme etendu..)
 - Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs
 - Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo
@@ -77,6 +78,7 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 ## divers
 
 __Change log__:
+- 26/08/2021 Passage de sqlite natif php vers pdo pour accepter aussi mysql, gestion version php si php est < 5.5 alors pas de tinyfilemanager il faut placer ses fichiers via filezilla ou équivalent et appeler l'administration manuellement avec un parametre (voir fichier inc-config.php)
 - 20/08/2021 Ajout miniature et lien partage copiable depuis le formulaire gestion sphère
 - 19/08/2021 Ajout ckeditor pour saisir les descriptions des marqueurs
 - 18/08/2021 Ajout double clique pour quitter une sphère
