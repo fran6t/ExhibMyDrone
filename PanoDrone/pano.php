@@ -1,12 +1,13 @@
 <?php
+include('inc-config.php');
 include('inc-lib.php');
 if (isset($_GET['c'])){
   // Sommes en presence d'une url courte on redirige directement au bon endroit
-  $statement = $db->prepare('SELECT fichier FROM lespanos WHERE short_code = :short_code LIMIT 1;');
-  $statement->bindValue(':short_code', rtrim($_GET['c']), SQLITE3_TEXT);
-  $result = $statement->execute();
+  $statement = $pdo->prepare('SELECT fichier FROM lespanos WHERE short_code = :short_code LIMIT 1;');
+  $statement->bindValue(':short_code', rtrim($_GET['c']), PDO::PARAM_STR );
+  $statement->execute();
   $fichier="";
-  while ($row = $result->fetchArray()) {
+  while ($row = $statement->fetch()) {
     $quelfic = $row['fichier'];
   }
 } else {
@@ -25,12 +26,12 @@ if (!file_exists($quelfic)){
 }
 
 $titre=$legende=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitudebleu=$descmarqueurbleu="";
-$statement = $db->prepare('SELECT hashfic,titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$statement = $pdo->prepare('SELECT hashfic,titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic);
-$result = $statement->execute();
+$statement->execute();
 
 $hashfic=$titre=$legende="";
-while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+while ($row = $statement->fetch()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
@@ -39,19 +40,19 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
 if (rtrim($hashfic) == ""){
   $hashfic = hash_file('md5', $quelfic, false);
   // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
-  $stmt = $db->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
-  $stmt->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
-  $stmt->bindValue(':fichier', $quelfic, SQLITE3_TEXT);
-  $result = $stmt->execute();
+  $stmt = $pdo->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
+  $stmt->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+  $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
+  $stmt->execute();
 }
 
 // On recupere les marqueurs
-$statement = $db->prepare('SELECT * FROM lespanos_details WHERE hashfic = :hashfic;');
-$statement->bindValue(':hashfic', $hashfic, SQLITE3_TEXT);
-$result = $statement->execute();
+$statement = $pdo->prepare('SELECT * FROM lespanos_details WHERE hashfic = :hashfic;');
+$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+$statement->execute();
 $nb_marqueur = $i = 0;
 $jmarqueur = "";
-while ($row = $result->fetchArray()) {
+while ($row = $statement->fetch()) {
   $i = $i +1;
   $nb_marqueur = $i;
   $nom_marqueur[$nb_marqueur] = $row['nom_marqueur'];

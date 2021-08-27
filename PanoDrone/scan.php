@@ -1,5 +1,4 @@
 <?php
-
 include('inc-config.php');
 include('inc-lib.php');
 
@@ -18,3 +17,4 @@ echo json_encode(array(
 	"path" => $dir,
 	"items" => $response
 ));
+?>
