@@ -207,39 +207,21 @@ function imageResize($quelfic,$after_width){
 		return;
 	}
 	if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 because use imagescale
-		//define the quality from 1 to 100
-  		$quality = 75;
-  		//detect the width and the height of original image
-  		list($width, $height) = getimagesize($quelfic);
+
+    	$img = imagecreatefromjpeg($quelfic);
+
+    	//Let's do the resize thing
+		//imagescale([returned image], [width of the resized image], [height of the resized image], [quality of the resized image]);
+		$imgResized = imagescale($img, $after_width, -1);
+ 
+		//now save the resized image with a suffix called "-resized" and with its extension. 
+		imagejpeg($imgResized, $quelfic.$compl_img);
   
-  		//resize only when the original image is larger than expected with.
-  		//this helps you to avoid from unwanted resizing.
-  		if ($width > $after_width) {
-  
-   			//get the reduced width
-   			$reduced_width = ($width - $after_width);
-   			//now convert the reduced width to a percentage and round it to 2 decimal places
-  	    	$reduced_radio = round(($reduced_width / $width) * 100, 2);
-  
-   	   		//ALL GOOD! let's reduce the same percentage from the height and round it to 2 decimal places
-  	    	$reduced_height = round(($height / 100) * $reduced_radio, 2);
-  	    	//reduce the calculated height from the original height
- 	     	$after_height = $height - $reduced_height;
-  
-  	    	$img = imagecreatefromjpeg($quelfic);
- 	    	//Let's do the resize thing
-  			//imagescale([returned image], [width of the resized image], [height of the resized image], [quality of the resized image]);
-   			$imgResized = imagescale($img, $after_width, $after_height, $quality);
-  
-   			//now save the resized image with a suffix called "-resized" and with its extension. 
-   			imagejpeg($imgResized, $quelfic.$compl_img);
-  
-   			//Finally frees any memory associated with image
-   			//**NOTE THAT THIS WONT DELETE THE IMAGE
-    		imagedestroy($img);
-   			imagedestroy($imgResized);
-			return;
-		}
+		//Finally frees any memory associated with image
+		//**NOTE THAT THIS WONT DELETE THE IMAGE
+  		imagedestroy($img);
+		imagedestroy($imgResized);
+		return;
 	}
 	//On resize avec function de base de gd
 	createThumb($quelfic, $quelfic.$compl_img, $after_width);	
