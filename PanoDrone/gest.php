@@ -1,7 +1,7 @@
 <?php
 include('inc-config.php');
-include('inc-lib.php');
 include('inc-session.php');
+include('inc-lib.php');
 
 if (isset($_POST['v'])){
 	for ($a = 1; $a <= $_POST['cpt']; $a++){

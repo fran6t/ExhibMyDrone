@@ -72,7 +72,7 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Démo :
 
-
+vi .c   
 [Démonstration](https://d.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
 
 ## divers

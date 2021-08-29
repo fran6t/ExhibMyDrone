@@ -1,6 +1,7 @@
 <?php
 include('inc-config.php');
 include('inc-lib.php');
+$lienAdmin = "";
 
 // Si nous arrivons du formulaire
 if (isset($_POST["v"])){
@@ -8,6 +9,7 @@ if (isset($_POST["v"])){
     $dir = $_POST['dir'];
     $monDomaine = $_POST['monDomaine'];
     $root_complement = $_POST['root_complement'];
+    $keyok = $_POST['keyok'];
     $admin = $_POST['admin'];
     $bddtype = $_POST['bddtype'];
     $host = $_POST['host'];
@@ -23,11 +25,15 @@ if (isset($_POST["v"])){
     $strFic .= "root_complement=".$root_complement."\n";
     $strFic .= "[Acces]\n";
     $strFic .= "keyok=".$keyok."\n";
-    if (rtrim($_POST["admin"])==""){                 //On ne laisse pas sans mot de passe minimum du coup on force avec celui de tinymanagerfile
+    if (version_compare(phpversion(), '5.5.0', '>=')) {
+      if (rtrim($_POST["admin"])==""){                 //On ne laisse pas sans mot de passe minimum du coup on force avec celui de tinymanagerfile
         $strFic .= "admin=".password_hash("admin@123", PASSWORD_DEFAULT)."\n";
-    } else {
+      } else {
         $strFic .= "admin=".password_hash($admin, PASSWORD_DEFAULT)."\n";
-    }
+      }
+    } else {
+      $strFic .= "admin=".crypt($admin, "le sel de la vie")."\n";
+    }  
     $strFic .= "[BDD]\n";
     $strFic .= "bddtype=".$bddtype."\n";
     $strFic .= "host=".$host."\n";
@@ -39,7 +45,7 @@ if (isset($_POST["v"])){
       fwrite($fp, $strFic);
       fclose($fp);
     }
-    $msg = "Sauvegarde effectuée";
+    $msg = "Sauvegarde effectuée !";
 }
 if (is_readable($config_file)) {
   $ini =  parse_ini_file($config_file);
@@ -58,6 +64,7 @@ if (is_readable($config_file)) {
     if ($ini['admin'] == password_hash("admin@123", PASSWORD_DEFAULT)) $msgerror = "Vous devez personaliser le mot de passe protection administration !";
   } else {
     if ( $keyok == "Azerty001" )  $msgerror = "Vous devez personaliser la clef accès manuel !";
+    $lienAdmin=$monDomaine."/".$root_complement."/gest.php?k=".$keyok;
   }
 } else {
   $msgerror = "Fichier ".$config_file."manquant !";
@@ -164,8 +171,16 @@ label {
 <nav class="menu">
 	<ul>
 		<li><a href="index.php">Quitter gestion</a></li>
-    <li><a href="gest.php">Gérer la liste</a></li>
-		<?php
+    <?php
+    if (version_compare(phpversion(), '5.5.0', '>=')) { 
+    ?>  
+      <li><a href="gest.php">Gérer la liste</a></li>
+    <?php    
+    } else {
+    ?>  
+      <li><a href="<?php echo $lienAdmin;?>">Gérer la liste</a></li>
+    <?php  
+    }
 		if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
 		?>
 		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des fichiers</a></li>
@@ -258,7 +273,7 @@ if(isset($msgerror)) echo '<p><span  style="background-color:red;">'.$msgerror.'
     <div class="form-group">
       <label for="name" class="form-label">Port</label>
       <div class="form-fields">
-        <input placeholder="<?php echo $port; ?>" type="text" name="port" id="port"  value="<?php echo $host; ?>">
+        <input placeholder="<?php echo $port; ?>" type="text" name="port" id="port"  value="<?php echo $port; ?>">
         <span class="form-tip">Non utilisé si Sqlite</span>
       </div>
     </div>
