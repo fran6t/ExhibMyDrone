@@ -63,7 +63,7 @@ Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de 
 N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Reste à faire :
-
+- Ajouter le mini gestionnaire de paramètres sur la partie vidéos droonies
 - Ajouter possibilité de partage lien pour que la sphère s'ouvre vers un point d'intérêt
 - Petit doc d'explications (wiki ou readme etendu..)
 - Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs
@@ -78,6 +78,7 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 ## divers
 
 __Change log__:
+- 29/08/2021 Mise en place d'un mini gestionnaire de paramètres côté sphères
 - 26/08/2021 Passage de sqlite natif php vers pdo pour accepter aussi mysql, gestion version php si php est < 5.5 alors pas de tinyfilemanager il faut placer ses fichiers via filezilla ou équivalent et appeler l'administration manuellement avec un parametre (voir fichier inc-config.php)
 - 20/08/2021 Ajout miniature et lien partage copiable depuis le formulaire gestion sphère
 - 19/08/2021 Ajout ckeditor pour saisir les descriptions des marqueurs

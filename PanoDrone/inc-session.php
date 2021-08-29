@@ -3,6 +3,17 @@
 // Dans le cas d'une version inferieur on utilise le parametre clef que l'on compare a la clef dans inc-config.php  
 
 if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
+	// On test si le fichier inc-config-perso.ini.php existe et si oui si le mot de passe d'origine a été changé
+	// Si ce n'est pas le cas on dirige vers param.php tant que le mot de passe n'a pas été changé 
+	$versParam = false;
+	if (is_readable($config_file)) {
+		$ini =  parse_ini_file($config_file);
+		if ($ini['admin'] == password_hash("admin@123", PASSWORD_DEFAULT)) $versParam = true;	// Le Mot de passe est d'origine
+	}
+	if ($versParam) {
+		header('Location: param.php');
+		exit;
+	}
 	// On va se servir de la connection de tinyfilemanager pour savoir si on peu acceder
 	// Attention tous ceux qui sont identifiés correctement dans tinyfilemanger accederons 
 	if ( !defined( 'FM_SESSION_ID')) {
@@ -20,6 +31,10 @@ if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use
     $msg = "Désolé version php trop ancienne et/ou parametre k non egal à celui définit dans inc-config.php";
     session_start();
 	if (isset($_GET['k'])){
+		if (rtrim($_GET['k'])== "Azerty001"){
+			header('Location: param.php'); // keyok est d'origine on branche vers param.php
+			exit;
+		} 
         if ( $_GET['k'] == $keyok ){
             $msg="";
             $_SESSION['k'] = $keyok;

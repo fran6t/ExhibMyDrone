@@ -1,4 +1,9 @@
 <?php
+// Les variables ci-dessous sont celles par defaut vous n'avez pas a y toucher
+// Vous serez automatiquement redirigé vers un formulaire de mises à jour de ces variables. 
+// Les nouvelles valeurs que vous aurez saisies vont l'emporter sur celle de ce fichier
+// Elles seront mémorisées dans le fichier inc-config-perso.ini.php
+
 $dir = "Spheres";						// Important dans scan.php sert au debut et a la fin pour le json
 
 $monDomaine = "http://www.wse.fr";      // Va servir pour construire un lien court vers la sphère directement
@@ -20,8 +25,8 @@ $auth_users = array(
     'user' => '$2y$10$Fg6Dz8oH9fPoZ2jJan5tZuv6Z4Kp7avtQ9bDfrdRntXtPeiMAZyGO' //12345
 );
 
-//$bddtype = 'mysql';					// Decommente si Mysql
-$bddtype = 'sqlite';					// Commente si pas de sqlite
+
+$bddtype = 'sqlite';					    // sqlite ou mysql
 $host = '127.0.0.1';
 $db   = 'pano.db';							// Nom de la bdd
 $user = 'user';
@@ -33,9 +38,6 @@ $port = "3306";
 // memory_limit, upload_max_filesize, post_max_size
 $max_upload_size_bytes = 5000;
 
-// Votre fichier perso de configuration non ecrasé en cas de maj
-$config_file = 'inc-config-perso.php';
-if (is_readable($config_file)) {
-    @include($config_file);
-}
+// Attention si vous changez le nom de ce fichier veillez à ce qu'il soit bien en .php sinon il y a risque de visualisation de son contenu
+$config_file = 'inc-config-perso.ini.php';
 ?>

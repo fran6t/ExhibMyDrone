@@ -81,7 +81,7 @@ $montab .= "</table>\n";
 
 	<!-- Include our stylesheet -->
 	<link href="assets/css/styles.css" rel="stylesheet"/>
-
+	<link href="css/navbar.css" rel="stylesheet"/>
 	<style type="text/css">
 		body{color: white;}
 		table { color: white; }
@@ -91,83 +91,6 @@ $montab .= "</table>\n";
 			font-weight: 700;
 			color: yellow; 
 		}
-
-        /* Pour la nav bar qui chapeaute la liste */
-		nav {
-            background-color: #333;
-            border: 1px solid #333;
-            color: #fff;
-            display: block;
-            margin: 0;
-            overflow: hidden;
-        }
-
-	    nav ul{
-    	    margin: 0;
-        	padding: 0;
-         	list-style: none;
-    	}
-    	nav ul li {
-           	margin: 0;
-          	display: inline-block;
-           	list-style-type: none;
-           	transition: all 0.2s;
-    	}
-
-    	nav > ul > li > a {
-          	color: #aaa;
-          	display: block;
-          	line-height: 2em;
-          	padding: 0.5em 2em;
-           	text-decoration: none;
-
-    	}
-
-    	nav li > ul{
-          	display : none;
-          	margin-top:1px;
-          	background-color: #bbb;
-
-    	}
-
-    	nav li > ul li{
-          	display: block;
-	    }
-
-	    nav  li > ul li a {
-          	color: #111;
-          	display: block;
-        	line-height: 2em;
-        	padding: 0.5em 2em;
-    	    text-decoration: none;
-    	}
-
-	    nav li:hover {
-        	background-color: #666;
-	    }
-	    nav li:hover > ul{
-        	position:absolute;
-        	display : block;
-	    }
-	    nav li > ul > li ul  {
-         	display: none;
-        	background-color: #888;	
-	    }
-	    nav li > ul > li:hover > ul  {
-        	position:absolute;
-        	display : block;
-        	margin-left:100%;
-         	margin-top:-3em;
-	    }
-
-	    nav ul > li.sub{
-        	background: url(ic_keyboard_arrow_down_white_18dp.png) right center no-repeat;
-	    }
-
-    	nav ul > li.sub li.sub{
-         	background: url(ic_keyboard_arrow_right_white_18dp.png) right center no-repeat;
-	    }
-
 	</style>
 
 </head>
@@ -180,6 +103,7 @@ $montab .= "</table>\n";
 		if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
 		?>
 		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des vidéos</a></li>
+		<li><a href="param.php">Paramètres</a></li>
 		<?php 
 		} 
 		?>
@@ -190,8 +114,6 @@ $montab .= "</table>\n";
 <form id="MyForm" action="gest.php" method="post" class="form-example">
 	<input id="v" name="v" type="hidden" value="ok">
 	<input id="cpt" name="cpt" type="hidden" value="<?php echo $i; ?>">
-	<br />
-	<input type="submit" value="Valider" />
 	<br /><br />
 	<p>
 		<span style="background-color:red">Fond rouge les fichiers qui n'existent plus, ils sont cochés par defaut pour effacement de la base de données</span><br />
@@ -200,7 +122,7 @@ $montab .= "</table>\n";
 	<br />
 	<?php echo $montab; ?> 
 	<br />
-	<input type="submit" value="Valider" /><br/><br />
+	<input type="submit" value="&nbsp;Effacer les fichiers lignes cochées&nbsp;" /><br/><br />
 </form>
 <script src="assets/js/jquery-1.11.0.min.js"></script>
 <script type='text/javascript'>
@@ -219,7 +141,5 @@ $montab .= "</table>\n";
 	}
 	function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
 </script>
-
-
 </body>
 </html>
