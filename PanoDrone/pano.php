@@ -147,7 +147,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
     panorama   : '<?php echo $quelfic; ?>',
-    caption    : '<?php echo $titre; ?>',
+    caption    : '<?php echo addslashes($titre); ?>',
     loadingImg: 'example/assets/photosphere-logo.gif',
     navbar    : [
       'autorotate', 'zoom', 'download', 'markers', 'markersList',
