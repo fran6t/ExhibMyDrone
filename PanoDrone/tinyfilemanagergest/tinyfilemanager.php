@@ -146,7 +146,7 @@ if (is_readable("../".$config_file)) {
 	$pass = $ini['pass'];
 	$port = $ini['port'];
 } else {
-	header('Location: param.php');
+	header('Location: ../param.php');
 	exit;
 }
 

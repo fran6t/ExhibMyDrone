@@ -1,7 +1,10 @@
 <?php
+// Si le fichier inc-config.ini.php existe on ne peut appeler les parametres sans passer par une validation soit de TinyFileManager soit de keyok
 include('inc-config.php');
-include('inc-lib.php');
+include('inc-session.php'); 
+//include('inc-lib.php');
 $lienAdmin = "";
+$msgerror = "";
 
 // Si nous arrivons du formulaire
 if (isset($_POST["v"])){
@@ -41,11 +44,15 @@ if (isset($_POST["v"])){
     $strFic .= "user=".$user."\n";
     $strFic .= "pass=".$pass."\n";
     $strFic .= "port=".$port."\n";
-    if ($fp = fopen($config_file, 'w')){
-      fwrite($fp, $strFic);
-      fclose($fp);
+    if (@is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
+      if ($fp = fopen($config_file, 'w')){
+        fwrite($fp, $strFic);
+        fclose($fp);
+      }
+      $msg = "Sauvegarde effectuée !";
+    } else {
+      $msgerror = "Répertoire: <b>".$root_complement."/".$dir. "</b> introuvable veuillez corriger svp ! (URL et/ou Répertoire sphère)";
     }
-    $msg = "Sauvegarde effectuée !";
 }
 if (is_readable($config_file)) {
   $ini =  parse_ini_file($config_file);
@@ -67,8 +74,17 @@ if (is_readable($config_file)) {
     $lienAdmin=$monDomaine."/".$root_complement."/gest.php?k=".$keyok;
   }
 } else {
-  $msgerror = "Fichier ".$config_file."manquant !";
+  if ($msgerror==""){
+    $msgerror = "Fichier <b>".$config_file."</b> manquant, création après validation de ce formulaire !";
+  }  
 }
+if ($keyok == "Azerty001"){
+  $msgerror = "Veuillez changer la clef d'accès elle ne doit pas être égale à Azerty001 en production";
+}
+if ( password_verify("admin@123", $ini['admin'])){
+  $msgerror = "Veuillez changer le mot de passe administration il ne doit pas être égal à admin@123 en production";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -204,21 +220,21 @@ if(isset($msgerror)) echo '<p><span  style="background-color:red;">'.$msgerror.'
       </div>
     </div>
     <div class="form-group-stacked">
-      <label for="name" class="form-label">Répertoire :</label>
+      <label for="name" class="form-label">Complément URL :</label>
         <div class="form-fields">
         <input placeholder="<?php echo $root_complement; ?>" type="text" name="root_complement" id="root_complement" value="<?php echo $root_complement; ?>">
-        <span class="form-tip">Répertoire ou se trouve les sphères (complément de l'Url</span>
+        <span class="form-tip">Complément de l'Url</span>
       </div>
     </div>
     <div class="form-group-stacked">
-      <label for="name" class="form-label">Répertoire :</label>
+      <label for="name" class="form-label">Répertoire sphères:</label>
         <div class="form-fields">
         <input placeholder="<?php echo $dir; ?>" type="text" name="dir" id="dir" value="<?php echo $dir; ?>">
-        <span class="form-tip">Répertoire ou se trouve les sphères</span>
+        <span class="form-tip">Sous répertoire ou se trouve les sphères</span>
       </div>
     </div>
     <div class="form-group-stacked">
-      <label for="name" class="form-label">Clef accès manuel :</label>
+      <label for="name" class="form-label">Clef accès manuelle :</label>
         <div class="form-fields">
         <input placeholder="<?php echo $keyok; ?>" type="text" name="keyok" id="keyok" value="<?php echo $keyok; ?>">
         <span class="form-tip">Si TinyFileManager désactivé vous devrez appeler l'administration sous cette forme https://d.wse.fr/ExhibMydrone/PanoDrone/gest.php?k=Azerty001</span>
