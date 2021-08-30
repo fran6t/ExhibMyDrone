@@ -131,10 +131,23 @@ $config_file = '../inc-config.php';        //$config_file = __DIR__.'/config.php
 if (is_readable($config_file)) {
     @include($config_file);
 }
+// Après l'include $config_file vaut la valeur de celui qui est dans ../inc-config.php
 // On re ecrase par un supplementaire si il existe (le sous sous include en raison des chemins dans inc-config.php ne fonctionnant pas)
-$config_file = '../inc-config-perso.php';        //$config_file = __DIR__.'/config.php';
-if (is_readable($config_file)) {
-    @include($config_file);
+if (is_readable("../".$config_file)) {
+	$ini =  parse_ini_file("../".$config_file);
+	$dir = $ini['dir'];
+	$monDomaine = $ini['monDomaine'];
+	$root_complement = $ini['root_complement'];
+	$keyok = $ini['keyok'];
+	$auth_users['admin'] = $ini['admin'];
+	$bddtype = $ini['bddtype'];
+	$host = $ini['host'];
+	$user = $ini['user'];
+	$pass = $ini['pass'];
+	$port = $ini['port'];
+} else {
+	header('Location: param.php');
+	exit;
 }
 
 // --- EDIT BELOW CAREFULLY OR DO NOT EDIT AT ALL ---
