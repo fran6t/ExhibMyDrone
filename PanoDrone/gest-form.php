@@ -166,7 +166,7 @@ imageResize($quelfic,600);
       background: rgba(0, 0, 0, 0.4);
     }
   </style>
-  <script src="../ckeditor/ckeditor.js"></script>
+  <script src="ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <div id="photosphere"></div>
