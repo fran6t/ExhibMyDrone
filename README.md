@@ -78,6 +78,7 @@ vi .c
 ## divers
 
 __Change log__:
+- 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct
 - 31/08/2021 Déplacement cd ckeditor dans PanoDrone pour independance accrue de PanoDrone versus VideoDrone
 - 29/08/2021 Mise en place d'un mini gestionnaire de paramètres côté sphères
 - 26/08/2021 Passage de sqlite natif php vers pdo pour accepter aussi mysql, gestion version php si php est < 5.5 alors pas de tinyfilemanager il faut placer ses fichiers via filezilla ou équivalent et appeler l'administration manuellement avec un parametre (voir fichier inc-config.php)

@@ -33,6 +33,7 @@ $hashfic=$titre=$legende="";
 $montab = "<table>\n";
 $montab .= "<tr>";
 $montab .= "        <th>Sel.</th>";
+$montab .= "        <th>Privé</th>";
 $montab .= "        <th>Fichier</th>";
 $montab .= "        <th>Titre</th>";
 $montab .= "        <th>Legende</th>";
@@ -56,11 +57,17 @@ while ($row = $statement->fetch()) {
 	} else {
 		$titreTmp = $row['titre'];
 	}
+	if (strpos($row['fichier'],"-p-") === false ){	// Ce n'est pas un fichier privee
+		$priv = "";
+	} else {							// Il est privée
+		$priv='<span style="color:orange;font-weight: 500;">Privée</span> ';
+	}
 	$titreTmp = '<a href="gest-form.php?p='.urlencode($row['fichier']).'">'.$titreTmp.'</a>';
 	$montab .= "<tr".$backgroungColor.">";
 	$montab .= '		<td><input type="checkbox" name="C_'.$i.'" value="Ok"'.$checkBox.'>';
 	$montab .= '			<input type="hidden" name="FIC_'.$i.'" value="'.$row['fichier'].'">';
 	$montab .= "		</td>";
+	$montab .= "        <td>".$priv."</td>";
 	$montab .= "        <td>".$row['fichier']."</td>";
 	$montab .= "        <td>".$titreTmp."</td>";
 	$montab .= "        <td>".$row['legende']."</td>";
@@ -117,7 +124,7 @@ $montab .= "</table>\n";
 	<br /><br />
 	<p>
 		<span style="background-color:red">Fond rouge les fichiers qui n'existent plus, ils sont cochés par defaut pour effacement de la base de données</span><br />
-		<span style="background-color:gray">Fond gris les fichiers non personalisés</span>
+		<span style="background-color:gray">Fond gris les fichiers non personalisés</span><br />
 	</p>
 	<br />
 	<?php echo $montab; ?> 

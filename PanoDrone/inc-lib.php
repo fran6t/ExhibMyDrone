@@ -102,9 +102,25 @@ function DB_column_exists($table,$column){
 
 // Test si la chaine passée contient la chaine MinX
 function isMiniature($aTester){
+// Quand la fonction retourne true c'est que c'est une miniature	
 	$pos = strpos($aTester,"MinX");
 	if ($pos === false){
 		return false;
+	} else {
+		return true;
+	}
+}
+
+$frontend = false;				// Seul scan.php place la variable $frontend à true car cela permet d'ignorer les fichiers avec -p- dans leurs noms 
+function isPrivate($f){
+// Quand la fonction retourne true c'est que c'est un fichier privée
+	global $frontend;
+	if ($frontend){				// Nous sommes en frontend alors on doit savoir si le fichier est privé
+		if (strpos($f,"-p-") === false ){	// Ce n'est pas un fichier privee
+			return false;
+		} else {							// Il est privée
+			return true;
+		}
 	} else {
 		return true;
 	}
@@ -122,7 +138,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f)) {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f)) {
 				continue; // Ignore hidden files
 			}
 
