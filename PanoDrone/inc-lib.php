@@ -62,11 +62,16 @@ if (!DB_table_exists('lespanos_details')){
 
 // Si la column existe pas on l'ajoute à la table
 if (!DB_column_exists('lespanos','short_code')){
-	echo "la colonne existe oas je k ajoute";
 	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [short_code] VARCHAR(25)";
 	$pdo->exec($SqlString);
 	$SqlString = "CREATE INDEX [IDX_lespanos_short_code] ON [lespanos]([short_code]  ASC);";
     $pdo->exec($SqlString);
+}
+
+// Si la column existe pas on l'ajoute à la table
+if (!DB_column_exists('lespanos_details','marker_center')){
+	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_center] VARCHAR(1)";
+	$pdo->exec($SqlString);
 }
 
 function DB_table_exists($table){
