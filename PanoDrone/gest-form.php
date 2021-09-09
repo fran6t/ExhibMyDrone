@@ -37,7 +37,7 @@ if (isset($_POST["v"])){
     if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //On insert que si un titre de marqueur est renseigné 
       if (rtrim($_POST['formu'][$a]['couleur']) == "") $_POST['formu'][$a]['couleur'] = 0;
       if (rtrim($_POST['formu'][$a]['longitude']) == "") $_POST['formu'][$a]['longitude'] = 0; 
-      $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri);');
+      $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
 	    $statement->bindValue(':fichier', $quelfic);
       $statement->bindValue(':hashfic', $_POST['hashfic']);
       $statement->bindValue(':nom_marqueur', $_POST['formu'][$a]['nom_marqueur']);
@@ -45,6 +45,8 @@ if (isset($_POST["v"])){
       $statement->bindValue(':latitude', $_POST['formu'][$a]['latitude']);
       $statement->bindValue(':longitude', $_POST['formu'][$a]['longitude']);
       $statement->bindValue(':descri', $_POST['formu'][$a]['descri']);
+      $statement->bindValue(':marker_center', $_POST['formu'][$a]['marker_center']);
+      echo "<br />marqueur center vaut :".$_POST['formu'][$a]['marker_center'];
 	    $result = $statement->execute();
       //echo "<br /><br />a=".$a." Marqueur=".$_POST['formu'][$a]['nom_marqueur']."<br /><br />";
       //echo "<br /><br />a=".$a." Couleur=".$_POST['formu'][$a]['couleur']."<br /><br />";
@@ -92,7 +94,7 @@ if (rtrim($short_code)==""){ // Idem si $short_code est vide on en calcul un
 }
 
 // On memorise les marqueurs pour le formulaire et aussi pour l'affichage
-$statement = $pdo->prepare('SELECT nom_marqueur,couleur,latitude,longitude,descri FROM lespanos_details WHERE hashfic = :hashfic;');
+$statement = $pdo->prepare('SELECT nom_marqueur,couleur,latitude,longitude,descri,marker_center FROM lespanos_details WHERE hashfic = :hashfic;');
 $statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
 $statement->execute();
 $nb_marqueur = $i = 0;
@@ -104,6 +106,7 @@ while ($row = $statement->fetch()) {
   $latitude[$nb_marqueur] = $row['latitude'];
   $longitude[$nb_marqueur] = $row['longitude'];
   $descri[$nb_marqueur] = $row['descri'];
+  $marker_center[$nb_marqueur] = $row['marker_center'];
   // On construit le tableau des marqueurs javascript
   $jmarqueur.="a.push({\n";
   $jmarqueur.="\t id       : 'Marker".$nb_marqueur."',\n";
@@ -205,9 +208,15 @@ imageResize($quelfic,600);
       </div>
     </div>
     <fieldset>
+      Couleur :
       <select name="formu[<?php echo $i; ?>][couleur]"" id="couleur_<?php echo $i; ?>">
                                           <option value="red"  <?php if ($couleur[$i]=="red") echo "SELECTED"; ?>>Rouge</option>
                                           <option value="blue" <?php if ($couleur[$i]=="blue") echo "SELECTED"; ?>>Bleu</option>
+      </select>
+      &nbsp;Centrer dessus à l'ouverture :
+      <select name="formu[<?php echo $i; ?>][marker_center]" id="marker_center_<?php echo $i; ?>">
+                                          <option value="N" <?php if ($marker_center[$i]=="N") echo "SELECTED"; ?>>Non</option>
+                                          <option value="O" <?php if ($marker_center[$i]=="O") echo "SELECTED"; ?>>Oui</option>
       </select>
     </fieldset>
     <fieldset>
@@ -237,9 +246,15 @@ imageResize($quelfic,600);
       </div>
     </div>
     <fieldset>
+      Couleur :
       <select name="formu[<?php echo $i; ?>][couleur]" id="couleur_<?php echo $i; ?>">
                                           <option value="red">Rouge</option>
                                           <option value="blue">Bleu</option>
+      </select>
+      &nbsp;Centrer dessus à l'ouverture :
+      <select name="formu[<?php echo $i; ?>][marker_center]" id="marker_center_<?php echo $i; ?>">
+                                          <option value="N">Non</option>
+                                          <option value="O">Oui</option>
       </select>
     </fieldset>
     <fieldset>

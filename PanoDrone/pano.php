@@ -24,7 +24,7 @@ if (!file_exists($quelfic)){
 	echo "Pano manquants !!!!";
 	return;
 }
-
+$goMarker = ""; 
 $titre=$legende=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitudebleu=$descmarqueurbleu="";
 $statement = $pdo->prepare('SELECT hashfic,titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic);
@@ -75,6 +75,24 @@ while ($row = $statement->fetch()) {
   $jmarqueur.="\t height   : 32,\n";
   $jmarqueur.="\t anchor   : 'bottom center',\n";
   $jmarqueur.="});\n";
+  $m = "Marker".$nb_marqueur;
+  if ($row['marker_center']=="O"){
+    $goMarker  = "PSV.once('ready', () => {\n";
+    $goMarker .= "  setTimeout(() => {\n";
+    $goMarker .= "  markers.gotoMarker('".$m."',500);\n";
+    $goMarker .= "  });\n";
+    $goMarker .= "});\n";  
+  }
+}
+
+// Si un marqueur est defini dans l'URL c'est lui qui sera priortaire, la sphère s'ouvre alors centrée sur lui
+if (isset($_GET['m'])){
+  $m = urldecode($_GET['m']);
+  $goMarker  = "PSV.once('ready', () => {\n";
+  $goMarker .= "  setTimeout(() => {\n";
+  $goMarker .= "  markers.gotoMarker('".$m."',500);\n";
+  $goMarker .= "  });\n";
+  $goMarker .= "});\n";
 }
 ?>
 <!DOCTYPE html>
@@ -178,6 +196,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   PSV.on('dblclick', function (e, data) {
     history.back();
   });
+  <?php echo $goMarker; ?>
 </script>
 </body>
 </html>
