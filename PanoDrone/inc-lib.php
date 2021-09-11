@@ -134,6 +134,7 @@ function isPrivate($f){
 // Test si c'est un repertoire qui fini par .d
 function isDirectoryHD($aTester){
 	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
+	if (!isset($atester)) return false;
 	$path_parts = pathinfo($aTester);
 	if ($path_parts['extension']=="d"){	
 		return true;
