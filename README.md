@@ -60,7 +60,7 @@ par un transcodage il est possible que ce soit juste une histoire d'entête mp4 
 En théorie n'importe quel serveur web disposant du langage PHP et sa librairie sqlite3 permettent le fonctionnement natif de l'appli. 
 
 La façon la plus simple et de télécharger le zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
-(Attention il est gros car il y a plusieurs sphères et 2 vidéos 155Mo au moment ou j'ecris cela)
+(Il n'y a plus de sphères ni de vidéo ainsi que de bdd dans le depot)
 
 Nota: Le respect des minuscules majuscules est important.
 
