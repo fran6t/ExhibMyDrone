@@ -78,8 +78,36 @@ Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de 
 
 N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
+## Nom et structure des fichiers :
+
+Pour les sphères, il suffit de placer les fichiers dans des repertoires et sous répertoires souhaités toutefois :
+
+    - Les noms de repertoire finissant par .d sont reservés aux images sources des sphères du même nom en .jpg
+    - Les noms de sphères possédant la chaine de caratère -p- ne seront visibles que par un lien partagé
+    - Les miniatures sont générées automatiquement invisible dans l'admin mais visible par le gestionnaire tinyfilemanager ou filezilla équivalent
+
+Exemple d'une sphère dont le nom de fichier est dji-maison.jpg placée dans un repertoire Sphere/My-Maison avec les images d'origine qui ont été assemblées nous aurons :
+
+/Sphere/My-Maison/dji-maison.jpg
+
+Nous créons un repertoire 
+/Sphere/My-Maison/dji-maison.d
+
+Dans lequel nous plaçons les 26 fichiers DJI_0001.jpg ce qui donne
+/Sphere/My-Maison/dji-maison.d/DJI_0001.jpg
+/Sphere/My-Maison/dji-maison.d/DJI_0002.jpg
+...
+/Sphere/My-Maison/dji-maison.d/DJI_0025.jpg
+/Sphere/My-Maison/dji-maison.d/DJI_0026.jpg
+
+Les miniatures suivantes seront créées automatiquement
+/Sphere/My-Maison/dji-maison-MinX0200.jpg
+/Sphere/My-Maison/dji-maison-MinX0600.jpg
+
+
+
+
 ## Reste à faire :
-- Lien vers images sources de la sphère;
 - Ajouter lien pour permettre un partage dans une frame;
 - Petit doc d'explications (wiki ou readme etendu..);
 - Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs;
@@ -88,12 +116,13 @@ N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Démo :
 
-vi .c   
+   
 [Démonstration](https://d.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
 
 ## divers
 
 __Change log__:
+- 11/09/2021 Si fichiers sources de construction de la sphère présent alors ajout de marqueur permettant de consulter jpg origine
 - 09/09/2021 Si un marqueur est defini centrer, la sphère s'ouvre alors sur celui-ci
 - 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct
 - 31/08/2021 Déplacement cd ckeditor dans PanoDrone pour independance accrue de PanoDrone versus VideoDrone
