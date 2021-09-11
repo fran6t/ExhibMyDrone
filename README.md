@@ -1,15 +1,28 @@
 # ExhibMyDrone
-Visualisation sphères et placement de points d'intérets
-Visualisation des droonies et rushs d'un drone
 
-__But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rushs videos du drone
+__But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rushs videos du drone.
 
 Pour ce faire, les logiciels suivants sont utilisés :
 
-- [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) de Damien Sorel pour l'affichage et le marquage de point d'intérêt
-- [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) de Nick Anastasov pour parcourir les photos
-- [TinyFileManager](https://tinyfilemanager.github.io) de CCP Programmers pour gérer les fichiers devant être presentés
-- [CkEditor](https://ckeditor.com) de CKSource pour la saisie des du texte de description des points d'interêts (marqueurs)
+- [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) de Damien Sorel pour l'affichage et le marquage de point d'intérêt;
+- [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) de Nick Anastasov pour parcourir les photos;
+- [TinyFileManager](https://tinyfilemanager.github.io) de CCP Programmers pour gérer les fichiers devant être presentés;
+- [CkEditor](https://ckeditor.com) de CKSource pour la saisie des du texte de description des points d'interêts (marqueurs).
+
+En option pour des sphères 4K depuis DJI mini air 2
+- [Rawtherapee](https://www.rawtherapee.com/) pour le developpement des fichiers raw
+- [Hugin](http://hugin.sourceforge.net/) logiciel d'assemblage de panorama
+
+
+## Fonctionalités :
+- Visualisation sphères comprenant :
+    - Ajout suppression de sphères (gestionnaire fichiers intégré);
+    - Ajout de points d'intérêts avec texte complémentaire (via simple formulaire);
+    - Centrage à l'ouverture sur un point d'intérêt;
+    - Sphère privée;
+    - Lien pour partage direct.
+- Visualisation des droonies et rushs d'un drone
+    - Ajout suppression de vidéos (gestionnaire fichiers intégré).
 
 ## Principe de fonctionnement : 
 
@@ -31,9 +44,12 @@ La fonction de scan des fichiers sphères et vidéos est en php le reste en java
 ## Format des fichiers :
 
 
-- Sphères & panorama : Actuellement ont été testés uniquement les sphères natives obtenues en exportant depuis la galerie DJI. 
-Le DJI mini 2 produit un jpg directement exploitable.
-- Vidéos : Les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
+- Sphères & panorama : 
+    - Actuellement ont été testés uniquement les sphères natives obtenues en exportant depuis la galerie DJI;
+    - Les images raw developpées avec [rawtherapee](https://www.rawtherapee.com/) et assemblées via [Hugin](http://hugin.sourceforge.net/). 
+
+- Vidéos : 
+    - Les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
 par un transcodage il est possible que ce soit juste une histoire d'entête mp4 l'idée serait alors de l'ajouter 
 à la volée en début de fichier mais je n'ai pas encore réussi.
 
@@ -63,12 +79,12 @@ Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de 
 N'hésitez pas si je peux vous aidez trautmann@wse.fr
 
 ## Reste à faire :
-- Ajouter lien pour permettre un partage dans une frame
-- Ajouter possibilité de partage lien pour que la sphère s'ouvre vers un point d'intérêt
-- Petit doc d'explications (wiki ou readme etendu..)
-- Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs
-- Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo
-- Ajouter un éditeur de sous titrage lors de la lecture d'une vidéo  
+- Lien vers images sources de la sphère;
+- Ajouter lien pour permettre un partage dans une frame;
+- Petit doc d'explications (wiki ou readme etendu..);
+- Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs;
+- Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo;
+- Ajouter un éditeur de sous titrage lors de la lecture d'une vidéo.  
 
 ## Démo :
 
@@ -78,6 +94,7 @@ vi .c
 ## divers
 
 __Change log__:
+- 09/09/2021 Si un marqueur est defini centrer, la sphère s'ouvre alors sur celui-ci
 - 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct
 - 31/08/2021 Déplacement cd ckeditor dans PanoDrone pour independance accrue de PanoDrone versus VideoDrone
 - 29/08/2021 Mise en place d'un mini gestionnaire de paramètres côté sphères

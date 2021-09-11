@@ -131,6 +131,18 @@ function isPrivate($f){
 	}
 }
 
+// Test si c'est un repertoire qui fini par .d
+function isDirectoryHD($aTester){
+	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
+	$path_parts = pathinfo($aTester);
+	if ($path_parts['extension']=="d"){	
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
 // Cette foncion faisait partie au départ de scan.php
 // This function scans the files folder recursively, and builds a large array
 function scan($dir){
@@ -143,7 +155,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f)) {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f)) {
 				continue; // Ignore hidden files
 			}
 
@@ -275,4 +287,75 @@ function createThumb($spath, $dpath, $maxd) {
 	}
 }
 
+// Permet d'ajouter des marqueurs afin de visualiser la source des 26 images sources de la sphère
+// Usage dans pano.php
+function listimg($nom_img){
+	$array_latitude['DJI_0001.jpg']='-0.09252984397812103';
+	$array_longitude['DJI_0001.jpg']='5.555662773914915';
+	$array_latitude['DJI_0002.jpg']='0.232558003708351';
+	$array_longitude['DJI_0002.jpg']='5.554250459465138';
+	$array_latitude['DJI_0003.jpg']='-0.4626724435377434';
+	$array_longitude['DJI_0003.jpg']='5.567678392009997';
+	$array_latitude['DJI_0004.jpg']='-0.962383806250426';
+	$array_longitude['DJI_0004.jpg']='5.637974232515125';
+	$array_latitude['DJI_0005.jpg']='-1.5536787971303037';
+	$array_longitude['DJI_0005.jpg']='2.692606580364135';
+	$array_latitude['DJI_0006.jpg']='-0.9781904794075316';
+	$array_longitude['DJI_0006.jpg']='4.783367293051897';
+	$array_latitude['DJI_0007.jpg']='-0.38867924822037425';
+	$array_longitude['DJI_0007.jpg']='4.838971582862978';
+	$array_latitude['DJI_0008.jpg']='0.14407080030219688';
+	$array_longitude['DJI_0008.jpg']='4.747493272911039';
+	$array_latitude['DJI_0009.jpg']='0.21079314150783213';
+	$array_longitude['DJI_0009.jpg']='3.931816379538116';
+	$array_latitude['DJI_0010.jpg']='-0.34722532850718';
+	$array_longitude['DJI_0010.jpg']='4.018244572905599';
+	$array_latitude['DJI_0011.jpg']='-1.015882144445956';
+	$array_longitude['DJI_0011.jpg']='4.027805712412321';
+	$array_latitude['DJI_0012.jpg']='-0.9373559905048263';
+	$array_longitude['DJI_0012.jpg']='3.1564785404179676';
+	$array_latitude['DJI_0013.jpg']='-0.33625680993064444';
+	$array_longitude['DJI_0013.jpg']='3.2676951112933614';
+	$array_latitude['DJI_0014.jpg']='0.13549596190930968';
+	$array_longitude['DJI_0014.jpg']='3.2700915614427246';
+	$array_latitude['DJI_0015.jpg']='0.11561547636859704';
+	$array_longitude['DJI_0015.jpg']='2.4295950354945464';
+	$array_latitude['DJI_0016.jpg']='-0.31342876318014423';
+	$array_longitude['DJI_0016.jpg']='2.36760514237171';
+	$array_latitude['DJI_0017.jpg']='-0.9530711639848573';
+	$array_longitude['DJI_0017.jpg']='2.4236265274907773';
+	$array_latitude['DJI_0018.jpg']='-0.8834796416291382';
+	$array_longitude['DJI_0018.jpg']='1.617121461494011';
+	$array_latitude['DJI_0019.jpg']='-0.3329297927757393';
+	$array_longitude['DJI_0019.jpg']='1.6213608783442042';
+	$array_latitude['DJI_0020.jpg']='0.13141430090940664';
+	$array_longitude['DJI_0020.jpg']='1.1587510462647024';
+	$array_latitude['DJI_0021.jpg']='0.15167681027720192';
+	$array_longitude['DJI_0021.jpg']='0.8037879174658019';
+	$array_latitude['DJI_0022.jpg']='-0.33269261920485826';
+	$array_longitude['DJI_0022.jpg']='0.7736362471043422';
+	$array_latitude['DJI_0023.jpg']='-0.9143608483005834';
+	$array_longitude['DJI_0023.jpg']='0.9110400685003149';
+	$array_latitude['DJI_0024.jpg']='-0.7975382334172547';
+	$array_longitude['DJI_0024.jpg']='0.08457568661042872';
+	$array_latitude['DJI_0025.jpg']='-0.3828550804822781';
+	$array_longitude['DJI_0025.jpg']='0.06140379425587219';
+	$array_latitude['DJI_0026.jpg']='0.17567919428837753';
+	$array_longitude['DJI_0026.jpg']='0.17567919428837753';
+	$jmarqueur="a.push({\n";
+	$jmarqueur.="\t id       : '".$nom_img."',\n";
+	$jmarqueur.="\t tooltip  : {\n";
+	$jmarqueur.="\t\t content : '".$nom_img."',\n";
+	$jmarqueur.="\t\t position: 'bottom right',\n";
+	$jmarqueur.="\t },\n";
+	//$jmarqueur.="\t content  : document.getElementById('dji-".$nb_marqueur."').innerHTML,\n";
+	$jmarqueur.="\t latitude : ".$array_latitude[$nom_img].",\n";
+	$jmarqueur.="\t longitude: ".$array_longitude[$nom_img].",\n";
+	$jmarqueur.="\t image    : 'example/assets/plus.gif',\n";
+	$jmarqueur.="\t width    : 32,\n";
+	$jmarqueur.="\t height   : 32,\n";
+	$jmarqueur.="\t anchor   : 'bottom center',\n";
+	$jmarqueur.="});\n";
+	return $jmarqueur;
+}
 ?>

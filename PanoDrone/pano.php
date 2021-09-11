@@ -79,6 +79,7 @@ while ($row = $statement->fetch()) {
   if ($row['marker_center']=="O"){
     $goMarker  = "PSV.once('ready', () => {\n";
     $goMarker .= "  setTimeout(() => {\n";
+    $goMarker .= "  markers.toggleAllTooltips();\n";  
     $goMarker .= "  markers.gotoMarker('".$m."',500);\n";
     $goMarker .= "  });\n";
     $goMarker .= "});\n";  
@@ -91,6 +92,7 @@ if (isset($_GET['m'])){
   $goMarker  = "PSV.once('ready', () => {\n";
   $goMarker .= "  setTimeout(() => {\n";
   $goMarker .= "  markers.gotoMarker('".$m."',500);\n";
+  $goMarker .= "  markers.toggleAllTooltips();\n";
   $goMarker .= "  });\n";
   $goMarker .= "});\n";
 }
@@ -151,6 +153,7 @@ if (isset($_GET['m'])){
 <script src="dist/plugins/gyroscope.js"></script>
 <script src="dist/plugins/stereo.js"></script>
 <script src="dist/plugins/markers.js"></script>
+<script src="creativa-popup.js"></script>
 
 <!-- text used for the marker description -->
 <?php
@@ -185,7 +188,18 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
       [PhotoSphereViewer.MarkersPlugin, {
         markers: (function () {
           var a = [];
-          <?php echo $jmarqueur; ?> 
+          <?php 
+            echo $jmarqueur;
+            // Si presence des fichiers haute definition de la sphère on provoque l'affichage de marqueur permettant d'ouvrir le jpg correspondant
+            // Exemple la sphere est Sphere/Aquitaine/dji_soulac-sur-mer.jpg  on charche si le repertoire Sphere/Aquitaine/dji_soulac-sur-mer.d existe
+            $path_parts = pathinfo($quelfic);
+            $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d";
+            if (is_dir($repHD)){
+              for ($iImg=1; $iImg <= 26; $iImg++){      // Pour les 26 images qui constitue la sphère du DJI mini air 2
+                echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg");
+              }
+            }
+          ?>
           return a;
         }())
       }]
@@ -193,6 +207,16 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   });
   var markers = PSV.getPlugin(PhotoSphereViewer.MarkersPlugin);
   
+  markers.on('select-marker', function (e, marker, data) {
+    console.log('select', marker.id);
+    console.log('latitude:',marker.latitude,'longitude:',marker.longitude);
+    const lesMaqueurs = ["DJI_0001.jpg", "DJI_0002.jpg", "DJI_0003.jpg", "DJI_0004.jpg", "DJI_0005.jpg", "DJI_0006.jpg", "DJI_0007.jpg", "DJI_0008.jpg", "DJI_0009.jpg","DJI_0010.jpg", "DJI_0011.jpg", "DJI_0012.jpg", "DJI_0013.jpg", "DJI_0014.jpg", "DJI_0015.jpg", "DJI_0016.jpg", "DJI_0017.jpg", "DJI_0018.jpg", "DJI_0019.jpg", "DJI_0020.jpg", "DJI_0021.jpg", "DJI_0022.jpg", "DJI_0023.jpg", "DJI_0024.jpg", "DJI_0025.jpg", "DJI_0026.jpg"];
+    if (lesMaqueurs.includes(marker.id)){         // returns true
+      //if (marker.id == 'DJI_0001.jpg'){
+      window.open('view.php?p=<?php echo urlencode($quelfic);?>&img='+marker.id,marker.id);
+    }  
+  });
+
   PSV.on('dblclick', function (e, data) {
     history.back();
   });
