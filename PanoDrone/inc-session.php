@@ -9,6 +9,7 @@ Principe :
 			Sinon
 				On va se servir du parametre k et le verifier s'il match avec keyok 
 */
+$msg ="";
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
 	$dir = $ini['dir'];
