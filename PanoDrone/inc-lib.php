@@ -89,7 +89,7 @@ function DB_column_exists($table,$column){
 	// Si la table est vide il faut au moins un enregistement pour que cela fonctionne
 	$colExist = false;
 	$fichier="To delete";
-	$stmt = $pdo->prepare('INSERT INTO lespanos (fichier) VALUES (:fichier);');
+	$stmt = $pdo->prepare('INSERT INTO '.$table.' (fichier) VALUES (:fichier);');
 	$stmt->bindValue(':fichier', $fichier);
 	$result = $stmt->execute();
 	$result = $pdo->query('SELECT * FROM '.$table.' LIMIT 1');
