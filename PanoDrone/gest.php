@@ -3,6 +3,8 @@ include('inc-config.php');
 include('inc-session.php');
 include('inc-lib.php');
 
+$frontend = true;	// la fonction scan montrera les fichier avec la chaine -p- dans leur nom
+
 if (isset($_POST['v'])){
 	for ($a = 1; $a <= $_POST['cpt']; $a++){
 		if (isset($_POST['C_'.$a])){							// Seul les checkbox cochées remplissent cette variable
@@ -83,7 +85,7 @@ $montab .= "</table>\n";
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<title>Vidéos</title>
+	<title>Sphères</title>
 
 
 	<!-- Include our stylesheet -->
@@ -109,7 +111,7 @@ $montab .= "</table>\n";
 		<?php
 		if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
 		?>
-		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des vidéos</a></li>
+		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des sphères</a></li>
 		<li><a href="param.php">Paramètres</a></li>
 		<?php 
 		} 

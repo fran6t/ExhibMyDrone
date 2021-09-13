@@ -74,6 +74,13 @@ if (!DB_column_exists('lespanos_details','marker_center')){
 	$pdo->exec($SqlString);
 }
 
+// Si la column existe pas on l'ajoute à la table
+// Ce champs vaudra Standard,URL ou IMG
+if (!DB_column_exists('lespanos_details','marker_type')){
+	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
+	$pdo->exec($SqlString);
+}
+
 function DB_table_exists($table){
     GLOBAL $pdo;
     try{
