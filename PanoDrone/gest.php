@@ -3,8 +3,6 @@ include('inc-config.php');
 include('inc-session.php');
 include('inc-lib.php');
 
-$frontend = true;	// la fonction scan montrera les fichier avec la chaine -p- dans leur nom
-
 if (isset($_POST['v'])){
 	for ($a = 1; $a <= $_POST['cpt']; $a++){
 		if (isset($_POST['C_'.$a])){							// Seul les checkbox cochées remplissent cette variable
@@ -22,11 +20,15 @@ if (isset($_POST['v'])){
 	}
 }
 
-// On commence apr faire un scan tout frais des la réalité des fichiers en place
-$reality = scan("../Public/Videos");
+// On commence par faire un scan tout frais pour mettre à jour la bdd
+$frontend = false;
+if ($frontend){
+echo "frontend=".$frontend."fin";
+}
+$reality = scan($dir);
 
 // A l'issue de ce scan tous les fichiers réels présent sur le disque sont donc dans la bdd
-// On parcours donc la bdd maintenant pour remplir un tableau et marqer tous les fichiers qui n'existent plus
+// On parcours donc la bdd maintenant pour remplir un tableau et marquer tous les fichiers qui n'existent plus
 
 $statement = $pdo->prepare('SELECT * FROM lespanos;');
 $statement->execute();

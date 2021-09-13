@@ -1,4 +1,6 @@
 <?php
+$frontend = true;				// Par defaut on prend en compte si un fichier est privé ou non
+								// C'est au script qui a besoins de voir les fichiers privé de mettre cette variable a false exemple dans gest.php
 
 if ($bddtype=='mysql'){
 	$dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
@@ -123,7 +125,8 @@ function isMiniature($aTester){
 	}
 }
 
-$frontend = true;				// Seul scan.php place la variable $frontend à true car cela permet d'ignorer les fichiers avec -p- dans leurs noms 
+$frontend = false;  // Seul le fichier scan.php met cette variable a true pour ignorer les fichiers ayant -p- dans leur nom
+
 function isPrivate($f){
 // Quand la fonction retourne true c'est que c'est un fichier privée
 	global $frontend;
@@ -134,7 +137,7 @@ function isPrivate($f){
 			return true;
 		}
 	} else {
-		return true;
+		return false;
 	}
 }
 
