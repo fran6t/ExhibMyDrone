@@ -123,7 +123,7 @@ function isMiniature($aTester){
 	}
 }
 
-$frontend = false;				// Seul scan.php place la variable $frontend à true car cela permet d'ignorer les fichiers avec -p- dans leurs noms 
+$frontend = true;				// Seul scan.php place la variable $frontend à true car cela permet d'ignorer les fichiers avec -p- dans leurs noms 
 function isPrivate($f){
 // Quand la fonction retourne true c'est que c'est un fichier privée
 	global $frontend;
