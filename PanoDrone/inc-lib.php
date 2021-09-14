@@ -366,6 +366,7 @@ function listimg($nom_img){
 	$jmarqueur.="\t width    : 32,\n";
 	$jmarqueur.="\t height   : 32,\n";
 	$jmarqueur.="\t anchor   : 'bottom center',\n";
+	$jmarqueur.="\t hideList : 'true',\n";					// Pas la peine de montrer la liste des 26 images les pictos + suffisent
 	$jmarqueur.="});\n";
 	return $jmarqueur;
 }
