@@ -103,6 +103,7 @@ if (isset($_GET['m'])){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $titre; ?></title>
+  <meta name=" description "  content="Panorama 360° : Sphère <?php echo $titre; ?>">
 
   <link rel="stylesheet" href="dist/photo-sphere-viewer.css">
   <link rel="stylesheet" href="dist/plugins/markers.css">
