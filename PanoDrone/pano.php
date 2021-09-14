@@ -128,6 +128,7 @@ if (isset($_GET['m'])){
   $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic.$nbrePixels;
   ?>
   <meta property="og:image" content="<?php echo $lienImg; ?>"/>
+  <meta property="og:image:alt" content="Miniature à plat de la sphère ou panorama représentant une vue de <?php echo $titre; ?>" />
   <meta property="og:url" content="<?php echo $lien; ?>"" />
   <meta property="og:description" content="Panorama 360° : Sphère <?php echo $titre; ?>"" />
 
