@@ -10,7 +10,7 @@ if (isset($_GET['c'])){
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<title>Panorama 360°</title>
-	<meta name=" description "  content="Listing des Panoramas 360° ou Sphère présentent sur ce site.">
+	<meta name="description"  content="Listing des Panoramas 360° ou Sphère présentent sur ce site." />
 
 	<!-- Include our stylesheet -->
 	<link href="assets/css/styles.css" rel="stylesheet"/>
