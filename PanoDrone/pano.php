@@ -106,8 +106,8 @@ if (isset($_GET['m'])){
   <meta property=”og:type” content=”siteweb” />
   <?php
   $nbrePixels = "-MinX0600.jpg";
-  $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
-  $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic;
+  $lien = $monDomaine.'/'.$root_complement.'/pano.php?p='.urlencode($quelfic);
+  $lienImg = $monDomaine.'/'.$root_complement.'/'.urlencode($quelfic);
   $lienComplet = $lienImg.$nbrePixels;
   ?>
   <meta property=”og:image” content=”<?php echo $lienComplet; ?>”/>
