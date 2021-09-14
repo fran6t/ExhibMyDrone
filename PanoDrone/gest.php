@@ -66,7 +66,10 @@ while ($row = $statement->fetch()) {
 	} else {							// Il est privée
 		$priv='<span style="color:orange;font-weight: 500;">Privée</span> ';
 	}
-	$titreTmp = '<a href="gest-form.php?p='.urlencode($row['fichier']).'">'.$titreTmp.'</a>';
+	if ($checkBox <> "checked"){
+		$titreTmp = '<a href="gest-form.php?p='.urlencode($row['fichier']).'">'.$titreTmp.'</a>';
+	}
+	
 	$montab .= "<tr".$backgroungColor.">";
 	$montab .= '		<td><input type="checkbox" name="C_'.$i.'" value="Ok"'.$checkBox.'>';
 	$montab .= '			<input type="hidden" name="FIC_'.$i.'" value="'.$row['fichier'].'">';
