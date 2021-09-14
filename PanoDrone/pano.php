@@ -126,9 +126,9 @@ if (isset($_GET['m'])){
   $lien = $monDomaine.'/'.$root_complement.'/pano.php?p='.$quelfic;
   $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic.$nbrePixels;
   ?>
-  <meta property=”og:image” content=”<?php echo $lienImg; ?>”/>
-  <meta property=”og:url” content=”<?php echo $lien; ?>” />
-  <meta property=”og:description” content="Panorama 360° : Sphère <?php echo $titre; ?>" />
+  <meta property="og:image" content="<?php echo $lienImg; ?>"/>
+  <meta property="og:url" content="<?php echo $lien; ?>"" />
+  <meta property="og:description" content="Panorama 360° : Sphère <?php echo $titre; ?>"" />
 
   <meta name="description"  content="Panorama 360° : Sphère <?php echo $titre; ?>" />
 
