@@ -1,6 +1,23 @@
 <?php
 include('inc-config.php');
+if (is_readable($config_file)) {
+	$ini =  parse_ini_file($config_file);
+	$dir = $ini['dir'];
+	$monDomaine = $ini['monDomaine'];
+	$root_complement = $ini['root_complement'];
+	$keyok = $ini['keyok'];
+	$auth_users['admin'] = $ini['admin'];
+	$bddtype = $ini['bddtype'];
+	$host = $ini['host'];
+	$user = $ini['user'];
+	$pass = $ini['pass'];
+	$port = $ini['port'];
+} else {
+  echo "Fichier parametres manquant";
+  return;
+}
 include('inc-lib.php');
+
 if (isset($_GET['c'])){
   // Sommes en presence d'une url courte on redirige directement au bon endroit
   $statement = $pdo->prepare('SELECT fichier FROM lespanos WHERE short_code = :short_code LIMIT 1;');
@@ -106,12 +123,11 @@ if (isset($_GET['m'])){
   <meta property=”og:type” content=”siteweb” />
   <?php
   $nbrePixels = "-MinX0600.jpg";
-  $lien = $monDomaine.'/'.$root_complement.'/pano.php?p='.urlencode($quelfic);
-  $lienImg = $monDomaine.'/'.$root_complement.'/'.urlencode($quelfic);
-  $lienComplet = $lienImg.$nbrePixels;
+  $lien = $monDomaine.'/'.$root_complement.'/pano.php?p='.$quelfic;
+  $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic.$nbrePixels;
   ?>
-  <meta property=”og:image” content=”<?php echo $lienComplet; ?>”/>
-  <meta property=”og:url” content=”<?php echo $monDomaine.urlencode($quelfic); ?>” />
+  <meta property=”og:image” content=”<?php echo $lienImg; ?>”/>
+  <meta property=”og:url” content=”<?php echo $lien; ?>” />
   <meta property=”og:description” content="Panorama 360° : Sphère <?php echo $titre; ?>" />
 
   <meta name="description"  content="Panorama 360° : Sphère <?php echo $titre; ?>" />
