@@ -120,7 +120,8 @@ if (isset($_GET['m'])){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $titre; ?></title>
-  <meta property=”og:type” content=”siteweb” />
+  <meta property="og:type" content="siteweb" />
+  <meta property="og:title" content="<?php echo $titre; ?>" />
   <?php
   $nbrePixels = "-MinX0600.jpg";
   $lien = $monDomaine.'/'.$root_complement.'/pano.php?p='.$quelfic;
