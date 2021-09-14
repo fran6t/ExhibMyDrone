@@ -27,12 +27,14 @@ if (!file_exists($imgHD)){
 		<li><a href="javascript:window.close();">Fermer</a></li>
 	</ul>
 </nav>
-<?php
-if ($msgError==""){
-	echo '<img src="'.$imgHD.'" style="width:100%;"/>';
-} else {
-	echo $msgError;
-}
-?>  
+<div style="overflow:auto;">
+	<?php
+	if ($msgError==""){
+		echo '<img src="'.$imgHD.'" width="4000" height="3000"/>';
+	} else {
+		echo $msgError;
+	}
+	?>
+</div>  
 </body>
 </html>
