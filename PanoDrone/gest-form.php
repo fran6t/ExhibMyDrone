@@ -1,4 +1,5 @@
 <?php
+$t0 = microtime(true);
 include('inc-config.php');
 include('inc-session.php');
 include('inc-lib.php');
@@ -32,12 +33,12 @@ if (isset($_POST["v"])){
   //echo "<br />";
   // var_dump($_POST['formu']);
   // echo "<br />Nombre marqueur dans formulaire".count($_POST['formu']);
-
+  $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
   for ($a = 1; $a <= count($_POST['formu']); $a++){
     if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //On insert que si un titre de marqueur est renseigné 
       if (rtrim($_POST['formu'][$a]['couleur']) == "") $_POST['formu'][$a]['couleur'] = 0;
       if (rtrim($_POST['formu'][$a]['longitude']) == "") $_POST['formu'][$a]['longitude'] = 0; 
-      $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
+      //$statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
 	    $statement->bindValue(':fichier', $quelfic);
       $statement->bindValue(':hashfic', $_POST['hashfic']);
       $statement->bindValue(':nom_marqueur', $_POST['formu'][$a]['nom_marqueur']);
@@ -46,7 +47,6 @@ if (isset($_POST["v"])){
       $statement->bindValue(':longitude', $_POST['formu'][$a]['longitude']);
       $statement->bindValue(':descri', $_POST['formu'][$a]['descri']);
       $statement->bindValue(':marker_center', $_POST['formu'][$a]['marker_center']);
-      echo "<br />marqueur center vaut :".$_POST['formu'][$a]['marker_center'];
 	    $result = $statement->execute();
       //echo "<br /><br />a=".$a." Marqueur=".$_POST['formu'][$a]['nom_marqueur']."<br /><br />";
       //echo "<br /><br />a=".$a." Couleur=".$_POST['formu'][$a]['couleur']."<br /><br />";
@@ -291,7 +291,11 @@ imageResize($quelfic,600);
       <button type="button" id="copyButton600">Copier le lien</button>
     </fieldset>
   </form>
-
+<?php
+$t1 = microtime(true);
+$time = $t1 - $t0;
+echo "<br />Tps exec:".sprintf('%.2f',$time)." s";
+?>
 </div> 
 <script src="node_modules/three/build/three.js"></script>
 <script src="node_modules/promise-polyfill/dist/polyfill.js"></script>
