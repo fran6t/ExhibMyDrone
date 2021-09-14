@@ -210,8 +210,8 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   markers.on('select-marker', function (e, marker, data) {
     console.log('select', marker.id);
     console.log('latitude:',marker.latitude,'longitude:',marker.longitude);
-    const lesMaqueurs = ["DJI_0001.jpg", "DJI_0002.jpg", "DJI_0003.jpg", "DJI_0004.jpg", "DJI_0005.jpg", "DJI_0006.jpg", "DJI_0007.jpg", "DJI_0008.jpg", "DJI_0009.jpg","DJI_0010.jpg", "DJI_0011.jpg", "DJI_0012.jpg", "DJI_0013.jpg", "DJI_0014.jpg", "DJI_0015.jpg", "DJI_0016.jpg", "DJI_0017.jpg", "DJI_0018.jpg", "DJI_0019.jpg", "DJI_0020.jpg", "DJI_0021.jpg", "DJI_0022.jpg", "DJI_0023.jpg", "DJI_0024.jpg", "DJI_0025.jpg", "DJI_0026.jpg"];
-    if (lesMaqueurs.includes(marker.id)){         // returns true
+    const lesMarqueurs = ["DJI_0001.jpg", "DJI_0002.jpg", "DJI_0003.jpg", "DJI_0004.jpg", "DJI_0005.jpg", "DJI_0006.jpg", "DJI_0007.jpg", "DJI_0008.jpg", "DJI_0009.jpg","DJI_0010.jpg", "DJI_0011.jpg", "DJI_0012.jpg", "DJI_0013.jpg", "DJI_0014.jpg", "DJI_0015.jpg", "DJI_0016.jpg", "DJI_0017.jpg", "DJI_0018.jpg", "DJI_0019.jpg", "DJI_0020.jpg", "DJI_0021.jpg", "DJI_0022.jpg", "DJI_0023.jpg", "DJI_0024.jpg", "DJI_0025.jpg", "DJI_0026.jpg"];
+    if (lesMarqueurs.includes(marker.id)){         // returns true
       //if (marker.id == 'DJI_0001.jpg'){
       window.open('view.php?p=<?php echo urlencode($quelfic);?>&img='+marker.id,marker.id);
     }  
