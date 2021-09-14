@@ -103,6 +103,17 @@ if (isset($_GET['m'])){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $titre; ?></title>
+  <meta property=”og:type” content=”siteweb” />
+  <?php
+  $nbrePixels = "-MinX0600.jpg";
+  $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
+  $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic;
+  $lienComplet = $lienImg.$nbrePixels;
+  ?>
+  <meta property=”og:image” content=”<?php echo $lienComplet; ?>”/>
+  <meta property=”og:url” content=”<?php echo $monDomaine.urlencode($quelfic); ?>” />
+  <meta property=”og:description” content="Panorama 360° : Sphère <?php echo $titre; ?>" />
+
   <meta name="description"  content="Panorama 360° : Sphère <?php echo $titre; ?>" />
 
   <link rel="stylesheet" href="dist/photo-sphere-viewer.css">
