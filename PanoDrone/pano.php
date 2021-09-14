@@ -129,10 +129,11 @@ if (isset($_GET['m'])){
   ?>
   <meta property="og:image" content="<?php echo $lienImg; ?>"/>
   <meta property="og:image:alt" content="Miniature à plat de la sphère ou panorama représentant une vue de <?php echo $titre; ?>" />
-  <meta property="og:url" content="<?php echo $lien; ?>"" />
-  <meta property="og:description" content="Panorama 360° : Sphère <?php echo $titre; ?>"" />
+  <meta property="og:url" content="<?php echo $lien; ?>" />
+  <meta property="og:description" content="Panorama 360° : Sphère <?php echo $titre; ?>" />
 
   <meta name="description"  content="Panorama 360° : Sphère <?php echo $titre; ?>" />
+  <link rel="canonical" href="<?php echo $lien; ?>" />
 
   <link rel="stylesheet" href="dist/photo-sphere-viewer.css">
   <link rel="stylesheet" href="dist/plugins/markers.css">
