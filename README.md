@@ -1,160 +1,154 @@
 # ExhibMyDrone
 
-__But__: Permettre de visualiser et d'enrichir les photos sphères prisent avec son drone, permettre de diffuser les rushs videos du drone.
+__Goal__: Make it possible to visualize and enrich the spherical photos taken with his drone, to broadcast the drone's video rushes.
 
-Pour ce faire, les logiciels suivants sont utilisés :
+To do this, the following software is used :
 
-- [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) de Damien Sorel pour l'affichage et le marquage de point d'intérêt;
-- [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) de Nick Anastasov pour parcourir les photos;
-- [TinyFileManager](https://tinyfilemanager.github.io) de CCP Programmers pour gérer les fichiers devant être presentés;
-- [CkEditor](https://ckeditor.com) de CKSource pour la saisie des du texte de description des points d'interêts (marqueurs).
+- [Photo Sphères Viewer](https://photo-sphere-viewer.js.org/) by Damien Sorel for displaying and marking points of interest;
+- [Cute File Browser](https://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php) by Nick Anastasov to browse photo and video directories;
+- [TinyFileManager](https://tinyfilemanager.github.io) by CCP Programmers o manage the files to be presented;
+- [CkEditor](https://ckeditor.com) by CKSource for entering the description text of points of interest (markers).
 
-En option pour des sphères 4K depuis DJI mini air 2
-- [Rawtherapee](https://www.rawtherapee.com/) pour le developpement des fichiers raw
-- [Hugin](http://hugin.sourceforge.net/) logiciel d'assemblage de panorama
-
-
-## Fonctionalités :
-- Visualisation sphères comprenant :
-    - Ajout suppression de sphères (gestionnaire fichiers intégré);
-    - Ajout de points d'intérêts avec texte complémentaire (via simple formulaire);
-    - Centrage à l'ouverture sur un point d'intérêt;
-    - Sphère privée;
-    - Lien pour partage direct.
-- Visualisation des droonies et rushs d'un drone
-    - Ajout suppression de vidéos (gestionnaire fichiers intégré).
-
-## Principe de fonctionnement : 
-
-Cute File Browser permet de se déplacer dans l'arborescence des photos sphères, puis lors du clique sur la tuile info de la photosphère on passe la main à Photo Sphères View qui permet alors de naviguer visuellement dans la sphère et afficher les marqueurs.  
-
-Cute File Browser est légérement modifié, il scan les fichiers .jpg, puis insert le nom du fichier dans une base de donnée sqlite qui sera alors enrichie pour donner un titre et des infos de marqueurs.  
-
-Photo Sphère Viewer est utilisé soit pour visualiser les sphères ainsi que les points d'intérêts soit pour créer ou mettre à jour ces derniers. Pour ce faire il recupére ou écrit les infos marqueurs dans la base de données.
-
-TinyFileManager est utilisé pour ajouter supprimer les fichiers à presenter.
-
-## Pré-requis :
-Un hergement web supportant php  
-
-Base de données sqlite3 pour mémoriser les infos persistantes.
-
-La fonction de scan des fichiers sphères et vidéos est en php le reste en javascript.
-
-## Format des fichiers :
+Useful software to make 4K spheres from DJI mini air 2 :
+- [Rawtherapee](https://www.rawtherapee.com/) for the development of raw files
+- [Hugin](http://hugin.sourceforge.net/) panorama stitching software
 
 
-- Sphères & panorama : 
-    - Actuellement ont été testés uniquement les sphères natives obtenues en exportant depuis la galerie DJI;
-    - Les images raw developpées avec [rawtherapee](https://www.rawtherapee.com/) et assemblées via [Hugin](http://hugin.sourceforge.net/). 
+## Features :
+- Spheres visualization including :
+    - Addition deletion of spheres (integrated file manager);
+    - Addition of points of interest with additional text (via simple form);
+    - Centering when opening on a point of interest;
+    - Private sphere;
+    - Link for direct sharing.
+- Viewing droonies and rushes from a drone :
+    - Added deletion of videos (integrated file manager).
+
+## Principle of operation : 
+
+Cute File Browser allows you to move in the tree of spheres photos, then when you click on the info tile of the photosphere, you switch the hand to Photo Spheres Viewer
+
+Photo Spheres Viewer then allows you to visually navigate in the sphere and display the markers (POI).
+
+Cute File Browser is slightly modified, it scans .jpg files, then inserts the name of the file in a sqlite database which will then be enriched to give a title and marker info.
+
+TinyFileManager is used to add delete files to present.
+
+## Prerequisites :
+A web hosting supporting php  
+
+Sqlite3 database to store persistent info.
+
+The function of scanning spheres and videos files is in php the rest in javascript.
+
+## File format :
+
+
+- Spheres & panorama : 
+    - Currently, only the native spheres obtained by exporting from the DJI gallery, and those assembled with the Hugin software have been tested;
+    -Raw images developed with [rawtherapee](https://www.rawtherapee.com/) and assembled with [Hugin](http://hugin.sourceforge.net/). 
 
 - Vidéos : 
-    - Les rushs videos bruts du DJI ne sont pas lisibles par les navigateurs, il faut pour l'instant passer 
-par un transcodage il est possible que ce soit juste une histoire d'entête mp4 l'idée serait alors de l'ajouter 
-à la volée en début de fichier mais je n'ai pas encore réussi.
+    - The raw DJI video rushes are not readable by browsers, it is necessary for the moment to pass
+by a transcoding it is possible that it is just a story of mp4 header the idea would be to add it
+on the fly at the beginning of the file but I haven't succeeded yet.
 
 
-## Installation sur son serveur :
+## Installation on its server :
 
 
-En théorie n'importe quel serveur web disposant du langage PHP et sa librairie sqlite3 permettent le fonctionnement natif de l'appli. 
+In theory, any web server using the PHP language and its sqlite3 library allows the native operation of the app. 
 
-La façon la plus simple et de télécharger le zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
-(Il n'y a plus de sphères ni de vidéo ainsi que de bdd dans le depot)
+The easiest way and download the zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
 
-Nota: Le respect des minuscules majuscules est important.
+Note: Respect for lower case letters is important.
 
-Une fois dezippé sur votre ordi, effectuez le transfert du répertoire ExhibMyDrone et de ses sous repertoires sur votre hebergement avec filezilla par exemple.
-Le transfet terminé si vous avez fait le transfert du répertoire à la racine de votre site alors http://mondomaine.xx/ExhibMyDrone doit fonctionner
-Dans le bas de l'écran en dessous des crédits vous avec le lien pour l'admin en cliquant le mot ici des sphères quand vous êtes dans les sphères et l'admin vidéos quand vous êtes dans les vidéos
-Le login mot de passe en dur dans l'appli est: admin avec le mot de passe admin@123  
+Once unzipped on your computer, transfer the ExhibMyDrone directory and its sub directories to your accommodation with filezilla for example.
+The transfer is complete if you have transferred the directory to the root of your site then http: //myomaine.xx/ExhibMyDrone must work
+At the bottom of the screen below the credits you will find the link for the admin
 
-Il vous faudra changer le mot de passe rapidement pour cela vous avez un generateur de mot de passe dans la partie aide de tinyfilemanager vous entrez le mot de passe souhaité puis vous allez remplacer la clef obtenue dans les fichiers inc-config.php présents dans les sous-repertoires PanoDrone et VideoDrone 
-Oui il y a deux fichiers inc-config.php à mettre à jour car pour l'instant PanoDrone et VideoDrone sont 100% indépendant l'un de l'autre 
+At the first launch you will have to change the manual access key and the password
 
-Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de texte le principe est de remplacer les clefs qui sont dans le fond noir par vos clefs obtenus avec le formulaire (fond blanc) 
+Do not hesitate to contact me if I can help you it is with pleasure trautmann@wse.fr
 
-![Changement mot de passe](PanoDrone/wiki/Changement-Mot-Passe.jpg "Changement mot de passe")
+## File name and structure :
 
-N'hésitez pas si je peux vous aidez trautmann@wse.fr
+For the spheres, it suffices to place the files in the desired directories and subdirectories, however :
 
-## Nom et structure des fichiers :
+    - Directory names ending in .d are reserved for source images of spheres of the same name in .jpg
+    - The names of spheres with the character string -p- will only be visible by a shared link
+    - Thumbnails are generated automatically invisible in the admin but visible by the manager tinyfilemanager or equivalent filezilla
 
-Pour les sphères, il suffit de placer les fichiers dans des repertoires et sous répertoires souhaités toutefois :
-
-    - Les noms de repertoire finissant par .d sont reservés aux images sources des sphères du même nom en .jpg
-    - Les noms de sphères possédant la chaine de caratère -p- ne seront visibles que par un lien partagé
-    - Les miniatures sont générées automatiquement invisible dans l'admin mais visible par le gestionnaire tinyfilemanager ou filezilla équivalent
-
-Exemple d'une sphère dont le nom de fichier est dji-maison.jpg placée dans un repertoire Sphere/My-Maison avec les images d'origine qui ont été assemblées nous aurons :
+Example of a sphere whose file name is dji-maison.jpg placed in a Sphere / My-Maison directory with the original images that have been assembled we will have:
 
 /Sphere/My-Maison/dji-maison.jpg
 
-Nous créons un repertoire 
+We create a directory 
 /Sphere/My-Maison/dji-maison.d
 
-Dans lequel nous plaçons les 26 fichiers DJI_0001.jpg ce qui donne
+In which we place the 26 DJI_0001.jpg files which gives
 /Sphere/My-Maison/dji-maison.d/DJI_0001.jpg
 /Sphere/My-Maison/dji-maison.d/DJI_0002.jpg
 ...
 /Sphere/My-Maison/dji-maison.d/DJI_0025.jpg
 /Sphere/My-Maison/dji-maison.d/DJI_0026.jpg
 
-Les miniatures suivantes seront créées automatiquement
+The following thumbnails will be created automatically
 /Sphere/My-Maison/dji-maison-MinX0200.jpg
 /Sphere/My-Maison/dji-maison-MinX0600.jpg
 
 
 
 
-## Reste à faire :
-- Ajouter lien pour permettre un partage dans une frame;
-- Petit doc d'explications (wiki ou readme etendu..);
-- Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs;
-- Ajouter la possibilité d'une piste son lors de la lecture d'une vidéo;
-- Ajouter un éditeur de sous titrage lors de la lecture d'une vidéo.  
+## Todo list :
+- Add link to allow sharing in a frame;
+- Small explanatory documentation (wiki or extended readme ..);
+- Study the re-encoding of videos because native DJI videos are not readable by browsers;
+- Add the possibility of a sound track when playing a video;
+- Add subtitles when playing a video.  
 
 ## Démo :
 
    
-[Démonstration](https://d.wse.fr/ExhibMyDrone/) Juste côté affichage l'administration est laissée protégée
+[Démonstration](https://d.wse.fr/ExhibMyDrone/) only the frontend
 
-## divers
+## various
 
 __Change log__:
-- 11/09/2021 Si fichiers sources de construction de la sphère présent alors ajout de marqueur permettant de consulter jpg origine
-- 09/09/2021 Si un marqueur est defini centrer, la sphère s'ouvre alors sur celui-ci
-- 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct
-- 31/08/2021 Déplacement cd ckeditor dans PanoDrone pour independance accrue de PanoDrone versus VideoDrone
-- 29/08/2021 Mise en place d'un mini gestionnaire de paramètres côté sphères
-- 26/08/2021 Passage de sqlite natif php vers pdo pour accepter aussi mysql, gestion version php si php est < 5.5 alors pas de tinyfilemanager il faut placer ses fichiers via filezilla ou équivalent et appeler l'administration manuellement avec un parametre (voir fichier inc-config.php)
-- 20/08/2021 Ajout miniature et lien partage copiable depuis le formulaire gestion sphère
-- 19/08/2021 Ajout ckeditor pour saisir les descriptions des marqueurs
-- 18/08/2021 Ajout double clique pour quitter une sphère
-- 15/08/2021 Changement nom du projet
-- 12/08/2021 Fusion de deux projets pour faire un portail de présentation de ses prises de vues de drone
+- 16/09/2021 Start of implementation of multi-lingual version (For the moment only Readme.md README-fr.md, index.php, parametre.php)
+- 11/09/2021 If the sphere construction source files are present then addition of respective markers allowing to consult the original .jpg
+- 09/09/2021 If a marker is defined to be centered, the sphere then opens on it
+- 01/08/2021 The files with the character string -p- in their name are invisible on the FrontEnd side except call via direct link
+- 31/08/2021 Relocation of ckeditor in PanoDrone for increased independence of PanoDrone versus VideoDrone
+- 29/08/2021 Implementation of a mini parameter manager on the spheres side
+- 26/08/2021 PSwitching from native sqlite php to pdo to also accept mysql, php version management if php is <5.5 then no tinyfilemanager you have to place your files via filezilla or equivalent and call the administration manually with a parameter (see inc-config.php file )
+- 20/08/2021 Add miniature and copyable sharing link from the sphere management form
+- 19/08/2021 Added ckeditor to enter descriptions of markers
+- 18/08/2021 Add double click to leave a sphere
+- 15/08/2021 Project name change
+- 12/08/2021 Merger of two projects (panodrone and video drone) to make a presentation portal for his drone shots
 
-__Captures écrans__:
+__Screenshots__:
 
-Ici deux marqueurs, 1 sur le bâtiment et 1 sur camping car
+Here two markers, 1 on the building and 1 on the motorhome
 ![2 marqueurs visibles](PanoDrone/wiki/Exemple-Marqueur.jpg "Exemple de marqueurs")
 
 
-Volet détail sur le marqueur ouvert
+Detail pane on the open marker
 ![Volet détail](PanoDrone/wiki/Volet-Marqueur-Ouvert.jpg "Volet des détails du marqueur ouvert")
 
 
-Bar de navigation dans la sphère et vers marqueurs en bas et à droite
+Navigation bar in the sphere and towards markers at the bottom and on the right
 ![Selection des marqueurs](PanoDrone/wiki/Volet-Selection-Marqueurs.jpg "Bar et Volet de selection des marqueurs")
 
 
-Formulaire de saisie des marqueurs
+Marker entry form
 ![Formulaire de saisie des marqueurs](PanoDrone/wiki/Formulaire-Saisie-Infos-Spheres.jpg "Formulaire de saisie des marqueurs")
 
 
-Gestionnaire des sphères
+Spheres manager
 ![Gestionnaire des sphères](PanoDrone/wiki/Gestionnaire-des-spheres.jpg "Gestionnaire des sphères")
 
 
-Gestionnaire des fichiers
+File manager
 ![Gestionnaire des fichiers](PanoDrone/wiki/Gestionnaire-Fichiers.jpg "Gestionnaire des fichiers")
