@@ -52,4 +52,11 @@ $lang["Password"] = "Password";
 $lang["Not used if Sqlite"] = "Not used if Sqlite";
 $lang["Port"] = "Port";
 $lang["Save"] = "Save";
+
+// pano.php
+$lang["Parameter file missing"] = "Parameter file missing";
+$lang["Missing parameter !!!"] = "Missing parameter !!!";
+$lang["Missing file panorama !!!"] = "Missing file panorama !!!";
+$lang["Thumbnail of the sphere or panorama representing"] = "Thumbnail of the sphere or panorama representing";
+$lang["Panorama 360° : Sphere"] = "Panorama 360° : Sphere";
 ?>

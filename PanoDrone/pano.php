@@ -2,6 +2,7 @@
 include('inc-config.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
+  $langue = $_POST['langue'];
 	$dir = $ini['dir'];
 	$monDomaine = $ini['monDomaine'];
 	$root_complement = $ini['root_complement'];
@@ -13,13 +14,16 @@ if (is_readable($config_file)) {
 	$pass = $ini['pass'];
 	$port = $ini['port'];
 } else {
-  echo "Fichier parametres manquant";
+  echo $t->display("Parameter file missing");
   return;
 }
 include('inc-lib.php');
+if (!isset($langue)) $langue = "en";
+$t = new Traductor();
+$t->setLanguage($langue);
 
 if (isset($_GET['c'])){
-  // Sommes en presence d'une url courte on redirige directement au bon endroit
+  // Short URL redirect to good place
   $statement = $pdo->prepare('SELECT fichier FROM lespanos WHERE short_code = :short_code LIMIT 1;');
   $statement->bindValue(':short_code', rtrim($_GET['c']), PDO::PARAM_STR );
   $statement->execute();
@@ -29,16 +33,16 @@ if (isset($_GET['c'])){
   }
 } else {
   if (!isset($_GET["p"])){
-    echo "Parametres manquants !!!!";
+    echo $t->display("Missing parameter !!!");
     return;
   }
   $quelfic = urldecode($_GET["p"]);
 } 	
 
-// On test si le fichier existe 
+// test if file panorama exist 
 if (!file_exists($quelfic)){
   echo $quelfic;
-	echo "Pano manquants !!!!";
+	echo $t->display("Missing file panorama !!!");
 	return;
 }
 $goMarker = ""; 
@@ -56,14 +60,14 @@ while ($row = $statement->fetch()) {
 
 if (rtrim($hashfic) == ""){
   $hashfic = hash_file('md5', $quelfic, false);
-  // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
+  // Store $hashfic, hashfic is link 1 <--> 1 between table lespanos and lespanos_details
   $stmt = $pdo->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
   $stmt->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $stmt->execute();
 }
 
-// On recupere les marqueurs
+// Retrieve marker from database
 $statement = $pdo->prepare('SELECT * FROM lespanos_details WHERE hashfic = :hashfic;');
 $statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
 $statement->execute();
@@ -77,7 +81,7 @@ while ($row = $statement->fetch()) {
   $latitude[$nb_marqueur] = $row['latitude'];
   $longitude[$nb_marqueur] = $row['longitude'];
   $descri[$nb_marqueur] = "<div class=\"lainner\">".$row['descri']."</div>";
-  // On construit le tableau des marqueurs javascript
+  // Construct array javascript of marker
   $jmarqueur.="a.push({\n";
   $jmarqueur.="\t id       : 'Marker".$nb_marqueur."',\n";
   $jmarqueur.="\t tooltip  : {\n";
@@ -103,7 +107,7 @@ while ($row = $statement->fetch()) {
   }
 }
 
-// Si un marqueur est defini dans l'URL c'est lui qui sera priortaire, la sphère s'ouvre alors centrée sur lui
+// If marker have been define "center" open panorama is centered on
 if (isset($_GET['m'])){
   $m = urldecode($_GET['m']);
   $goMarker  = "PSV.once('ready', () => {\n";
@@ -115,7 +119,7 @@ if (isset($_GET['m'])){
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $langue;?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -128,11 +132,11 @@ if (isset($_GET['m'])){
   $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic.$nbrePixels;
   ?>
   <meta property="og:image" content="<?php echo $lienImg; ?>"/>
-  <meta property="og:image:alt" content="Miniature à plat de la sphère ou panorama représentant une vue de <?php echo $titre; ?>" />
+  <meta property="og:image:alt" content="<?php echo $t->display("Thumbnail of the sphere or panorama representing")." : ".$titre; ?>" />
   <meta property="og:url" content="<?php echo $lien; ?>" />
-  <meta property="og:description" content="Panorama 360° : Sphère <?php echo $titre; ?>" />
+  <meta property="og:description" content="<?php echo $t->display("Panorama 360° : Sphere")." ".$titre; ?>" />
 
-  <meta name="description"  content="Panorama 360° : Sphère <?php echo $titre; ?>" />
+  <meta name="description"  content="<?php echo $t->display("Panorama 360° : Sphere")." ".$titre; ?>" />
   <link rel="canonical" href="<?php echo $lien; ?>" />
 
   <link rel="stylesheet" href="dist/photo-sphere-viewer.css">
@@ -221,12 +225,12 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
           var a = [];
           <?php 
             echo $jmarqueur;
-            // Si presence des fichiers haute definition de la sphère on provoque l'affichage de marqueur permettant d'ouvrir le jpg correspondant
-            // Exemple la sphere est Sphere/Aquitaine/dji_soulac-sur-mer.jpg  on charche si le repertoire Sphere/Aquitaine/dji_soulac-sur-mer.d existe
+            // If file UHD exist then add a fictif marker for open jpg
+            // For example for Sphere/Aquitaine/dji_soulac-sur-mer.jpg  we search if directory Sphere/Aquitaine/dji_soulac-sur-mer.d exist
             $path_parts = pathinfo($quelfic);
             $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d";
             if (is_dir($repHD)){
-              for ($iImg=1; $iImg <= 26; $iImg++){      // Pour les 26 images qui constitue la sphère du DJI mini air 2
+              for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2
                 echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg");
               }
             }
