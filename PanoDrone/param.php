@@ -69,7 +69,11 @@ if (isset($_POST["v"])){
 }
 if (is_readable($config_file)) {
   $ini =  parse_ini_file($config_file);
-  $langue = $ini['langue'];
+  if (!isset($ini['langue'])){
+    $langue = "en";
+  } else {}
+    $langue = $ini['langue'];
+  }
   $dir = $ini['dir'];
   $monDomaine = $ini['monDomaine'];
   $root_complement = $ini['root_complement'];
