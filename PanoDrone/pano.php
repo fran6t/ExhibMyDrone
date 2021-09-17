@@ -44,7 +44,7 @@ if (!isset($quelfic)){
 }
 // test if file panorama exist 
 if (!file_exists($quelfic)){
-	display_Frontend_Error(("Missing file panorama !!!");
+	display_Frontend_Error("Missing file panorama !!!");
 	return;
 }
 $goMarker = ""; 
