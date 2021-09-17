@@ -71,7 +71,7 @@ if (is_readable($config_file)) {
   $ini =  parse_ini_file($config_file);
   if (!isset($ini['langue'])){
     $langue = "en";
-  } else {}
+  } else {
     $langue = $ini['langue'];
   }
   $dir = $ini['dir'];
