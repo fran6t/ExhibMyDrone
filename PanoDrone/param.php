@@ -2,7 +2,7 @@
 
 include('inc-config.php');
 include('inc-session.php');
-require_once 'inc-traductor.php';
+include('inc-lib.php');
 if (isset($_POST['langue'])){
   if ($_POST['langue']=="fr") $langue = "fr";
   if ($_POST['langue']=="en") $langue = "en";
