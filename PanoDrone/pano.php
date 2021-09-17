@@ -33,16 +33,18 @@ if (isset($_GET['c'])){
   }
 } else {
   if (!isset($_GET["p"])){
-    echo $t->display("Missing parameter !!!");
+    display_Frontend_Error("Missing parameter !!!");
     return;
   }
   $quelfic = urldecode($_GET["p"]);
 } 	
-
+if (!isset($quelfic)){
+  display_Frontend_Error("Missing file panorama !!!");
+	return;
+}
 // test if file panorama exist 
 if (!file_exists($quelfic)){
-  echo $quelfic;
-	echo $t->display("Missing file panorama !!!");
+	display_Frontend_Error(("Missing file panorama !!!");
 	return;
 }
 $goMarker = ""; 

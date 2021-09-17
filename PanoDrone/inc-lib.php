@@ -82,16 +82,37 @@ if (!DB_column_exists('lespanos_details','marker_type')){
 	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
 	$pdo->exec($SqlString);
 }
+// End traitment
 
-function DB_table_exists($table){
-    GLOBAL $pdo;
-    try{
-        $pdo->query("SELECT 1 FROM $table");
-    } catch (PDOException $e){
-        return false;
-    }
-    return true;
+// List function php used in all script include inc-lib.php order by aphabetic name
+
+function createThumb($spath, $dpath, $maxd) {
+	$src=@imagecreatefromjpeg($spath);
+	if (!$src) return false;
+	
+	$srcw=imagesx($src);
+	$srch=imagesy($src);
+	if ($srcw<$srch) {
+		$height=$maxd;
+		$width=floor($srcw*$height/$srch);
+	} else {
+		$width=$maxd;
+		$height=floor($srch*$width/$srcw);
+	}
+	if ($width>$srcw && $height>$srch) {
+		$width=$srcw;
+		$height=$srch;
+	}  //if image is actually smaller than you want, leave small (remove this line to resize anyway)
+	$thumb=imagecreatetruecolor($width, $height);
+  	if ($height<100) {
+		imagecopyresized($thumb, $src, 0, 0, 0, 0, $width, $height, imagesx($src), imagesy($src));
+	} else {
+		imagecopyresampled($thumb, $src, 0, 0, 0, 0, $width, $height, imagesx($src), imagesy($src));
+  		imagejpeg($thumb, $dpath);
+	  	return true;
+	}
 }
+
 
 function DB_column_exists($table,$column){
 	GLOBAL $pdo;
@@ -114,128 +135,22 @@ function DB_column_exists($table,$column){
 	return $colExist;
 }
 
-// Test si la chaine passée contient la chaine MinX
-function isMiniature($aTester){
-// Quand la fonction retourne true c'est que c'est une miniature	
-	$pos = strpos($aTester,"MinX");
-	if ($pos === false){
-		return false;
-	} else {
-		return true;
-	}
+
+function DB_table_exists($table){
+    GLOBAL $pdo;
+    try{
+        $pdo->query("SELECT 1 FROM $table");
+    } catch (PDOException $e){
+        return false;
+    }
+    return true;
 }
 
-$frontend = false;  // Seul le fichier scan.php met cette variable a true pour ignorer les fichiers ayant -p- dans leur nom
-
-function isPrivate($f){
-// Quand la fonction retourne true c'est que c'est un fichier privée
-	global $frontend;
-	if ($frontend){				// Nous sommes en frontend alors on doit savoir si le fichier est privé
-		if (strpos($f,"-p-") === false ){	// Ce n'est pas un fichier privee
-			return false;
-		} else {							// Il est privée
-			return true;
-		}
-	} else {
-		return false;
-	}
-}
-
-// Test si c'est un repertoire qui fini par .d
-function isDirectoryHD($aTester){
-	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
-	$path_parts = pathinfo($aTester);
-	if (!isset($path_parts['extension'])) return false;
-	if ($path_parts['extension']=="d"){	
-		return true;
-	} else {
-		return false;
-	}
-}
-
-
-// Cette foncion faisait partie au départ de scan.php
-// This function scans the files folder recursively, and builds a large array
-function scan($dir){
-	global $pdo;
-	$files = array();
-
-	// Is there actually such a folder/file?
-
-	if(file_exists($dir)){
-	
-		foreach(scandir($dir) as $f) {
-		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f)) {
-				continue; // Ignore hidden files
-			}
-
-			if(is_dir($dir . '/' . $f)) {
-
-				// The path is a folder
-
-				$files[] = array(
-					"name" => $f,
-					"titre"=> "",
-					"type" => "folder",
-					"path" => $dir . '/' . $f,
-					"items" => scan($dir . '/' . $f) // Recursively get the contents of the folder
-				);
-			}
-			
-			else {
-				// On recupere le titre et la legende sinon on insert
-				$titre="";
-				$legende="";
-				$fichier = $dir . '/' . $f;
-				$statement = $pdo->prepare('SELECT titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
-				$statement->bindValue(':fichier', $fichier);
-				$statement->execute();
-				$row=$statement->fetch();
-				// check for empty result
-				if ($row != false) { // Trouvé
-					$titre	= $row['titre'];
-					$legende= $row['legende'];
-				} else {
-					// J'ai pas trouvé alors il faut insert
-    				$statement = $pdo->prepare('INSERT INTO lespanos (fichier) VALUES (:fichier);');
-					$statement->bindValue(':fichier', $fichier);
-					$statement->execute();
-				}
-
-				if (rtrim($titre)=="") $titre = $f;
-				$files[] = array(
-					"name" => $f,
-					"titre"=> $titre,
-					"legende"=> $legende,
-					"type" => "file",
-					"path" => $dir . '/' . $f,
-					"size" => filesize($dir . '/' . $f) // Gets the size of this file
-				);
-			}
-		}
-	
-	}
-
-	return $files;
-}
-
-
-function generateRandomString($length){
-	$chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
-	$sets = explode('|', $chars);
-	$all = '';
-	$randString = '';
-	foreach($sets as $set){
-		$randString .= $set[array_rand(str_split($set))];
-		$all .= $set;
-	}
-	$all = str_split($all);
-	for($i = 0; $i < $length - count($sets); $i++){
-		$randString .= $all[array_rand($all)];
-	}
-	$randString = str_shuffle($randString);
-	return $randString;
+function display_Frontend_Error($quelError){
+	GLOBAL $t;
+	echo "*** ".$t->display("Error")." ***";
+	echo "<br />".$t->display($quelError);
+	echo "<br /><a href=\".\">".$t->display("Go home sphere")."</a>";
 }
 
 function imageResize($quelfic,$after_width){
@@ -271,31 +186,64 @@ function imageResize($quelfic,$after_width){
 	createThumb($quelfic, $quelfic.$compl_img, $after_width);	
 }
 
-function createThumb($spath, $dpath, $maxd) {
-	$src=@imagecreatefromjpeg($spath);
-	if (!$src) return false;
-	
-	$srcw=imagesx($src);
-	$srch=imagesy($src);
-	if ($srcw<$srch) {
-		$height=$maxd;
-		$width=floor($srcw*$height/$srch);
+
+
+// Test si c'est un repertoire qui fini par .d
+function isDirectoryHD($aTester){
+	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
+	$path_parts = pathinfo($aTester);
+	if (!isset($path_parts['extension'])) return false;
+	if ($path_parts['extension']=="d"){	
+		return true;
 	} else {
-		$width=$maxd;
-		$height=floor($srch*$width/$srcw);
+		return false;
 	}
-	if ($width>$srcw && $height>$srch) {
-		$width=$srcw;
-		$height=$srch;
-	}  //if image is actually smaller than you want, leave small (remove this line to resize anyway)
-	$thumb=imagecreatetruecolor($width, $height);
-  	if ($height<100) {
-		imagecopyresized($thumb, $src, 0, 0, 0, 0, $width, $height, imagesx($src), imagesy($src));
+}
+
+// Test si la chaine passée contient la chaine MinX
+function isMiniature($aTester){
+// Quand la fonction retourne true c'est que c'est une miniature	
+	$pos = strpos($aTester,"MinX");
+	if ($pos === false){
+		return false;
 	} else {
-		imagecopyresampled($thumb, $src, 0, 0, 0, 0, $width, $height, imagesx($src), imagesy($src));
-  		imagejpeg($thumb, $dpath);
-	  	return true;
+		return true;
 	}
+}
+
+$frontend = false;  // Seul le fichier scan.php met cette variable a true pour ignorer les fichiers ayant -p- dans leur nom
+
+function isPrivate($f){
+// Quand la fonction retourne true c'est que c'est un fichier privée
+	global $frontend;
+	if ($frontend){				// Nous sommes en frontend alors on doit savoir si le fichier est privé
+		if (strpos($f,"-p-") === false ){	// Ce n'est pas un fichier privee
+			return false;
+		} else {							// Il est privée
+			return true;
+		}
+	} else {
+		return false;
+	}
+}
+
+
+
+function generateRandomString($length){
+	$chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
+	$sets = explode('|', $chars);
+	$all = '';
+	$randString = '';
+	foreach($sets as $set){
+		$randString .= $set[array_rand(str_split($set))];
+		$all .= $set;
+	}
+	$all = str_split($all);
+	for($i = 0; $i < $length - count($sets); $i++){
+		$randString .= $all[array_rand($all)];
+	}
+	$randString = str_shuffle($randString);
+	return $randString;
 }
 
 // Permet d'ajouter des marqueurs afin de visualiser la source des 26 images sources de la sphère
@@ -370,6 +318,75 @@ function listimg($nom_img){
 	$jmarqueur.="});\n";
 	return $jmarqueur;
 }
+
+
+// Cette foncion faisait partie au départ de scan.php
+// This function scans the files folder recursively, and builds a large array
+function scan($dir){
+	global $pdo;
+	$files = array();
+
+	// Is there actually such a folder/file?
+
+	if(file_exists($dir)){
+	
+		foreach(scandir($dir) as $f) {
+		
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f)) {
+				continue; // Ignore hidden files
+			}
+
+			if(is_dir($dir . '/' . $f)) {
+
+				// The path is a folder
+
+				$files[] = array(
+					"name" => $f,
+					"titre"=> "",
+					"type" => "folder",
+					"path" => $dir . '/' . $f,
+					"items" => scan($dir . '/' . $f) // Recursively get the contents of the folder
+				);
+			}
+			
+			else {
+				// On recupere le titre et la legende sinon on insert
+				$titre="";
+				$legende="";
+				$fichier = $dir . '/' . $f;
+				$statement = $pdo->prepare('SELECT titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+				$statement->bindValue(':fichier', $fichier);
+				$statement->execute();
+				$row=$statement->fetch();
+				// check for empty result
+				if ($row != false) { // Trouvé
+					$titre	= $row['titre'];
+					$legende= $row['legende'];
+				} else {
+					// J'ai pas trouvé alors il faut insert
+    				$statement = $pdo->prepare('INSERT INTO lespanos (fichier) VALUES (:fichier);');
+					$statement->bindValue(':fichier', $fichier);
+					$statement->execute();
+				}
+
+				if (rtrim($titre)=="") $titre = $f;
+				$files[] = array(
+					"name" => $f,
+					"titre"=> $titre,
+					"legende"=> $legende,
+					"type" => "file",
+					"path" => $dir . '/' . $f,
+					"size" => filesize($dir . '/' . $f) // Gets the size of this file
+				);
+			}
+		}
+	
+	}
+
+	return $files;
+}
+
+
 
 /**
  * TRADUCTOR 1.0
