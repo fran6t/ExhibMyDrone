@@ -34,6 +34,11 @@ Photo Sphère Viewer est utilisé soit pour visualiser les sphères ainsi que le
 
 TinyFileManager est utilisé pour ajouter supprimer les fichiers à presenter.
 
+## Licence :
+
+Aucune idée de license, alors j'ai choisie une qui me parait respecter le travail de chacun, personnellement tout ce que j'ai fais moi-même est totalement libre d'usage sauf les prises de vues.
+Licence choisie CC-BY 3.0 http://creativecommons.org/licenses/by/3.0/
+
 ## Pré-requis :
 Un hergement web supportant php  
 

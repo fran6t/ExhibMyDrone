@@ -34,6 +34,17 @@ Cute File Browser is slightly modified, it scans .jpg files, then inserts the na
 
 TinyFileManager is used to add delete files to present.
 
+## License
+
+No idea of ​​a license, so I chose one that seems to me to respect everyone's work, personally everything I have done myself is totally free to use except the shots
+All Parts in this repository are licensed under CC-BY 3.0 http://creativecommons.org/licenses/by/3.0/
+Each Part is copyrighted by and should be attributed to its respective author(s).
+See commit details to find the authors of each Part.
+
+If you are uploading parts to this repository, please make sure you are the author of the model,
+or otherwise that you have right to share it here under the CC-BY 3.0 license, and make sure the author
+is mentioned in the commit message.
+
 ## Prerequisites :
 A web hosting supporting php  
 
