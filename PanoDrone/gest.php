@@ -3,9 +3,13 @@ include('inc-config.php');
 include('inc-session.php');
 include('inc-lib.php');
 
+if (!isset($langue)) $langue = "en";
+$t = new Traductor();
+$t->setLanguage($langue);
+
 if (isset($_POST['v'])){
 	for ($a = 1; $a <= $_POST['cpt']; $a++){
-		if (isset($_POST['C_'.$a])){							// Seul les checkbox cochées remplissent cette variable
+		if (isset($_POST['C_'.$a])){							// Only checked checkbox fill this variable
 			if ($_POST['C_'.$a]=="Ok"){
 				$quelfic = $_POST['FIC_'.$a];
 				$statement = $pdo->prepare('DELETE FROM lespanos WHERE fichier = :fichier;');
@@ -14,21 +18,18 @@ if (isset($_POST['v'])){
 				$statement = $pdo->prepare('DELETE FROM lespanos_details WHERE fichier = :fichier;');
 	    		$statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
 				$result = $statement->execute();
-				$msg = "Suppression Ok !";			
+				$msg = $t->display("Delete ok !");
 			}
 		}
 	}
 }
 
-// On commence par faire un scan tout frais pour mettre à jour la bdd
+// we begin by scan for refresh database
 $frontend = false;
-if ($frontend){
-echo "frontend=".$frontend."fin";
-}
 $reality = scan($dir);
 
-// A l'issue de ce scan tous les fichiers réels présent sur le disque sont donc dans la bdd
-// On parcours donc la bdd maintenant pour remplir un tableau et marquer tous les fichiers qui n'existent plus
+// Then all real file are present in database
+// we spide database to fill array and top all file non-existent
 
 $statement = $pdo->prepare('SELECT * FROM lespanos;');
 $statement->execute();
@@ -36,12 +37,12 @@ $hashfic=$titre=$legende="";
 
 $montab = "<table>\n";
 $montab .= "<tr>";
-$montab .= "        <th>Sel.</th>";
-$montab .= "        <th>Privé</th>";
-$montab .= "        <th>Fichier</th>";
-$montab .= "        <th>Titre</th>";
-$montab .= "        <th>Legende</th>";
-$montab .= "        <th>Hash</th>";
+$montab .= "        <th>".$t->display("Sel.")."</th>";
+$montab .= "        <th>".$t->display("Private")."</th>";
+$montab .= "        <th>".$t->display("File")."</th>";
+$montab .= "        <th>".$t->display("Title")."</th>";
+$montab .= "        <th>".$t->display("Legend")."</th>";
+$montab .= "        <th>".$t->display("Hash")."</th>";
 $montab .= "</tr>\n";
 $i=0;
 while ($row = $statement->fetch()) {
@@ -51,7 +52,7 @@ while ($row = $statement->fetch()) {
 		$checkBox = "checked";
 	} else {
 		$backgroungColor = $checkBox = "";
-		if (rtrim($row['titre'])==""){		// Le fichier existe mais n'a pas été personalisé on lui met une couleur 
+		if (rtrim($row['titre'])==""){		// File exist but not personalized gray color is affected
 			$backgroungColor = ' style="background-color:gray;"';
 		}
 	}
@@ -61,9 +62,9 @@ while ($row = $statement->fetch()) {
 	} else {
 		$titreTmp = $row['titre'];
 	}
-	if (strpos($row['fichier'],"-p-") === false ){	// Ce n'est pas un fichier privee
+	if (strpos($row['fichier'],"-p-") === false ){	// Not a private file
 		$priv = "";
-	} else {							// Il est privée
+	} else {							// is private
 		$priv='<span style="color:orange;font-weight: 500;">Privée</span> ';
 	}
 	if ($checkBox <> "checked"){
@@ -90,7 +91,7 @@ $montab .= "</table>\n";
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<title>Sphères</title>
+	<title><?php echo $t->display("Sphères"); ?></title>
 
 
 	<!-- Include our stylesheet -->
@@ -112,12 +113,12 @@ $montab .= "</table>\n";
 
 <nav class="menu">
 	<ul>
-		<li><a href="index.php">Quitter gestion</a></li>
+		<li><a href="index.php"><?php echo $t->display("Exit management"); ?></a></li>
 		<?php
 		if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 for use authentification of tinymanagerfile
 		?>
-		<li><a href="tinyfilemanagergest/tinyfilemanager.php">Ajouter/Supprimer des sphères</a></li>
-		<li><a href="param.php">Paramètres</a></li>
+		<li><a href="tinyfilemanagergest/tinyfilemanager.php"><?php echo $t->display("Add/Delete files"); ?></a></li>
+		<li><a href="param.php"><?php echo $t->display("Parameters"); ?></a></li>
 		<?php 
 		} 
 		?>
@@ -130,13 +131,13 @@ $montab .= "</table>\n";
 	<input id="cpt" name="cpt" type="hidden" value="<?php echo $i; ?>">
 	<br /><br />
 	<p>
-		<span style="background-color:red">Fond rouge les fichiers qui n'existent plus, ils sont cochés par defaut pour effacement de la base de données</span><br />
-		<span style="background-color:gray">Fond gris les fichiers non personalisés</span><br />
+		<span style="background-color:red"><?php echo $t->display("Red background files that no longer exist, they are checked by default for deletion from the database"); ?></span><br />
+		<span style="background-color:gray"><?php echo $t->display("Gray background unpersonalized files"); ?></span><br />
 	</p>
 	<br />
 	<?php echo $montab; ?> 
 	<br />
-	<input type="submit" value="&nbsp;Effacer les fichiers lignes cochées&nbsp;" /><br/><br />
+	<input type="submit" value="&nbsp;<?php echo $t->display("Clear files with checked lines"); ?>&nbsp;" /><br/><br />
 </form>
 <script src="assets/js/jquery-1.11.0.min.js"></script>
 <script type='text/javascript'>

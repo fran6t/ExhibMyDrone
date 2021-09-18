@@ -63,4 +63,19 @@ $lang["Panorama 360° : Sphere"] = "Panorama 360° : Sphère";
 // inc-lib.php
 $lang["Error"] = "Erreur";
 $lang["Go home sphere"] = "Aller à l'accueil sphère";
+
+// gest.php
+$lang["Delete ok !"] = "Suppression Ok !";
+$lang["Sel."] = "Sel.";     // Pour selectionné
+$lang["Private"] = "Privé";
+$lang["File"] = "Fichier";
+$lang["Title"] = "Titre";
+$lang["Legend"] = "Legende";
+$lang["Hash"] = "Hash";
+$lang["Exit management"] = "Quitter gestion";
+$lang["Add/Delete files"] = "Ajouter/Supprimer des sphères";
+$lang["Parameters"] = "Paramètres";
+$lang["Red background files that no longer exist, they are checked by default for deletion from the database"] = "Fond rouge les fichiers qui n'existent plus, ils sont cochés par defaut pour effacement de la base de données";
+$lang["Gray background unpersonalized files"] = "Fond gris les fichiers non personalisés";
+$lang["Clear files with checked lines"] = "Effacer les fichiers lignes cochées";
 ?>

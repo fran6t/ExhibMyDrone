@@ -1,13 +1,13 @@
 <?php
-$frontend = true;				// Par defaut on prend en compte si un fichier est privé ou non
-								// C'est au script qui a besoins de voir les fichiers privé de mettre cette variable a false exemple dans gest.php
+$frontend = true;				// By default we considere all file, if $frontend = true then private file are not show 
+								// If script php need accepte private file  set $frontend = false, for example in  gest.php
 
 if ($bddtype=='mysql'){
 	$dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
 	try {
 		$pdo = new PDO($dsn, $user, $pass);
    	} catch (Exception $e) {
-		echo "Impossible d'accéder à la base de données MySql : ".$e->getMessage();
+		echo "Access database fail : ".$e->getMessage();
 		die();
    	} 
 } 
@@ -18,15 +18,13 @@ if ($bddtype=='sqlite'){
 		$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // ERRMODE_WARNING | ERRMODE_EXCEPTION | ERRMODE_SILENT
 	} catch(Exception $e) {
-		echo "Impossible d'accéder à la base de données SQLite : ".$e->getMessage();
+		echo "Access SQLite fail : ".$e->getMessage();
 		die();
 	}
 	
 }
 
-//$pdo = new SQLite3($mabdd);
-
-// Decommente les 4 lignes une fois pour remette a zero la bdd attention irreversible
+// Uncoment the next 4 lines = reset table of database
 /*
 $SqlString = "drop table if exists lespanos"; 
 $pdo->exec($SqlString);
@@ -62,7 +60,7 @@ if (!DB_table_exists('lespanos_details')){
     $pdo->exec($SqlString);
 }
 
-// Si la column existe pas on l'ajoute à la table
+// If Col named short_code not exist then add to the table
 if (!DB_column_exists('lespanos','short_code')){
 	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [short_code] VARCHAR(25)";
 	$pdo->exec($SqlString);
@@ -70,7 +68,7 @@ if (!DB_column_exists('lespanos','short_code')){
     $pdo->exec($SqlString);
 }
 
-// Si la column existe pas on l'ajoute à la table
+// If Col named marker_center not exist then add to the table
 if (!DB_column_exists('lespanos_details','marker_center')){
 	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_center] VARCHAR(1)";
 	$pdo->exec($SqlString);
@@ -78,10 +76,12 @@ if (!DB_column_exists('lespanos_details','marker_center')){
 
 // Si la column existe pas on l'ajoute à la table
 // Ce champs vaudra Standard,URL ou IMG
-if (!DB_column_exists('lespanos_details','marker_type')){
-	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
-	$pdo->exec($SqlString);
-}
+//if (!DB_column_exists('lespanos_details','marker_type')){
+//	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
+//	$pdo->exec($SqlString);
+//}
+
+
 // End traitment
 
 // List function php used in all script include inc-lib.php order by aphabetic name
@@ -116,7 +116,7 @@ function createThumb($spath, $dpath, $maxd) {
 
 function DB_column_exists($table,$column){
 	GLOBAL $pdo;
-	// Si la table est vide il faut au moins un enregistement pour que cela fonctionne
+	// If table is empty we need one row for success test
 	$colExist = false;
 	$fichier="To delete";
 	$stmt = $pdo->prepare('INSERT INTO '.$table.' (fichier) VALUES (:fichier);');
@@ -125,7 +125,6 @@ function DB_column_exists($table,$column){
 	$result = $pdo->query('SELECT * FROM '.$table.' LIMIT 1');
 	foreach ($result as $row){
 	    foreach($row as $col_name => $val){
-     		//echo "<br /> $col_name == $val";
 			if ($col_name == $column) $colExist = true;   
      	}
  	}
@@ -154,12 +153,12 @@ function display_Frontend_Error($quelError){
 }
 
 function imageResize($quelfic,$after_width){
-	// Exemple nom miniature généré "my-picture.jpg" donnera "my-picture-MinX0200.jpg" pour une 200px par exemple
+	// Example thumbnail name for "my-picture.jpg" create  "my-picture-MinX0200.jpg"
 	$compl_img = "-MinX0".$after_width.".jpg";
 	if( class_exists("Imagick") ){
-		// On genere 2 versions une pour des vignettes et une pour affichage sur blog
-		// La premiere est en 200px thumb, la deuxieme 600px medium
-		// Les images avec x200x ou x600x dans leurs noms sont ignorées lors du scan
+		// We create 2 thumbnail for blog or seo
+		// First size 200px thumb, second 600px medium
+		// Thumbnail named with x200x or x600x are ignored by function scan()
 		$image = new Imagick($quelfic);
 		$image->thumbnailImage($after_width, 0, false);
 		$image->writeImage($quelfic.$compl_img);
@@ -182,15 +181,16 @@ function imageResize($quelfic,$after_width){
 		imagedestroy($imgResized);
 		return;
 	}
-	//On resize avec function de base de gd
+	//Resize with native function of gd lib
 	createThumb($quelfic, $quelfic.$compl_img, $after_width);	
 }
 
 
 
-// Test si c'est un repertoire qui fini par .d
+// Test if directory name ending by .d
 function isDirectoryHD($aTester){
 	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
+	// When it's a directory endind by .d we return true this directory is ignored by function scan()
 	$path_parts = pathinfo($aTester);
 	if (!isset($path_parts['extension'])) return false;
 	if ($path_parts['extension']=="d"){	
@@ -200,9 +200,10 @@ function isDirectoryHD($aTester){
 	}
 }
 
-// Test si la chaine passée contient la chaine MinX
+// Test if $aTester contain string "MinX"
 function isMiniature($aTester){
-// Quand la fonction retourne true c'est que c'est une miniature	
+	// Quand la fonction retourne true c'est que c'est une miniature	
+	// If string "MinX" then we retuen true it's a thumbnail and is ignored by function scan()
 	$pos = strpos($aTester,"MinX");
 	if ($pos === false){
 		return false;
@@ -211,15 +212,15 @@ function isMiniature($aTester){
 	}
 }
 
-$frontend = false;  // Seul le fichier scan.php met cette variable a true pour ignorer les fichiers ayant -p- dans leur nom
+$frontend = false;  // Only script php name scan.php need $fronted = true to ignore file with string "-p-" because it's a private file on link direct can show private file
 
 function isPrivate($f){
-// Quand la fonction retourne true c'est que c'est un fichier privée
+	// When true is returned it's a private file
 	global $frontend;
-	if ($frontend){				// Nous sommes en frontend alors on doit savoir si le fichier est privé
-		if (strpos($f,"-p-") === false ){	// Ce n'est pas un fichier privee
+	if ($frontend){				// We are in frontend mode we must test if file is private
+		if (strpos($f,"-p-") === false ){	// Not private
 			return false;
-		} else {							// Il est privée
+		} else {							// Is private
 			return true;
 		}
 	} else {
@@ -246,8 +247,9 @@ function generateRandomString($length){
 	return $randString;
 }
 
-// Permet d'ajouter des marqueurs afin de visualiser la source des 26 images sources de la sphère
-// Usage dans pano.php
+// Function create marker to access high resolution file used for stitch panorama
+// 26 icon + represent link to .jpg showing on the sphere
+// Used in pano.php
 function listimg($nom_img){
 	$array_latitude['DJI_0001.jpg']='-0.09252984397812103';
 	$array_longitude['DJI_0001.jpg']='5.555662773914915';
@@ -314,13 +316,13 @@ function listimg($nom_img){
 	$jmarqueur.="\t width    : 32,\n";
 	$jmarqueur.="\t height   : 32,\n";
 	$jmarqueur.="\t anchor   : 'bottom center',\n";
-	$jmarqueur.="\t hideList : 'true',\n";					// Pas la peine de montrer la liste des 26 images les pictos + suffisent
+	$jmarqueur.="\t hideList : 'true',\n";					// Only icon + on sphere is showing, links in right panel are hidden
 	$jmarqueur.="});\n";
 	return $jmarqueur;
 }
 
 
-// Cette foncion faisait partie au départ de scan.php
+// At start this function is in script scan.php but we need in scan.php and gest.php
 // This function scans the files folder recursively, and builds a large array
 function scan($dir){
 	global $pdo;
@@ -350,7 +352,7 @@ function scan($dir){
 			}
 			
 			else {
-				// On recupere le titre et la legende sinon on insert
+				// We store title and legend  in database
 				$titre="";
 				$legende="";
 				$fichier = $dir . '/' . $f;
