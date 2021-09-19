@@ -51,6 +51,9 @@ $lang["Database user (Not used if Sqlite)"] = "Utilisateur de la bdd (Non utilis
 $lang["Password"] = "Mot de passe";
 $lang["Not used if Sqlite"] = "Non utilisé si SqLite";
 $lang["Port"] = "Port";
+$lang["Various"] = "Divers";
+$lang["Protect browsing"] = "Interdire parcours" ;
+$lang["Protect against file browsing"] = "Interdire le parcours direct des répertoires";
 $lang["Save"] = "Sauvegarder";
 
 // pano.php
@@ -63,6 +66,7 @@ $lang["Panorama 360° : Sphere"] = "Panorama 360° : Sphère";
 // inc-lib.php
 $lang["Error"] = "Erreur";
 $lang["Go home sphere"] = "Aller à l'accueil sphère";
+$lang["Becarefull creating file failed : "] = "Attention création du fichier impossible : "; 
 
 // gest.php
 $lang["Delete ok !"] = "Suppression Ok !";

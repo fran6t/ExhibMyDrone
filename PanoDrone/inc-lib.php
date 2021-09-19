@@ -228,7 +228,18 @@ function isPrivate($f){
 	}
 }
 
-
+// We protecct or not directory by an empty file name index.html
+function fBrowsingProtect($browsingProtect,$quelfic){
+	GLOBAL $t;
+	if ($browsingProtect=="Y"){
+		$directory_protect = pathinfo($quelfic);
+		if (isset($directory_protect['dirname'])){
+			if (!touch($directory_protect['dirname']."/index.html")) {
+				echo $t->display("Becarefull creating file failed : ").$directory_protect['dirname']."/index.html";
+			}
+		}
+	}
+}
 
 function generateRandomString($length){
 	$chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
@@ -334,7 +345,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f)) {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html") {
 				continue; // Ignore hidden files
 			}
 

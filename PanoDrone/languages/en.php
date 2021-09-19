@@ -51,6 +51,9 @@ $lang["Database user (Not used if Sqlite)"] = "Database user (Not used if Sqlite
 $lang["Password"] = "Password";
 $lang["Not used if Sqlite"] = "Not used if Sqlite";
 $lang["Port"] = "Port";
+$lang["Various"] = "Various";
+$lang["Protect browsing"] = "Protect browsing";
+$lang["Protect against file browsing"] = "Protect against file browsing";
 $lang["Save"] = "Save";
 
 // pano.php
@@ -63,6 +66,7 @@ $lang["Panorama 360° : Sphere"] = "Panorama 360° : Sphere";
 // inc-lib.php
 $lang["Error"] = "Error";
 $lang["Go home sphere"] = "Go home sphere";
+$lang["Becarefull creating file failed : "] = "Becarefull creating file failed : "; 
 
 // gest.php
 $lang["Delete ok !"] = "Delete ok !";

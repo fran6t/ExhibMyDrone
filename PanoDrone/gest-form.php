@@ -4,6 +4,11 @@ include('inc-config.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
   $langue = $ini['langue'];
+  if (!isset($ini['browsingProtect'])){
+    $browsingProtect = "Y";   // By default when gest-form.php is called we create a index.php empty in directory to avoid browsing file
+  } else {
+    $browsingProtect = $ini['browsingProtect'];
+  }
 	$dir = $ini['dir'];
 	$monDomaine = $ini['monDomaine'];
 	$root_complement = $ini['root_complement'];
@@ -68,6 +73,8 @@ if (isset($_POST["v"])){
 } else {
   if (!isset($quelfic)) $quelfic = stripSlashes($_GET["p"]);
 }		
+
+fBrowsingProtect($browsingProtect,$quelfic);  // We protecct or not directory by an empty file name index.php
 
 // Read details markers
 $statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');

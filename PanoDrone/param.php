@@ -15,6 +15,7 @@ if (isset($_POST["v"])){
     $t->setLanguage($langue);
     // overwrite file inc-config-perso.php
     $langue = $_POST['langue'];
+    $browsingProtect = $_POST['browsingProtect'];
     $dir = $_POST['dir'];
     $monDomaine = $_POST['monDomaine'];
     $root_complement = $_POST['root_complement'];
@@ -67,6 +68,11 @@ if (is_readable($config_file)) {
     $langue = "en";
   } else {
     $langue = $ini['langue'];
+  }
+  if (!isset($ini['browsingProtect'])){
+    $browsingProtect = "Y";   // By default when gest-form.php is called we create a index.php empty in directory to avoid browsing file
+  } else {
+    $browsingProtect = $ini['browsingProtect'];
   }
   if (!isset($_POST["v"])) $t->setLanguage($langue);
   $dir = $ini['dir'];
@@ -314,6 +320,17 @@ if(isset($msgerror)) echo '<p><span  style="background-color:red;">'.$msgerror.'
       <div class="form-fields">
         <input placeholder="<?php echo $port; ?>" type="text" name="port" id="port"  value="<?php echo $port; ?>">
         <span class="form-tip"><?php echo $t->display("Not used if Sqlite"); ?></span>
+      </div>
+    </div>
+    <h2><?php echo $t->display("Various"); ?> :</h2>
+    <div class="form-group">
+      <label for="name" class="form-label"><?php echo $t->display("Protect browsing"); ?></label>
+        <div class="form-fields">
+        <select name="browsingProtect" id="browsingProtect">
+                                            <option value="Y"  <?php if ($browsingProtect=="Y") echo "SELECTED"; ?>><?php echo $t->display("Yes"); ?></option>
+                                            <option value="N" <?php if ($browsingProtect=="N") echo "SELECTED"; ?>><?php echo $t->display("No"); ?></option>
+        </select>
+        <span class="form-tip"><?php echo $t->display("Protect against file browsing"); ?></span>
       </div>
     </div>
     <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending"><?php echo $t->display("Save"); ?></button>
