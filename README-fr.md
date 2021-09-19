@@ -16,6 +16,7 @@ En option pour des sphères 4K depuis DJI mini air 2
 
 ## Fonctionalités :
 - Visualisation sphères comprenant :
+    - Affichage des images sources de la sphère si présentent;
     - Ajout suppression de sphères (gestionnaire fichiers intégré);
     - Ajout de points d'intérêts avec texte complémentaire (via simple formulaire);
     - Centrage à l'ouverture sur un point d'intérêt;
@@ -42,7 +43,7 @@ Licence choisie CC-BY 3.0 http://creativecommons.org/licenses/by/3.0/
 ## Pré-requis :
 Un hergement web supportant php  
 
-Base de données sqlite3 pour mémoriser les infos persistantes.
+Base de données sqlite possiblement mysql (mais non testé) pour mémoriser les infos persistantes.
 
 La fonction de scan des fichiers sphères et vidéos est en php le reste en javascript.
 
@@ -50,7 +51,7 @@ La fonction de scan des fichiers sphères et vidéos est en php le reste en java
 
 
 - Sphères & panorama : 
-    - Actuellement ont été testés uniquement les sphères natives obtenues en exportant depuis la galerie DJI;
+    - Actuellement ont été testés les sphères natives obtenues en exportant depuis la galerie DJI et les sphères obtenues via Hugin;
     - Les images raw developpées avec [rawtherapee](https://www.rawtherapee.com/) et assemblées via [Hugin](http://hugin.sourceforge.net/). 
 
 - Vidéos : 
@@ -62,7 +63,7 @@ par un transcodage il est possible que ce soit juste une histoire d'entête mp4 
 ## Installation sur son serveur :
 
 
-En théorie n'importe quel serveur web disposant du langage PHP et sa librairie sqlite3 permettent le fonctionnement natif de l'appli. 
+En théorie n'importe quel serveur web disposant du langage PHP et sa librairie sqlite permettent le fonctionnement natif de l'appli. 
 
 La façon la plus simple et de télécharger le zip https://github.com/fran6t/ExhibMyDrone/archive/refs/heads/master.zip
 (Il n'y a plus de sphères ni de vidéo ainsi que de bdd dans le depot)
@@ -71,17 +72,12 @@ Nota: Le respect des minuscules majuscules est important.
 
 Une fois dezippé sur votre ordi, effectuez le transfert du répertoire ExhibMyDrone et de ses sous repertoires sur votre hebergement avec filezilla par exemple.
 Le transfet terminé si vous avez fait le transfert du répertoire à la racine de votre site alors http://mondomaine.xx/ExhibMyDrone doit fonctionner
-Dans le bas de l'écran en dessous des crédits vous avec le lien pour l'admin en cliquant le mot ici des sphères quand vous êtes dans les sphères et l'admin vidéos quand vous êtes dans les vidéos
+Dans le bas de l'écran un lien pour l'admin est présenté.
 Le login mot de passe en dur dans l'appli est: admin avec le mot de passe admin@123  
 
-Il vous faudra changer le mot de passe rapidement pour cela vous avez un generateur de mot de passe dans la partie aide de tinyfilemanager vous entrez le mot de passe souhaité puis vous allez remplacer la clef obtenue dans les fichiers inc-config.php présents dans les sous-repertoires PanoDrone et VideoDrone 
-Oui il y a deux fichiers inc-config.php à mettre à jour car pour l'instant PanoDrone et VideoDrone sont 100% indépendant l'un de l'autre 
+Il vous faudra changer le mot de passe rapidement sinon vous riquez que quelqu'un utilise le système de gestion de fichier à vos dépends 
 
-Sur fond blanc il s'agit du générateur de clef et sur fond noir un editeur de texte le principe est de remplacer les clefs qui sont dans le fond noir par vos clefs obtenus avec le formulaire (fond blanc) 
-
-![Changement mot de passe](PanoDrone/wiki/Changement-Mot-Passe.jpg "Changement mot de passe")
-
-N'hésitez pas si je peux vous aidez trautmann@wse.fr
+N'hésitez à me contacter trautmann@wse.fr
 
 ## Nom et structure des fichiers :
 
@@ -89,7 +85,7 @@ Pour les sphères, il suffit de placer les fichiers dans des repertoires et sous
 
     - Les noms de repertoire finissant par .d sont reservés aux images sources des sphères du même nom en .jpg
     - Les noms de sphères possédant la chaine de caratère -p- ne seront visibles que par un lien partagé
-    - Les miniatures sont générées automatiquement invisible dans l'admin mais visible par le gestionnaire tinyfilemanager ou filezilla équivalent
+    - Les miniatures sont générées automatiquement invisible dans l'admin mais visible uniquement par le gestionnaire tinyfilemanager ou filezilla équivalent
 
 Exemple d'une sphère dont le nom de fichier est dji-maison.jpg placée dans un repertoire Sphere/My-Maison avec les images d'origine qui ont été assemblées nous aurons :
 
@@ -127,6 +123,7 @@ Les miniatures suivantes seront créées automatiquement
 ## divers
 
 __Change log__:
+- 19/09/2021 Correction traduction, et bug dans la recherche
 - 11/09/2021 Si fichiers sources de construction de la sphère présent alors ajout de marqueur permettant de consulter jpg origine
 - 09/09/2021 Si un marqueur est defini centrer, la sphère s'ouvre alors sur celui-ci
 - 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct

@@ -16,6 +16,7 @@ Useful software to make 4K spheres from DJI mini air 2 :
 
 ## Features :
 - Spheres visualization including :
+    - Display source images of the sphere if they are presents;
     - Addition deletion of spheres (integrated file manager);
     - Addition of points of interest with additional text (via simple form);
     - Centering when opening on a point of interest;
@@ -126,6 +127,7 @@ The following thumbnails will be created automatically
 ## various
 
 __Change log__:
+- 19/09/2021 Correct traduction, and bug search
 - 16/09/2021 Start of implementation of multi-lingual version (For the moment only Readme.md README-fr.md, index.php, parametre.php)
 - 11/09/2021 If the sphere construction source files are present then addition of respective markers allowing to consult the original .jpg
 - 09/09/2021 If a marker is defined to be centered, the sphere then opens on it
