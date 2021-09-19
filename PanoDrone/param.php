@@ -3,22 +3,16 @@
 include('inc-config.php');
 include('inc-session.php');
 include('inc-lib.php');
-if (isset($_POST['langue'])){
-  if ($_POST['langue']=="fr") $langue = "fr";
-  if ($_POST['langue']=="en") $langue = "en";
-} else {
-  $language="en";
-}
-if (!isset($langue)) $langue = "en";
+
 $t = new Traductor();
-$t->setLanguage($langue);
-
-
 $lienAdmin = "";
 $msgerror = "";
 
 // Come from form
 if (isset($_POST["v"])){
+    if ($_POST['langue']=="fr") $langue = "fr";
+    if ($_POST['langue']=="en") $langue = "en";
+    $t->setLanguage($langue);
     // overwrite file inc-config-perso.php
     $langue = $_POST['langue'];
     $dir = $_POST['dir'];
@@ -74,6 +68,7 @@ if (is_readable($config_file)) {
   } else {
     $langue = $ini['langue'];
   }
+  if (!isset($_POST["v"])) $t->setLanguage($langue);
   $dir = $ini['dir'];
   $monDomaine = $ini['monDomaine'];
   $root_complement = $ini['root_complement'];
