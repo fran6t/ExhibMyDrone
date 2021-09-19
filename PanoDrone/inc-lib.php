@@ -372,6 +372,7 @@ function scan($dir){
 				}
 
 				if (rtrim($titre)=="") $titre = $f;
+				if (rtrim($legende)=="") $legende = "";
 				$files[] = array(
 					"name" => $f,
 					"titre"=> $titre,
