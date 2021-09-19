@@ -86,6 +86,25 @@ if (!DB_column_exists('lespanos_details','marker_center')){
 
 // List function php used in all script include inc-lib.php order by aphabetic name
 
+/**
+ * Test if column of table exist 
+ * 
+ *
+ * @param string $spath
+ * 
+ * 		file source
+ * 
+ * @param string $dpath
+ * 
+ * 		file destination
+ *
+ * @param integer $maxd
+ * 
+ * 		size in pixels
+ *
+ * @return boolean
+ *      Return true if thumbnail create 
+**/
 function createThumb($spath, $dpath, $maxd) {
 	$src=@imagecreatefromjpeg($spath);
 	if (!$src) return false;
@@ -113,7 +132,21 @@ function createThumb($spath, $dpath, $maxd) {
 	}
 }
 
-
+/**
+ * Test if column of table exist 
+ * 
+ *
+ * @param string $table
+ * 
+ * 		Name of table
+ * 
+ * @param string $column
+ * 
+ * 		Name of column to test
+ *
+ * @return boolean
+ *      Return true if column exist 
+**/
 function DB_column_exists($table,$column){
 	GLOBAL $pdo;
 	// If table is empty we need one row for success test
@@ -134,7 +167,17 @@ function DB_column_exists($table,$column){
 	return $colExist;
 }
 
-
+/**
+ * Test if table exist 
+ * 
+ *
+ * @param string $table
+ * 
+ * 		Name of table to test
+ *
+ * @return boolean
+ *      Return true if table exist 
+**/
 function DB_table_exists($table){
     GLOBAL $pdo;
     try{
@@ -145,12 +188,39 @@ function DB_table_exists($table){
     return true;
 }
 
+/**
+ * Translate and display message error with home link 
+ * 
+ *
+ * @param string $quelError
+ * 
+ * 		Message error must be translate
+ *
+ * @return 
+ *      Print error message with link to home 
+**/
 function display_Frontend_Error($quelError){
 	GLOBAL $t;
 	echo "*** ".$t->display("Error")." ***";
 	echo "<br />".$t->display($quelError);
 	echo "<br /><a href=\".\">".$t->display("Go home sphere")."</a>";
 }
+
+/**
+ * Resize picture 
+ * 
+ *
+ * @param string $quelfic
+ * 
+ * 		file picture must be resize
+
+ * @param integer $after_width
+ * 
+ * 		size in px
+ *
+ * @return 
+ *      create file picture with name concatenation of $quelfic + -MinX0 + $after_width + jpg 
+**/
 
 function imageResize($quelfic,$after_width){
 	// Example thumbnail name for "my-picture.jpg" create  "my-picture-MinX0200.jpg"
@@ -187,7 +257,18 @@ function imageResize($quelfic,$after_width){
 
 
 
-// Test if directory name ending by .d
+
+/**
+ * Test if directory name ending by .d 
+ * 
+ * Used by function scan() to ignore this directory
+ *
+ * @param string $aTester
+
+ *
+ * @return boolean
+ *      true if directory ending by .d
+**/
 function isDirectoryHD($aTester){
 	// Quand c'est un repertoire fichier qui fini par .d retourne true en theorie c'est un repertoire
 	// When it's a directory endind by .d we return true this directory is ignored by function scan()
@@ -200,7 +281,17 @@ function isDirectoryHD($aTester){
 	}
 }
 
-// Test if $aTester contain string "MinX"
+/**
+ * Test string "MinX" is present 
+ * 
+ * Used by function scan() to ignore thumbnail
+ *
+ * @param string $aTester
+
+ *
+ * @return boolean
+ *      true if "MinX" is found
+**/
 function isMiniature($aTester){
 	// Quand la fonction retourne true c'est que c'est une miniature	
 	// If string "MinX" then we retuen true it's a thumbnail and is ignored by function scan()
@@ -214,8 +305,21 @@ function isMiniature($aTester){
 
 $frontend = false;  // Only script php name scan.php need $fronted = true to ignore file with string "-p-" because it's a private file on link direct can show private file
 
+
+/**
+ * Protect or not directory by placement of an empty file named index.html
+ *
+ * @param string $browsingProtect
+ * 		Value Y or N 
+ * 			if Y we protect elese nothing do
+ *
+ * @param string $quelfic
+ *      Name with is relative path 
+ *
+ * @return boolean
+ *      true is returned it's a private file
+**/
 function isPrivate($f){
-	// When true is returned it's a private file
 	global $frontend;
 	if ($frontend){				// We are in frontend mode we must test if file is private
 		if (strpos($f,"-p-") === false ){	// Not private
@@ -228,7 +332,21 @@ function isPrivate($f){
 	}
 }
 
-// We protecct or not directory by an empty file name index.html
+
+/**
+ * Protect directory by placement of an empty file named index.html
+ *
+ * @param string $browsingProtect
+ * 		Value Y or N 
+ * 			if Y we protect elese nothing do
+ *
+ * @param string $quelfic
+ *      Name with is relative path 
+ *
+ * @return
+ *      Nothing just create or not empty file index.html
+**/
+
 function fBrowsingProtect($browsingProtect,$quelfic){
 	GLOBAL $t;
 	if ($browsingProtect=="Y"){
@@ -241,6 +359,18 @@ function fBrowsingProtect($browsingProtect,$quelfic){
 	}
 }
 
+
+/**
+ * Generate a random string
+ * 
+ *
+ * @param integer $length
+ * 
+ * 		length of the string returned
+ *
+ * @return string
+ *      Return randomed string 
+**/
 function generateRandomString($length){
 	$chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
 	$sets = explode('|', $chars);
@@ -258,9 +388,19 @@ function generateRandomString($length){
 	return $randString;
 }
 
-// Function create marker to access high resolution file used for stitch panorama
-// 26 icon + represent link to .jpg showing on the sphere
-// Used in pano.php
+
+/**
+ * create marker to access high resolution file used for stitch panorama
+ * 26 icon + represent link to .jpg showing on the sphere
+ * Used in pano.php
+ *
+ * @param string $nom_img
+ * 
+ * 		name of the picture hd
+ *
+ * @return string
+ *      Return string represent javascript code interpreted in navigator 
+**/
 function listimg($nom_img){
 	$array_latitude['DJI_0001.jpg']='-0.09252984397812103';
 	$array_longitude['DJI_0001.jpg']='5.555662773914915';
@@ -333,8 +473,18 @@ function listimg($nom_img){
 }
 
 
-// At start this function is in script scan.php but we need in scan.php and gest.php
-// This function scans the files folder recursively, and builds a large array
+/**
+ * Scan the files folder recursively, and builds a large array for json and database
+ * 
+ * At start this function is in script scan.php but we need in scan.php and gest.php
+ *
+ * @param string $dir
+ * 
+ * 		name of the directory browsing
+ *
+ * @return string
+ *      Return json 
+**/
 function scan($dir){
 	global $pdo;
 	$files = array();
