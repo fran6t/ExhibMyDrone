@@ -78,4 +78,28 @@ $lang["Parameters"] = "Paramètres";
 $lang["Red background files that no longer exist, they are checked by default for deletion from the database"] = "Fond rouge les fichiers qui n'existent plus, ils sont cochés par defaut pour effacement de la base de données";
 $lang["Gray background unpersonalized files"] = "Fond gris les fichiers non personalisés";
 $lang["Clear files with checked lines"] = "Effacer les fichiers lignes cochées";
+
+// gest-form.php
+$lang["Back list"] = "Retour liste";
+$lang["Exit"] = "Quitter";
+$lang["Title (list)"] = "Titre (liste)";
+$lang["Additional Info (list)..."] = "Info complèmentaire (liste)...";
+$lang["Marker n°"] = "Marqueur n°";
+$lang["Marker Title (Bubble Label)"] = "Titre du marqueur (Etiquette bulle)";
+$lang["Latitude"] = "Latitude";
+$lang["Longitude"] = "Longitude";
+$lang["Color"] = "Couleur";
+$lang["All the additional information of the marker ...."] = "Toutes les infos complèmentaires du marqueur...";
+$lang["New marker"] = "Nouveau marqueur";
+$lang["Red"] = "Rouge";
+$lang["Blue"] = "Bleu";
+$lang["Center on it when opening"] = "Centrer dessus à l'ouverture";
+$lang["Yes"] = "Oui";
+$lang["No"] = "Non";
+$lang["All the additional information about the marker ..."] = "Toutes les infos complèmentaires du marqueur...";
+$lang["Save"] = "Sauvegarder";
+$lang["Direct to the sphere"] = "Vers la sphère directement";
+$lang["Copy link"] = "Copier le lien";
+$lang["To the tumbnail"] = "Vers la sphère avec une miniature de";
+$lang["Link for sharing"] = "Liens pour partage";
 ?>

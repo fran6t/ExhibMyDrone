@@ -1,18 +1,38 @@
 <?php
 $t0 = microtime(true);
 include('inc-config.php');
+if (is_readable($config_file)) {
+	$ini =  parse_ini_file($config_file);
+  $langue = $ini['langue'];
+	$dir = $ini['dir'];
+	$monDomaine = $ini['monDomaine'];
+	$root_complement = $ini['root_complement'];
+	$keyok = $ini['keyok'];
+	$auth_users['admin'] = $ini['admin'];
+	$bddtype = $ini['bddtype'];
+	$host = $ini['host'];
+	$user = $ini['user'];
+	$pass = $ini['pass'];
+	$port = $ini['port'];
+} else {
+  echo $t->display("Parameter file missing");
+  return;
+}
 include('inc-session.php');
 include('inc-lib.php');
 
-$p_cnt = 0;     //Nombre de marqueurs
-$jmarqueur="";  //A peupler pour javascript
+if (!isset($langue)) $langue = "en";
+$t = new Traductor();
+$t->setLanguage($langue);
+
+$p_cnt = 0;     //Markers number
+$jmarqueur="";  //For fill javascript
 $contenu="";
 
-// Si nous arrivons du formulaire
+// Come from form
 if (isset($_POST["v"])){
   $quelfic = stripSlashes($_POST["p"]);
-  // ON update avec la clef fichier ce qui permet d'avoir un titre et une legende differente en fonction
-  // de l'endroit ou se trouve le fichier par contre les marqueurs eux seront communs
+  // we update with the file key which allows to have a different title and legend depending on where the file is located, however the markers will be common
   $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic WHERE fichier = :fichier');
   $stmt->bindValue(':titre', rtrim($_POST['titre']), PDO::PARAM_STR);
   $stmt->bindValue(':legende', rtrim($_POST['legende']), PDO::PARAM_STR);
@@ -21,24 +41,18 @@ if (isset($_POST["v"])){
   $result = $stmt->execute();
 
 
-  // On commence par effacer tous les marqueurs de cette sphère
+  // Begin by delete all marker of current sphere
   $stmt = $pdo->prepare('DELETE FROM lespanos_details WHERE hashfic = :hashfic');
   $stmt->bindValue(':hashfic', $_POST["hashfic"], PDO::PARAM_STR);
   $result = $stmt->execute();
 
 
-  // On insere maintenant les marqueurs du formulaire
-  // On calcul combien de marqueur sont dans le formulaire
-  //echo "<br />Nombre de formulaire = ".count($_POST['formu']);
-  //echo "<br />";
-  // var_dump($_POST['formu']);
-  // echo "<br />Nombre marqueur dans formulaire".count($_POST['formu']);
+  // insert all markers from form
   $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
   for ($a = 1; $a <= count($_POST['formu']); $a++){
-    if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //On insert que si un titre de marqueur est renseigné 
+    if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //Insert only if name marker not blank
       if (rtrim($_POST['formu'][$a]['couleur']) == "") $_POST['formu'][$a]['couleur'] = 0;
       if (rtrim($_POST['formu'][$a]['longitude']) == "") $_POST['formu'][$a]['longitude'] = 0; 
-      //$statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
 	    $statement->bindValue(':fichier', $quelfic);
       $statement->bindValue(':hashfic', $_POST['hashfic']);
       $statement->bindValue(':nom_marqueur', $_POST['formu'][$a]['nom_marqueur']);
@@ -48,11 +62,6 @@ if (isset($_POST["v"])){
       $statement->bindValue(':descri', $_POST['formu'][$a]['descri']);
       $statement->bindValue(':marker_center', $_POST['formu'][$a]['marker_center']);
 	    $result = $statement->execute();
-      //echo "<br /><br />a=".$a." Marqueur=".$_POST['formu'][$a]['nom_marqueur']."<br /><br />";
-      //echo "<br /><br />a=".$a." Couleur=".$_POST['formu'][$a]['couleur']."<br /><br />";
-      //echo "<br /><br />a=".$a." Longitude=".$_POST['formu'][$a]['longitude']."<br /><br />";
-      //echo "<br /><br />a=".$a." Latitude=".$_POST['formu'][$a]['latitude']."<br /><br />";
-      //echo "<br /><br />a=".$a." Description=".$_POST['formu'][$a]['descri']."<br /><br />";
     }
   }
 
@@ -60,8 +69,7 @@ if (isset($_POST["v"])){
   if (!isset($quelfic)) $quelfic = stripSlashes($_GET["p"]);
 }		
 
-// On recupere les elements eventuel pour les marqueur
-//echo "<br />SELECT titre,legende,short_code FROM lespanos WHERE fichier = ".$quelfic." LIMIT 1";
+// Read details markers
 $statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
 $statement->execute();
@@ -73,27 +81,26 @@ while ($row = $statement->fetch()) {
   $short_code = $row['short_code'];
 }
 
-// On calcul le Hash du fichier pour avoir les mêmes infos marqueur pour un fichier
-// La legende peut être differentes mais pas les infos marqueurs
+// Calc hash file details is uniq for on file
+// But legend of file could be differ
 if (rtrim($hashfic) == ""){
   $hashfic = hash_file('md5', $quelfic, false);
-  // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
+  // Store hash, hash is link 1 <--> x between table lespanos and lespanos_details
   $stmt = $pdo->prepare('UPDATE lespanos SET hashfic = :hashfic WHERE fichier = :fichier');
   $stmt->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 }
 
-if (rtrim($short_code)==""){ // Idem si $short_code est vide on en calcul un
+if (rtrim($short_code)==""){  // short_code is used to share small url
   $short_code = generateRandomString(6); 
-  // On mémorise le $hashfic c'est lui qui fera la liaison entre la table lespanos et lespanos_details
   $stmt = $pdo->prepare('UPDATE lespanos SET short_code = :short_code WHERE fichier = :fichier');
   $stmt->bindValue(':short_code', $short_code, PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 }
 
-// On memorise les marqueurs pour le formulaire et aussi pour l'affichage
+// Store all marakers form form and display on sphere
 $statement = $pdo->prepare('SELECT nom_marqueur,couleur,latitude,longitude,descri,marker_center FROM lespanos_details WHERE hashfic = :hashfic;');
 $statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
 $statement->execute();
@@ -107,7 +114,7 @@ while ($row = $statement->fetch()) {
   $longitude[$nb_marqueur] = $row['longitude'];
   $descri[$nb_marqueur] = $row['descri'];
   $marker_center[$nb_marqueur] = $row['marker_center'];
-  // On construit le tableau des marqueurs javascript
+  // Construc array of markers for javascript
   $jmarqueur.="a.push({\n";
   $jmarqueur.="\t id       : 'Marker".$nb_marqueur."',\n";
   $jmarqueur.="\t tooltip  : {\n";
@@ -124,13 +131,13 @@ while ($row = $statement->fetch()) {
   $jmarqueur.="});\n";
 }
 
-// On genere les images reduites pour les partages
+// Crate thumbnail for share
 imageResize($quelfic,200);
 imageResize($quelfic,600);
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $langue; ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -175,40 +182,40 @@ imageResize($quelfic,600);
 <div id="photosphere"></div>
 <div id="DivMyForm">
   <ul>
-    <li><a href="gest.php">Retour liste</a></li>
-    <li><a href="index.php">Quitter</a></li>
+    <li><a href="gest.php"><?php echo $t->display("Back list"); ?></a></li>
+    <li><a href="index.php"><?php echo $t->display("Exit"); ?></a></li>
   </ul>
   <form id="MyForm" action="gest-form.php" method="post" class="form-example">
     <input id="p" name="p" type="hidden" value="<?php echo $quelfic; ?>">
     <input id="hashfic" name="hashfic" type="hidden" value="<?php echo $hashfic; ?>">
     <input id="v" name="v" type="hidden" value="ok">
     <fieldset>
-      <input placeholder="Titre (liste)" type="text" name="titre" id="titre" value="<?php echo $titre; ?>">
+      <input placeholder="<?php echo $t->display("Title (list)"); ?>" type="text" name="titre" id="titre" value="<?php echo $titre; ?>">
     </fieldset>
     <fieldset>
-      <textarea placeholder="Info complèmentaire (liste)...." name="legende"><?php echo $legende; ?></textarea>
+      <textarea placeholder="<?php echo $t->display("Additional Info (list)..."); ?>" name="legende"><?php echo $legende; ?></textarea>
     </fieldset>
     <?php
     for ($i = 1; $i <= $nb_marqueur; $i++) {
-      echo "<h4>Marqueur n°".$i."</h4>";
+      echo "<h4>".$t->display("Marker n°").$i."</h4>";
     ?>
     <fieldset>
-      <input placeholder="Titre du marqueur (Etiquette bulle)" type="text" name="formu[<?php echo $i; ?>][nom_marqueur]" id="nom_marqueur<?php echo $i; ?>"  value="<?php echo $nom_marqueur[$i]; ?>">
+      <input placeholder="<?php echo $t->display("Marker Title (Bubble Label)"); ?>" type="text" name="formu[<?php echo $i; ?>][nom_marqueur]" id="nom_marqueur<?php echo $i; ?>"  value="<?php echo $nom_marqueur[$i]; ?>">
     </fieldset>
     <div class="gps">
       <div class="gauche">
         <fieldset>
-          <input placeholder="Latitude" type="text" class="gpsCoord" name="formu[<?php echo $i; ?>][latitude]" id="latitude_<?php echo $i; ?>" value="<?php echo $latitude[$i]; ?>">
+          <input placeholder="<?php echo $t->display("Latitude"); ?>" type="text" class="gpsCoord" name="formu[<?php echo $i; ?>][latitude]" id="latitude_<?php echo $i; ?>" value="<?php echo $latitude[$i]; ?>">
         </fieldset>
       </div>
       <div class="droite">
         <fieldset>
-          <input placeholder="Longitude" type="text"  class="gpsCoord" name="formu[<?php echo $i; ?>][longitude]"    id="longitude_<?php echo $i; ?>" value="<?php echo $longitude[$i]; ?>">
+          <input placeholder="<?php echo $t->display("Longitude"); ?>" type="text"  class="gpsCoord" name="formu[<?php echo $i; ?>][longitude]"    id="longitude_<?php echo $i; ?>" value="<?php echo $longitude[$i]; ?>">
         </fieldset>
       </div>
     </div>
     <fieldset>
-      Couleur :
+      <?php echo $t->display("Color"); ?> :
       <select name="formu[<?php echo $i; ?>][couleur]"" id="couleur_<?php echo $i; ?>">
                                           <option value="red"  <?php if ($couleur[$i]=="red") echo "SELECTED"; ?>>Rouge</option>
                                           <option value="blue" <?php if ($couleur[$i]=="blue") echo "SELECTED"; ?>>Bleu</option>
@@ -220,14 +227,14 @@ imageResize($quelfic,600);
       </select>
     </fieldset>
     <fieldset>
-      <textarea placeholder="Toutes les infos complèmentaires du marqueur...." name="formu[<?php echo $i; ?>][descri]" id="descri_<?php echo $i; ?>" class="ckeditor"><?php echo $descri[$i]; ?></textarea>
+      <textarea placeholder="<?php echo $t->display("All the additional information of the marker ...."); ?>" name="formu[<?php echo $i; ?>][descri]" id="descri_<?php echo $i; ?>" class="ckeditor"><?php echo $descri[$i]; ?></textarea>
     </fieldset>
     <?php
     }
     ?>
-    <h4>Nouveau Marqueur</h4>
+    <h4><?php echo $t->display("New marker"); ?></h4>
     <fieldset>
-      <input placeholder="Titre du marqueur (Etiquette bulle)" type="text" name="formu[<?php echo $i; ?>][nom_marqueur]" id="nom_marqueur_<?php echo $i; ?>"  value="">
+      <input placeholder="<?php echo $t->display("Marker Title (Bubble Label)"); ?>" type="text" name="formu[<?php echo $i; ?>][nom_marqueur]" id="nom_marqueur_<?php echo $i; ?>"  value="">
     </fieldset>
     <?php
     $name_latitude = "formu[".$i."][latitude]";
@@ -236,40 +243,40 @@ imageResize($quelfic,600);
     <div class="gps">
       <div class="gauche">
         <fieldset>
-          <input placeholder="Latitude" type="text" class="gpsCoord" name="<?php echo $name_latitude; ?>" id="<?php echo $name_latitude; ?>" value="">
+          <input placeholder="<?php echo $t->display("Latitude"); ?>" type="text" class="gpsCoord" name="<?php echo $name_latitude; ?>" id="<?php echo $name_latitude; ?>" value="">
         </fieldset>
       </div>
       <div class="droite">
         <fieldset>
-          <input placeholder="Longitude" type="text"  class="gpsCoord" name="<?php echo $name_longitude; ?>"    id="<?php echo $name_longitude; ?>" value="">
+          <input placeholder="<?php echo $t->display("Longitude"); ?>" type="text"  class="gpsCoord" name="<?php echo $name_longitude; ?>"    id="<?php echo $name_longitude; ?>" value="">
         </fieldset>
       </div>
     </div>
     <fieldset>
-      Couleur :
+    <?php echo $t->display("Color"); ?> :
       <select name="formu[<?php echo $i; ?>][couleur]" id="couleur_<?php echo $i; ?>">
-                                          <option value="red">Rouge</option>
-                                          <option value="blue">Bleu</option>
+                                          <option value="red"><?php echo $t->display("Red"); ?></option>
+                                          <option value="blue"><?php echo $t->display("Blue"); ?></option>
       </select>
-      &nbsp;Centrer dessus à l'ouverture :
+      &nbsp;<?php echo $t->display("Center on it when opening"); ?> :
       <select name="formu[<?php echo $i; ?>][marker_center]" id="marker_center_<?php echo $i; ?>">
-                                          <option value="N">Non</option>
-                                          <option value="O">Oui</option>
+                                          <option value="N"><?php echo $t->display("No"); ?></option>
+                                          <option value="O"><?php echo $t->display("Yes"); ?></option>
       </select>
     </fieldset>
     <fieldset>
-      <textarea placeholder="Toutes les infos complèmentaires du marqueur...." name="formu[<?php echo $i; ?>][descri]" id="descri_<?php echo $i; ?>"></textarea>
+      <textarea placeholder="<?php echo $t->display("All the additional information about the marker ..."); ?>" name="formu[<?php echo $i; ?>][descri]" id="descri_<?php echo $i; ?>"></textarea>
     </fieldset>
     <fieldset>
-      <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending">Sauvegarder</button>
+      <button name="Sauvegarder" type="submit" id="MyForm-submit" data-submit="...Sending"><?php echo $t->display("Save"); ?></button>
     </fieldset>
-    <h4>Liens pour partage :</h4>
-    <h4>Vers la sphère directement</h43>
+    <h4><?php echo $t->display("Link for sharing"); ?> :</h4>
+    <h4><?php echo $t->display("Direct to the sphere"); ?></h43>
     <fielset>
       <input id="copyURL" type="text" value="<?php echo $monDomaine.'/'.$root_complement."/?c=".$short_code; ?>"/><br>
-      <button type="button" id="copyButton">Copier le lien</button>
+      <button type="button" id="copyButton"><?php echo $t->display("Copy link"); ?></button>
     </fieldset>
-    <h4>Vers la sphère avec une miniature de 200px</h4>
+    <h4><?php echo $t->display("To the tumbnail"); ?>  200px</h4>
     <?php
     $nbrePixels = "-MinX0200.jpg";
     $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
@@ -278,17 +285,17 @@ imageResize($quelfic,600);
     ?>
     <fielset>
       <input id="copyURL200" type="text" value="<?php echo $lienComplet; ?>"/><br>
-      <button type="button" id="copyButton200">Copier le lien</button>
+      <button type="button" id="copyButton200"><?php echo $t->display("Copy link"); ?></button>
       <?php echo $lienComplet; ?>
     </fieldset>
-    <h4>Vers la sphère avec une miniature de 600px</h4>
+    <h4><?php echo $t->display("To the tumbnail"); ?> 600px</h4>
     <?php
     $nbrePixels = "-MinX0600.jpg";
     $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
     ?>
     <fielset>
       <input id="copyURL600" type="text" value="<?php echo $lienComplet; ?>"/><br>
-      <button type="button" id="copyButton600">Copier le lien</button>
+      <button type="button" id="copyButton600"><?php echo $t->display("Copy link"); ?></button>
     </fieldset>
   </form>
 <?php
@@ -317,7 +324,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 
 <script>
   
-  <?php // Mettre le lien court dans le press papier lors du clique sur le bouton copier le lien ?>
+  <?php // Store short link in clipboard ?>
   function copyPressPapier(quelBouton) {
     switch(quelBouton){
       case "copyButton":
@@ -349,8 +356,6 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
-    //panorama  : '../Panos/Lorient-pano.jpg',
-    //caption   : 'Parc national du Mercantour <b>&copy; Damien Sorel</b>',
     panorama   : '<?php echo $quelfic; ?>',
     caption    : '<?php echo $titre; ?>',
     loadingImg: 'example/assets/photosphere-logo.gif',

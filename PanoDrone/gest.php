@@ -1,5 +1,22 @@
 <?php
 include('inc-config.php');
+if (is_readable($config_file)) {
+	$ini =  parse_ini_file($config_file);
+  $langue = $ini['langue'];
+	$dir = $ini['dir'];
+	$monDomaine = $ini['monDomaine'];
+	$root_complement = $ini['root_complement'];
+	$keyok = $ini['keyok'];
+	$auth_users['admin'] = $ini['admin'];
+	$bddtype = $ini['bddtype'];
+	$host = $ini['host'];
+	$user = $ini['user'];
+	$pass = $ini['pass'];
+	$port = $ini['port'];
+} else {
+  echo $t->display("Parameter file missing");
+  return;
+}
 include('inc-session.php');
 include('inc-lib.php');
 
@@ -87,7 +104,7 @@ $montab .= "</table>\n";
 ?>
 <!DOCTYPE html>
 <html>
-<head lang="fr">
+<head lang="<?php echo $langue; ?>">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 

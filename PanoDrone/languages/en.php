@@ -78,4 +78,28 @@ $lang["Parameters"] = "Parameters";
 $lang["Red background files that no longer exist, they are checked by default for deletion from the database"] = "Red background files that no longer exist, they are checked by default for deletion from the database";
 $lang["Gray background unpersonalized files"] = "Gray background unpersonalized files";
 $lang["Clear files with checked lines"] = "Clear files with checked lines";
+
+// gest-form.php
+$lang["Back list"] = "Back list";
+$lang["Exit"] = "Exit";
+$lang["Title (list)"] = "Title (list)";
+$lang["Additional Info (list)..."] = "Additional Info (list)...";
+$lang["Marker n°"] = "Marker n°";
+$lang["Marker Title (Bubble Label)"] = "Marker Title (Bubble Label)";
+$lang["Latitude"] = "Latitude";
+$lang["Longitude"] = "Longitude";
+$lang["Color"] = "Color";
+$lang["All the additional information of the marker ...."] = "All the additional information of the marker ....";
+$lang["New marker"] = "New marker";
+$lang["Red"] = "Red";
+$lang["Blue"] = "Blue";
+$lang["Center on it when opening"] = "Center on it when opening";
+$lang["Yes"] = "Yes";
+$lang["No"] = "No";
+$lang["All the additional information about the marker ..."] = "All the additional information about the marker ...";
+$lang["Save"] = "Save";
+$lang["Direct to the sphere"] = "Direct to the sphere";
+$lang["Copy link"] = "Copy link";
+$lang["To the tumbnail"] = "To the tumbnail";
+$lang["Link for sharing"] = "Link for sharing";
 ?>
