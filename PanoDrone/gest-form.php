@@ -217,13 +217,13 @@ imageResize($quelfic,600);
     <fieldset>
       <?php echo $t->display("Color"); ?> :
       <select name="formu[<?php echo $i; ?>][couleur]"" id="couleur_<?php echo $i; ?>">
-                                          <option value="red"  <?php if ($couleur[$i]=="red") echo "SELECTED"; ?>>Rouge</option>
-                                          <option value="blue" <?php if ($couleur[$i]=="blue") echo "SELECTED"; ?>>Bleu</option>
+                                          <option value="red"  <?php if ($couleur[$i]=="red") echo "SELECTED"; ?>><?php echo $t->display("Red"); ?></option>
+                                          <option value="blue" <?php if ($couleur[$i]=="blue") echo "SELECTED"; ?>><?php echo $t->display("Blue"); ?></option>
       </select>
-      &nbsp;Centrer dessus à l'ouverture :
+      &nbsp;<?php echo $t->display("Center on it when opening"); ?> :
       <select name="formu[<?php echo $i; ?>][marker_center]" id="marker_center_<?php echo $i; ?>">
-                                          <option value="N" <?php if ($marker_center[$i]=="N") echo "SELECTED"; ?>>Non</option>
-                                          <option value="O" <?php if ($marker_center[$i]=="O") echo "SELECTED"; ?>>Oui</option>
+                                          <option value="N" <?php if ($marker_center[$i]=="N") echo "SELECTED"; ?>><?php echo $t->display("No"); ?></option>
+                                          <option value="O" <?php if ($marker_center[$i]=="O") echo "SELECTED"; ?>><?php echo $t->display("Yes"); ?></option>
       </select>
     </fieldset>
     <fieldset>
@@ -276,7 +276,7 @@ imageResize($quelfic,600);
       <input id="copyURL" type="text" value="<?php echo $monDomaine.'/'.$root_complement."/?c=".$short_code; ?>"/><br>
       <button type="button" id="copyButton"><?php echo $t->display("Copy link"); ?></button>
     </fieldset>
-    <h4><?php echo $t->display("To the tumbnail"); ?>  200px</h4>
+    <h4><?php echo $t->display("To the thumbnail"); ?>  200px</h4>
     <?php
     $nbrePixels = "-MinX0200.jpg";
     $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;

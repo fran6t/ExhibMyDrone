@@ -100,6 +100,6 @@ $lang["All the additional information about the marker ..."] = "All the addition
 $lang["Save"] = "Save";
 $lang["Direct to the sphere"] = "Direct to the sphere";
 $lang["Copy link"] = "Copy link";
-$lang["To the tumbnail"] = "To the tumbnail";
+$lang["To the thumbnail"] = "To the thumbnail";
 $lang["Link for sharing"] = "Link for sharing";
 ?>
