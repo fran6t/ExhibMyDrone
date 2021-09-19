@@ -109,6 +109,7 @@ Les miniatures suivantes seront créées automatiquement
 
 
 ## Reste à faire :
+- Mettre à jour le côté vidéo pour qu'il fonctionne avec parametre.php
 - Ajouter lien pour permettre un partage dans une frame;
 - Petit doc d'explications (wiki ou readme etendu..);
 - Creuser le ré-encodage des vidéos car nativement les videos DJI ne sont pas lisible par les navigateurs;

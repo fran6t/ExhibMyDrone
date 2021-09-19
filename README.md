@@ -113,6 +113,7 @@ The following thumbnails will be created automatically
 
 
 ## Todo list :
+- Update side video for use parameter.php
 - Add link to allow sharing in a frame;
 - Small explanatory documentation (wiki or extended readme ..);
 - Study the re-encoding of videos because native DJI videos are not readable by browsers;
