@@ -38,10 +38,11 @@ $contenu="";
 if (isset($_POST["v"])){
   $quelfic = stripSlashes($_POST["p"]);
   // we update with the file key which allows to have a different title and legend depending on where the file is located, however the markers will be common
-  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic WHERE fichier = :fichier');
+  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic, sphere_origin = :sphere_origin WHERE fichier = :fichier');
   $stmt->bindValue(':titre', rtrim($_POST['titre']), PDO::PARAM_STR);
   $stmt->bindValue(':legende', rtrim($_POST['legende']), PDO::PARAM_STR);
   $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), PDO::PARAM_STR);
+  $stmt->bindValue(':sphere_origin', rtrim($_POST['sphere_origin']), PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 
@@ -77,7 +78,7 @@ if (isset($_POST["v"])){
 fBrowsingProtect($browsingProtect,$quelfic);  // We protecct or not directory by an empty file name index.php
 
 // Read details markers
-$statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
 $statement->execute();
 $hashfic=$titre=$legende=$short_code="";
@@ -86,6 +87,7 @@ while ($row = $statement->fetch()) {
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
   $short_code = $row['short_code'];
+  $sphere_origin = $row['sphere_origin'];
 }
 
 // Calc hash file details is uniq for on file
@@ -201,6 +203,13 @@ imageResize($quelfic,600);
     </fieldset>
     <fieldset>
       <textarea placeholder="<?php echo $t->display("Additional Info (list)..."); ?>" name="legende"><?php echo $legende; ?></textarea>
+    </fieldset>
+    <fieldset>
+      <?php echo $t->display("Assembled by : "); ?> :
+      <select name="sphere_origin" id="sphere_origin">
+                                          <option value="0"  <?php if ($sphere_origin=="0") echo "SELECTED"; ?>><?php echo $t->display("Share of Dji app Album"); ?></option>
+                                          <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Hugin"); ?></option>
+      </select>
     </fieldset>
     <?php
     for ($i = 1; $i <= $nb_marqueur; $i++) {

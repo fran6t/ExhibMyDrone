@@ -15,10 +15,13 @@ if (!file_exists($imgHD)){
 	$msgError .= "<br />Image HD manquante !!!!";
 }
 ?>
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fullscreen Image Zoom and Pan with Jquery</title>
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+<link href="jquery.pan/dist/css/jquery.pan.css" rel="stylesheet" type="text/css"/>
 <link href="css/navbar.css" rel="stylesheet"/>
 </head>
 <body>
@@ -27,14 +30,20 @@ if (!file_exists($imgHD)){
 		<li><a href="javascript:window.close();">Fermer</a></li>
 	</ul>
 </nav>
-<div style="overflow:auto;">
-	<?php
+<?php
 	if ($msgError==""){
-		echo '<img src="'.$imgHD.'" width="4000" height="3000"/>';
+		?>
+		<a class="pan" data-big="<?php echo $imgHD; ?>" href="#"><img src="<?php echo $imgHD; ?>" alt="" /></a>
+		<?php
 	} else {
 		echo $msgError;
 	}
-	?>
-</div>  
+?>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="jquery.pan/src/js/jquery.pan.js"></script>
+<script type="text/javascript">
+    $(window).on('load', function() {
+		$(".pan").pan();
+    });
+</script>
 </body>
-</html>

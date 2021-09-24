@@ -49,15 +49,16 @@ if (!file_exists($quelfic)){
 }
 $goMarker = ""; 
 $titre=$legende=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitudebleu=$descmarqueurbleu="";
-$statement = $pdo->prepare('SELECT hashfic,titre,legende FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$statement = $pdo->prepare('SELECT hashfic,titre,legende,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic);
 $statement->execute();
 
-$hashfic=$titre=$legende="";
+$hashfic=$titre=$legende=$sphere_origin="";
 while ($row = $statement->fetch()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
   $hashfic = $row['hashfic'];
+  $sphere_origin = $row['sphere_origin'];
 }
 
 if (rtrim($hashfic) == ""){
@@ -233,7 +234,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
             $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d";
             if (is_dir($repHD)){
               for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2
-                echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg");
+                echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg",$sphere_origin);
               }
             }
           ?>
