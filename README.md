@@ -128,6 +128,7 @@ The following thumbnails will be created automatically
 ## various
 
 __Change log__:
+- 24/09/2021 Update Longitude Lattitude Poi when panorama is assembled by Hugin or obtain with function "Share Dji app Album"
 - 19/09/2021 Correction of translation, and bug in search, addition of index.html when calling gest-form.php to prevent browsing of spheres directories
 - 16/09/2021 Start of implementation of multi-lingual version (For the moment only Readme.md README-fr.md, index.php, parametre.php)
 - 11/09/2021 If the sphere construction source files are present then addition of respective markers allowing to consult the original .jpg

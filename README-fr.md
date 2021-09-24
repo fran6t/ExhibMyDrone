@@ -124,7 +124,8 @@ Les miniatures suivantes seront créées automatiquement
 ## divers
 
 __Change log__:
-- 19/09/2021 Correction traduction, et bug dans la recherche
+- 24/09/2021 Adapatation Longitude Lattitude Poi quand le panorama est assemblé par Hugin ou obtenu pas la fonction "Share Dji app Album"
+- 19/09/2021 Correction traduction, et bug dans la recherche, ajout index.html lors de l'appel de gest-form.php pour empecher parcours des repertoires sphères
 - 11/09/2021 Si fichiers sources de construction de la sphère présent alors ajout de marqueur permettant de consulter jpg origine
 - 09/09/2021 Si un marqueur est defini centrer, la sphère s'ouvre alors sur celui-ci
 - 01/08/2021 Les fichiers avec la chaine de caractère -p- dans leur nom sont invisibles côté FrontEnd sauf appel via lien direct
