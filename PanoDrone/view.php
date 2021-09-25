@@ -14,7 +14,7 @@ $imgHD = $repHD."/".$quelimg;
 if (!file_exists($repHD."/".$quelimg)){
 	//On Sd card file .jpg is upper .JPG
 	$imgHD = $repHD."/".strtoupper($quelimg);
-	if (!file_exists(strtoupper($imgHD))){
+	if (!file_exists($imgHD)){
 		$msgError .= "<br />Image HD manquante !!!!";
 	}
 }
