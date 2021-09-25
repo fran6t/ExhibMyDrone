@@ -44,7 +44,7 @@ if (!file_exists($repHD."/".$quelimg)){
 	}
 ?>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="jquery.pan/src/js/jquery.pan.js"></script>
+<script src="jquery.pan/dist/jquery.pan.min.js"></script>
 <script type="text/javascript">
     $(window).on('load', function() {
 		$(".pan").pan();
