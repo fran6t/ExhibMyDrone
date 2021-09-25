@@ -11,12 +11,11 @@ if (!is_dir($repHD)){
 	$msgError .= "<br />Repertoire HD manquants !!!!";
 }
 $imgHD = $repHD."/".$quelimg; 
-if (!file_exists($imgHD)){
+if (!file_exists($repHD."/".$quelimg)){
 	//On Sd card file .jpg is upper .JPG
+	$imgHD = $repHD."/".strtoupper($quelimg);
 	if (!file_exists(strtoupper($imgHD))){
 		$msgError .= "<br />Image HD manquante !!!!";
-	} else {
-		$imgHD = strtoupper($imgHD);
 	}
 }
 ?>
