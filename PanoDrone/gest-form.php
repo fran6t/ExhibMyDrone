@@ -205,7 +205,7 @@ imageResize($quelfic,600);
       <textarea placeholder="<?php echo $t->display("Additional Info (list)..."); ?>" name="legende"><?php echo $legende; ?></textarea>
     </fieldset>
     <fieldset>
-      <?php echo $t->display("Assembled by : "); ?> :
+      <?php echo $t->display("Assembled by"); ?> :
       <select name="sphere_origin" id="sphere_origin">
                                           <option value="0"  <?php if ($sphere_origin=="0") echo "SELECTED"; ?>><?php echo $t->display("Share of Dji app Album"); ?></option>
                                           <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Hugin"); ?></option>
