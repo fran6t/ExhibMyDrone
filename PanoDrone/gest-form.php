@@ -24,6 +24,7 @@ if (is_readable($config_file)) {
   return;
 }
 include('inc-session.php');
+include('inc-bdd-ctrl.php');
 include('inc-lib.php');
 
 if (!isset($langue)) $langue = "en";
@@ -140,7 +141,7 @@ while ($row = $statement->fetch()) {
   $jmarqueur.="});\n";
 }
 
-// Crate thumbnail for share
+// Create thumbnail for share
 imageResize($quelfic,200);
 imageResize($quelfic,600);
 
@@ -294,10 +295,9 @@ imageResize($quelfic,600);
     </fieldset>
     <h4><?php echo $t->display("To the thumbnail"); ?>  200px</h4>
     <?php
-    $nbrePixels = "-MinX0200.jpg";
-    $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
-    $lienImg = $monDomaine.'/'.$root_complement.'/'.$quelfic;
-    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
+     $lien = $monDomaine.'/'.$root_complement.'/?c='.$short_code;
+    $lienImg = $monDomaine.'/'.$root_complement.'/'.nameThumbnail($quelfic,"200");
+    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg."' alt='Minature ".$titre."' /></a>";
     ?>
     <fielset>
       <input id="copyURL200" type="text" value="<?php echo $lienComplet; ?>"/><br>
@@ -306,8 +306,8 @@ imageResize($quelfic,600);
     </fieldset>
     <h4><?php echo $t->display("To the tumbnail"); ?> 600px</h4>
     <?php
-    $nbrePixels = "-MinX0600.jpg";
-    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg.$nbrePixels."' alt='Minature ".$titre."' /></a>";
+    $lienImg = $monDomaine.'/'.$root_complement.'/'.nameThumbnail($quelfic,"600");
+    $lienComplet = "<a href='".$lien."' title='".$titre."'><img src='".$lienImg."' alt='Minature ".$titre."' /></a>";
     ?>
     <fielset>
       <input id="copyURL600" type="text" value="<?php echo $lienComplet; ?>"/><br>

@@ -18,6 +18,7 @@ if (is_readable($config_file)) {
   return;
 }
 include('inc-lib.php');
+include('inc-bdd-ctrl.php');
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
 $t->setLanguage($langue);
@@ -182,17 +183,13 @@ if (isset($_GET['m'])){
 <body>
 
 <div id="photosphere"></div>
-
-<script src="node_modules/three/build/three.js"></script>
-<script src="node_modules/promise-polyfill/dist/polyfill.js"></script>
-<script src="node_modules/uevent/browser.js"></script>
-<script src="node_modules/nosleep.js/dist/NoSleep.js"></script>
-<script src="dist/photo-sphere-viewer.js"></script>
+<script type="text/javascript" src="dist/fromcdn/three.min.js"></script>
+<script type="text/javascript" src="dist/fromcdn/polyfill.min.js"></script>
+<script type="text/javascript" src="dist/fromcdn/browser.js"></script>
+<script type="text/javascript" src="dist/fromcdn/photo-sphere-viewer.js"></script>
+<script type="text/javascript" src="dist/fromcdn/equirectangular-tiles.js"></script>
 <script src="dist/plugins/gyroscope.js"></script>
-<script src="dist/plugins/stereo.js"></script>
 <script src="dist/plugins/markers.js"></script>
-<script src="creativa-popup.js"></script>
-
 <!-- text used for the marker description -->
 <?php
 for($inner = 1; $inner <= $nb_marqueur; $inner++) {
@@ -205,8 +202,33 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 <script>
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
-    panorama   : '<?php echo $quelfic; ?>',
     caption    : '<?php echo addslashes($titre); ?>',
+    <?php
+    if (removeSmall($quelfic) <> ""){
+      // It's a big sphere run mode tile
+      $path_tiles=nameDirD($quelfic)."/tiles/";
+      $path_hd=nameDirD($quelfic)."/src/";
+    ?>
+      adapter: PhotoSphereViewer.EquirectangularTilesAdapter,
+      panorama: {
+      width: 16000,
+      cols: 16,
+      rows: 8,
+      baseUrl: '<?php echo $quelfic; ?>',
+        tileUrl: (col, row) => {
+          const num = row * 16 + col;
+          console.log(`<?php echo $path_tiles; ?>tile_${('000' + num).slice(-4)}.jpg`);
+          return `<?php echo $path_tiles; ?>tile_${('000' + num).slice(-4)}.jpg`;
+        },
+    },
+    <?php
+    } else {
+      // It's a normal sphere
+    ?>
+      panorama   : '<?php echo $quelfic; ?>',
+    <?php  
+    }
+    ?>
     loadingImg: 'example/assets/photosphere-logo.gif',
     navbar    : [
       'autorotate', 'zoom', 'download', 'markers', 'markersList',
@@ -218,7 +240,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
           markers.toggleAllTooltips();
         }
       },
-      'caption', 'gyroscope', 'stereo', 'fullscreen',
+      'caption', 'gyroscope', 'fullscreen',
     ],
     plugins   : [
       PhotoSphereViewer.GyroscopePlugin,
@@ -230,9 +252,10 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
             echo $jmarqueur;
             // If file UHD exist then add a fictif marker for open jpg
             // For example for Sphere/Aquitaine/dji_soulac-sur-mer.jpg  we search if directory Sphere/Aquitaine/dji_soulac-sur-mer.d exist
-            $path_parts = pathinfo($quelfic);
-            $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d";
-            if (is_dir($repHD)){
+            if (!isset($path_hd)){   
+              $path_hd = nameDirD($quelfic)."/src";
+            }
+            if (is_dir($path_hd)){
               for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2
                 echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg",$sphere_origin);
               }

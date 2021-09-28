@@ -96,19 +96,37 @@ Example of a sphere whose file name is dji-maison.jpg placed in a Sphere / My-Ma
 /Sphere/My-Maison/dji-maison.jpg
 
 We create a directory 
-/Sphere/My-Maison/dji-maison.d
+/Sphere/My-Maison/dji-maison.d  (this directory mus contain all files of a sphere)
 
-In which we place the 26 DJI_0001.jpg files which gives
-/Sphere/My-Maison/dji-maison.d/DJI_0001.jpg
-/Sphere/My-Maison/dji-maison.d/DJI_0002.jpg
+The following thumbnails will be created automatically in directory .d
+/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0200.jpg
+/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0600.jpg
+
+We create a sub-directory named src to place the 26 DJI_0001.jpg files which gives
+/Sphere/My-Maison/dji-maison.d/src/DJI_0001.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0002.jpg
 ...
-/Sphere/My-Maison/dji-maison.d/DJI_0025.jpg
-/Sphere/My-Maison/dji-maison.d/DJI_0026.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0025.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0026.jpg
 
-The following thumbnails will be created automatically
-/Sphere/My-Maison/dji-maison-MinX0200.jpg
-/Sphere/My-Maison/dji-maison-MinX0600.jpg
 
+We create a sub-directory named tiles to place the 128 tiles which gives
+/Sphere/My-Maison/dji-maison.d/tiles/tile_0000.jpg
+/Sphere/My-Maison/dji-maison.d/tiles/tile_0001.jpg
+
+## Sphere with tiles
+
+Soon a tutorial will be made available, for the moment the principle is to limit the sphere to 1600 pixels because of the characteristics of the Dji mini air 2 the top of the sphere is missing. It is therefore necessary to complete the height of the image in order to obtain an image of 16000x8000 pixels.
+
+Prochainement un tutoriel sera mis à disposition, pour l'instant le principe et de limiter la sphère a 1600 pixels en raison des caractéstique du Dji mini air 2 le dessus de la sphère est manquant. Il faut donc compléter la hauteur de l'image afin d'obtenir une image de 16000x8000 pixels.
+
+You must then cut this image, to achieve this imagick allows you to do it by launching the command :
+Il faut ensuite découper cette image, pour réaliser cela imagick permet de le faire en lançant la commande :
+
+convert -crop 1000x1000 dji-maison.jpg tile_%04d.jpg
+
+Result: 128 images obtained must be placed in the tiles sub-directory
+On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 
 
 
@@ -128,6 +146,7 @@ The following thumbnails will be created automatically
 ## various
 
 __Change log__:
+- 28/09/2021 For big sphere add possibility loading with mode tile, now directory name-of-sphere.d contain directory src and tiles and thumbnail
 - 24/09/2021 Update Longitude Lattitude Poi when panorama is assembled by Hugin or obtain with function "Share Dji app Album"
 - 19/09/2021 Correction of translation, and bug in search, addition of index.html when calling gest-form.php to prevent browsing of spheres directories
 - 16/09/2021 Start of implementation of multi-lingual version (For the moment only Readme.md README-fr.md, index.php, parametre.php)

@@ -19,6 +19,7 @@ if (is_readable($config_file)) {
 }
 include('inc-session.php');
 include('inc-lib.php');
+include('inc-bdd-ctrl.php');
 
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();

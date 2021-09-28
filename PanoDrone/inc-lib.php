@@ -1,98 +1,5 @@
 <?php
-$frontend = true;				// By default we considere all file, if $frontend = true then private file are not show 
-								// If script php need accepte private file  set $frontend = false, for example in  gest.php
-
-if ($bddtype=='mysql'){
-	$dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
-	try {
-		$pdo = new PDO($dsn, $user, $pass);
-   	} catch (Exception $e) {
-		echo "Access database fail : ".$e->getMessage();
-		die();
-   	} 
-} 
-if ($bddtype=='sqlite'){
-	$dsn = "sqlite:".dirname(__FILE__).'/'.$db;
-	try{
-		$pdo = new PDO($dsn);
-		$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // ERRMODE_WARNING | ERRMODE_EXCEPTION | ERRMODE_SILENT
-	} catch(Exception $e) {
-		echo "Access SQLite fail : ".$e->getMessage();
-		die();
-	}
-	
-}
-
-// Uncoment the next 4 lines = reset table of database
-/*
-$SqlString = "drop table if exists lespanos"; 
-$pdo->exec($SqlString);
-
-$SqlString = "drop table if exists lespanos_details"; 
-$pdo->exec($SqlString);
-*/
-
-if (!DB_table_exists('lespanos')){
-	$SqlString = "CREATE TABLE 'lespanos' (
-		'fichier' VARCHAR(500)  NULL,
-		'titre' VARCHAR(500)  NULL,
-		'legende' TEXT  NULL,
-		'hashfic' VARCHAR(100)  NULL
-	);";
-	$pdo->exec($SqlString);
-	$SqlString = "CREATE INDEX 'IDX_lespanos_fichier' ON 'lespanos' ('fichier')";
-	$pdo->exec($SqlString);
-}
-
-if (!DB_table_exists('lespanos_details')){
-    $SqlString = "CREATE TABLE [lespanos_details] (
-        [fichier] VARCHAR(500)  NULL,
-        [hashfic] VARCHAR(100)  NULL,
-        [nom_marqueur] VARCHAR(100)  NULL,
-        [couleur] VARCHAR(10)  NULL,
-        [latitude] VARCHAR(20)  NULL,
-        [longitude] VARCHAR(20)  NULL,
-        [descri] TEXT  NULL
-        );";
-    $pdo->exec($SqlString);
-    $SqlString = "CREATE INDEX [IDX_lespanos_DETAILS_hashfic] ON [lespanos_details] ([hashfic])";
-    $pdo->exec($SqlString);
-}
-
-// If Col named short_code not exist then add to the table
-if (!DB_column_exists('lespanos','short_code')){
-	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [short_code] VARCHAR(25)";
-	$pdo->exec($SqlString);
-	$SqlString = "CREATE INDEX [IDX_lespanos_short_code] ON [lespanos]([short_code]  ASC);";
-    $pdo->exec($SqlString);
-}
-
-// If Col named marker_center not exist then add to the table
-if (!DB_column_exists('lespanos_details','marker_center')){
-	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_center] VARCHAR(1)";
-	$pdo->exec($SqlString);
-}
-
-// If Col named sphere_origin not exist then add to the table it's use to find coordinate to show original .jpg
-// 0 Original sphere obtain by direct share from app Dji Album
-// 1 Sphere create with Hugin and dji_assistant
-if (!DB_column_exists('lespanos','sphere_origin')){
-	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [sphere_origin] VARCHAR(1)";
-	$pdo->exec($SqlString);
-}
-
-// Si la column existe pas on l'ajoute à la table
-// Ce champs vaudra Standard,URL ou IMG
-//if (!DB_column_exists('lespanos_details','marker_type')){
-//	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
-//	$pdo->exec($SqlString);
-//}
-
-
-// End traitment
-
-// List function php used in all script include inc-lib.php order by aphabetic name
+// Function php used in all script order by aphabetic name
 
 /**
  * Test if column of table exist 
@@ -231,15 +138,15 @@ function display_Frontend_Error($quelError){
 **/
 
 function imageResize($quelfic,$after_width){
+	$name_thumbnail = nameThumbnail($quelfic,$after_width);
 	// Example thumbnail name for "my-picture.jpg" create  "my-picture-MinX0200.jpg"
-	$compl_img = "-MinX0".$after_width.".jpg";
 	if( class_exists("Imagick") ){
 		// We create 2 thumbnail for blog or seo
 		// First size 200px thumb, second 600px medium
 		// Thumbnail named with x200x or x600x are ignored by function scan()
 		$image = new Imagick($quelfic);
 		$image->thumbnailImage($after_width, 0, false);
-		$image->writeImage($quelfic.$compl_img);
+		$image->writeImage($name_thumbnail);
 		return;
 	}
 	if (version_compare(phpversion(), '5.5.0', '>=')) {     // Must be > 5.5 because use imagescale
@@ -251,7 +158,7 @@ function imageResize($quelfic,$after_width){
 		$imgResized = imagescale($img, $after_width, -1);
  
 		//now save the resized image with a suffix called "-resized" and with its extension. 
-		imagejpeg($imgResized, $quelfic.$compl_img);
+		imagejpeg($imgResized, $name_thumbnail);
   
 		//Finally frees any memory associated with image
 		//**NOTE THAT THIS WONT DELETE THE IMAGE
@@ -260,7 +167,7 @@ function imageResize($quelfic,$after_width){
 		return;
 	}
 	//Resize with native function of gd lib
-	createThumb($quelfic, $quelfic.$compl_img, $after_width);	
+	createThumb($quelfic, $name_thumbnail, $after_width);	
 }
 
 
@@ -290,26 +197,69 @@ function isDirectoryHD($aTester){
 }
 
 /**
- * Test string "MinX" is present 
+ * Find the name of directory .d contain src, tiles and thumbnail 
  * 
- * Used by function scan() to ignore thumbnail
+ * 
  *
  * @param string $aTester
 
  *
- * @return boolean
- *      true if "MinX" is found
+ * @return string
+ *      string 
 **/
-function isMiniature($aTester){
-	// Quand la fonction retourne true c'est que c'est une miniature	
-	// If string "MinX" then we retuen true it's a thumbnail and is ignored by function scan()
-	$pos = strpos($aTester,"MinX");
+function nameDirD($aTester){
+	if (removeSmall($aTester)!="") $aTester = removeSmall($aTester);
+	$path_parts = pathinfo($aTester);
+	return  $path_parts['dirname']."/".$path_parts['filename'].".d";
+}
+
+/**
+ * Find the prefix of thumbnail and create directory .d if not exist
+ * 
+ * Example nameThumbnail("Spheres/sphere-name.jpg","600")
+ * 		return Spheres/sphere-name.d/sphere-name-600.jpg 
+ *
+ * @param string $aTester
+ * 
+ * @param string $size
+ *
+ * @return string
+ *      string 
+**/
+function nameThumbnail($aTester,$size){
+	// First if sub-directory with name of jpg sphere complet with .d is inexistant the create
+	$name_Dir_D = nameDirD($aTester);
+	if(!is_dir($name_Dir_D)){
+		mkdir($name_Dir_D);
+	}
+	$path_parts = pathinfo($name_Dir_D);
+	$name_fic = $path_parts['filename']; 
+	return $name_Dir_D."/".$name_fic."-".$size.".jpg";
+}
+
+
+/**
+ * if string ".small.jpg"  is found, return string without ".small.jpg" else return blank string
+ * 
+ * Used by pano to display tile mode or not
+ *
+ * @param string $aTester
+
+ *
+ * @return string
+ *      string without true if ".small." is found
+**/
+function removeSmall($aTester){
+	// If string ".small." then return true it's small version of sphere and tile must be displayed
+	$pos = strpos($aTester,".small.jpg");
 	if ($pos === false){
-		return false;
+		return "";
 	} else {
-		return true;
+		return str_replace(".small.jpg","",$aTester);
 	}
 }
+
+
 
 $frontend = false;  // Only script php name scan.php need $fronted = true to ignore file with string "-p-" because it's a private file on link direct can show private file
 
@@ -563,7 +513,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isMiniature($f) || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html") {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html") {
 				continue; // Ignore hidden files
 			}
 

@@ -1,12 +1,16 @@
 <?php
+
+include('inc-lib.php');
+
 $quelfic = urldecode($_GET["p"]);
 $quelimg = urldecode($_GET["img"]);
 $msgError ="";
 if (!file_exists($quelfic)){
 	$msgError .= "<br />Pano manquants !!!!";
 }
+if (removeSmall($quelfic)<>"") $quelfic = removeSmall($quelfic); 
 $path_parts = pathinfo($quelfic);
-$repHD = $path_parts['dirname']."/".$path_parts['filename'].".d";
+$repHD = $path_parts['dirname']."/".$path_parts['filename'].".d/src";
 if (!is_dir($repHD)){
 	$msgError .= "<br />Repertoire HD manquants !!!!";
 }
@@ -31,7 +35,7 @@ if (!file_exists($repHD."/".$quelimg)){
 <body>
 <nav class="menu">
 	<ul>
-		<li><a href="javascript:window.close();">Fermer</a></li>
+		<li><a href="javascript:window.close();"><img src="jquery.pan/dist/css/img/close.png" style="width: 32px;height: 32px;"/></a></li>
 	</ul>
 </nav>
 <?php

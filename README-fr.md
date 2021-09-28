@@ -94,17 +94,30 @@ Exemple d'une sphère dont le nom de fichier est dji-maison.jpg placée dans un 
 Nous créons un repertoire 
 /Sphere/My-Maison/dji-maison.d
 
-Dans lequel nous plaçons les 26 fichiers DJI_0001.jpg ce qui donne
-/Sphere/My-Maison/dji-maison.d/DJI_0001.jpg
-/Sphere/My-Maison/dji-maison.d/DJI_0002.jpg
+Les miniatures suivantes seront créées automatiquement dans le repertoire .d
+/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0200.jpg
+/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0600.jpg
+
+Dans un sous repertoire src les 26 fichiers DJI_0001.jpg comme cela
+/Sphere/My-Maison/dji-maison.d/src/DJI_0001.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0002.jpg
 ...
-/Sphere/My-Maison/dji-maison.d/DJI_0025.jpg
-/Sphere/My-Maison/dji-maison.d/DJI_0026.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0025.jpg
+/Sphere/My-Maison/dji-maison.d/src/DJI_0026.jpg
 
-Les miniatures suivantes seront créées automatiquement
-/Sphere/My-Maison/dji-maison-MinX0200.jpg
-/Sphere/My-Maison/dji-maison-MinX0600.jpg
+Dans un sous repertoire tiles les 128 tuiles comme cela
+/Sphere/My-Maison/dji-maison.d/tiles/tile_0000.jpg
+/Sphere/My-Maison/dji-maison.d/tiles/tile_0001.jpg
 
+## Sphere avec des tuiles
+
+Prochainement un tutoriel sera mis à disposition, pour l'instant le principe et de limiter la sphère a 1600 pixels en raison des caractéstique du Dji mini air 2 le dessus de la sphère est manquant. Il faut donc compléter la hauteur de l'image afin d'obtenir une image de 16000x8000 pixels.
+
+Il faut ensuite découper cette image, pour réaliser cela imagick permet de le faire en lançant la commande :
+
+convert -crop 1000x1000 dji-maison.jpg tile_%04d.jpg
+
+On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 
 
 
@@ -124,6 +137,7 @@ Les miniatures suivantes seront créées automatiquement
 ## divers
 
 __Change log__:
+- 28/09/2021 Pour les spheres en haute définition il est possible d'utiliser un système de tuiles, le repertoire nom-de-la-spher.d contiendra tous les fichiers de la sphere.
 - 24/09/2021 Adapatation Longitude Lattitude Poi quand le panorama est assemblé par Hugin ou obtenu pas la fonction "Share Dji app Album"
 - 19/09/2021 Correction traduction, et bug dans la recherche, ajout index.html lors de l'appel de gest-form.php pour empecher parcours des repertoires sphères
 - 11/09/2021 Si fichiers sources de construction de la sphère présent alors ajout de marqueur permettant de consulter jpg origine
