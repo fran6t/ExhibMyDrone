@@ -55,6 +55,7 @@ if (isset($_POST["v"])){
 
 
   // insert all markers from form
+  $export_POI = "";
   $statement = $pdo->prepare('INSERT INTO lespanos_details (fichier, hashfic, nom_marqueur, couleur, latitude, longitude, descri, marker_center) VALUES (:fichier, :hashfic, :nom_marqueur, :couleur, :latitude, :longitude, :descri, :marker_center);');
   for ($a = 1; $a <= count($_POST['formu']); $a++){
     if (rtrim($_POST['formu'][$a]['nom_marqueur'])!=""){   //Insert only if name marker not blank
@@ -69,6 +70,9 @@ if (isset($_POST["v"])){
       $statement->bindValue(':descri', $_POST['formu'][$a]['descri']);
       $statement->bindValue(':marker_center', $_POST['formu'][$a]['marker_center']);
 	    $result = $statement->execute();
+      // Construct liste of POI for export longitude latitude
+      $export_POI .= "\t\t\t\$array_latitude['".$_POST['formu'][$a]['nom_marqueur']."']='".$_POST['formu'][$a]['latitude']."'; //".$_POST['formu'][$a]['nom_marqueur']."\n";
+      $export_POI .= "\t\t\t\$array_longitude['".$_POST['formu'][$a]['nom_marqueur']."']='".$_POST['formu'][$a]['longitude']."';\n";
     }
   }
 
@@ -318,8 +322,19 @@ imageResize($quelfic,600);
 $t1 = microtime(true);
 $time = $t1 - $t0;
 echo "<br />Tps exec:".sprintf('%.2f',$time)." s";
+/*
+if (isset($export_POI)){
+    echo "<pre> \n";
+    echo $export_POI;
+    echo "</pre>\n";
+}
+*/
 ?>
 </div> 
+<?php
+include("inc-javascript.php");
+?>
+<!-- 
 <script src="node_modules/three/build/three.js"></script>
 <script src="node_modules/promise-polyfill/dist/polyfill.js"></script>
 <script src="node_modules/uevent/browser.js"></script>
@@ -328,6 +343,7 @@ echo "<br />Tps exec:".sprintf('%.2f',$time)." s";
 <script src="dist/plugins/gyroscope.js"></script>
 <script src="dist/plugins/stereo.js"></script>
 <script src="dist/plugins/markers.js"></script>
+-->
 
 <!-- text used for the marker description -->
 <?php
@@ -372,8 +388,33 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
 
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
-    panorama   : '<?php echo $quelfic; ?>',
     caption    : '<?php echo $titre; ?>',
+    <?php
+    if (removeSmall($quelfic) <> ""){
+      // It's a big sphere run mode tile
+      $path_tiles=nameDirD($quelfic)."/tiles/";
+      $path_hd=nameDirD($quelfic)."/src/";
+    ?>
+      adapter: PhotoSphereViewer.EquirectangularTilesAdapter,
+      panorama: {
+      width: 16000,
+      cols: 16,
+      rows: 8,
+      baseUrl: '<?php echo $quelfic; ?>',
+        tileUrl: (col, row) => {
+          const num = row * 16 + col;
+          console.log(`<?php echo $path_tiles; ?>tile_${('000' + num).slice(-4)}.jpg`);
+          return `<?php echo $path_tiles; ?>tile_${('000' + num).slice(-4)}.jpg`;
+        },
+    },
+    <?php
+    } else {
+      // It's a normal sphere
+    ?>
+      panorama   : '<?php echo $quelfic; ?>',
+    <?php  
+    }
+    ?>
     loadingImg: 'example/assets/photosphere-logo.gif',
     navbar    : [
       'autorotate', 'zoom', 'download', 'markers', 'markersList',
@@ -385,7 +426,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
           markers.toggleAllTooltips();
         }
       },
-      'caption', 'gyroscope', 'stereo', 'fullscreen',
+      'caption', 'gyroscope', 'fullscreen',
     ],
     plugins   : [
       PhotoSphereViewer.GyroscopePlugin,

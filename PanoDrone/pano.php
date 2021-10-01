@@ -183,6 +183,10 @@ if (isset($_GET['m'])){
 <body>
 
 <div id="photosphere"></div>
+<?php
+include("inc-javascript.php");
+?>
+<!--
 <script type="text/javascript" src="dist/fromcdn/three.min.js"></script>
 <script type="text/javascript" src="dist/fromcdn/polyfill.min.js"></script>
 <script type="text/javascript" src="dist/fromcdn/browser.js"></script>
@@ -190,6 +194,7 @@ if (isset($_GET['m'])){
 <script type="text/javascript" src="dist/fromcdn/equirectangular-tiles.js"></script>
 <script src="dist/plugins/gyroscope.js"></script>
 <script src="dist/plugins/markers.js"></script>
+  -->
 <!-- text used for the marker description -->
 <?php
 for($inner = 1; $inner <= $nb_marqueur; $inner++) {
@@ -206,6 +211,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
     <?php
     if (removeSmall($quelfic) <> ""){
       // It's a big sphere run mode tile
+      $tile = true;
       $path_tiles=nameDirD($quelfic)."/tiles/";
       $path_hd=nameDirD($quelfic)."/src/";
     ?>
@@ -224,6 +230,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
     <?php
     } else {
       // It's a normal sphere
+      $tile = false;
     ?>
       panorama   : '<?php echo $quelfic; ?>',
     <?php  
@@ -257,7 +264,7 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
             }
             if (is_dir($path_hd)){
               for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2
-                echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg",$sphere_origin);
+                echo listimg("DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg",$sphere_origin,$tile);
               }
             }
           ?>
