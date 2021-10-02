@@ -1,4 +1,13 @@
 <?php
+/* Permit view and zoom on original .jpg
+*
+*
+* 
+* Use Fullscreen Image Zoom and Pan with Jquery 
+* Original version by Samil Hazir (https://github.com/saplumbaga)
+* Version 2.x and .3.x by JM Alarcon (https://github.com/jmalarcon/)
+* Version used is https://github.com/jmalarcon/jquery.pan
+*/
 
 include('inc-lib.php');
 
@@ -11,10 +20,12 @@ if (!file_exists($quelfic)){
 if (removeSmall($quelfic)<>"") $quelfic = removeSmall($quelfic); 
 $path_parts = pathinfo($quelfic);
 $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d/src";
+$repTHMB = $path_parts['dirname']."/".$path_parts['filename'].".d/thmb";
 if (!is_dir($repHD)){
 	$msgError .= "<br />Repertoire HD manquants !!!!";
 }
-$imgHD = $repHD."/".$quelimg; 
+$imgHD = $repHD."/".$quelimg;
+$imgTHMB =  $repTHMB."/".$quelimg;
 if (!file_exists($repHD."/".$quelimg)){
 	//On Sd card file .jpg is upper .JPG
 	$imgHD = $repHD."/".strtoupper($quelimg);
@@ -40,9 +51,19 @@ if (!file_exists($repHD."/".$quelimg)){
 </nav>
 <?php
 	if ($msgError==""){
+		// If directory thumbnail exist
+		if (is_dir($repTHMB)){
+			for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2
+				$name_IMG = "DJI_".str_pad ( $iImg, 4, '0', STR_PAD_LEFT ).".jpg";
+				$widthStyle="";
+				if ($name_IMG==$quelimg) $widthStyle=' style="width:300px; border-width:5px; border-color:red; border-style:solid;" ';
+				echo '<a class="pan" data-big="'.$repHD.'/'.$name_IMG.'" href="#"><img src="'.$repTHMB.'/'.$name_IMG.'" alt="'.$name_IMG.'"'.$widthStyle.'></a> ';
+			}
+		} else {
 		?>
-		<a class="pan" data-big="<?php echo $imgHD; ?>" href="#"><img src="<?php echo $imgHD; ?>" alt="" /></a>
+			<a class="pan" data-big="<?php echo $imgHD; ?>" href="#"><img src="<?php echo $imgHD; ?>" alt="" style="width:300px;"/></a>
 		<?php
+		}
 	} else {
 		echo $msgError;
 	}

@@ -105,9 +105,15 @@ Dans un sous repertoire src les 26 fichiers DJI_0001.jpg comme cela
 /Sphere/My-Maison/dji-maison.d/src/DJI_0025.jpg
 /Sphere/My-Maison/dji-maison.d/src/DJI_0026.jpg
 
+Facultatif
 Dans un sous repertoire tiles les 128 tuiles comme cela
 /Sphere/My-Maison/dji-maison.d/tiles/tile_0000.jpg
 /Sphere/My-Maison/dji-maison.d/tiles/tile_0001.jpg
+
+Facultatif
+Dans un sous repertoire thmb nous plaçons les vignettes representatives des images originales
+/Sphere/My-Maison/dji-maison.d/thmb/DJI_0000.jpg
+/Sphere/My-Maison/dji-maison.d/thmb/DJI_0001.jpg
 
 ## Sphere avec des tuiles
 
@@ -137,6 +143,7 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 ## divers
 
 __Change log__:
+- 02/09/2021 Amélioration vue fichiers originaux si les vignettes sont présentes
 - 28/09/2021 Pour les spheres en haute définition il est possible d'utiliser un système de tuiles, le repertoire nom-de-la-spher.d contiendra tous les fichiers de la sphere.
 - 24/09/2021 Adapatation Longitude Lattitude Poi quand le panorama est assemblé par Hugin ou obtenu pas la fonction "Share Dji app Album"
 - 19/09/2021 Correction traduction, et bug dans la recherche, ajout index.html lors de l'appel de gest-form.php pour empecher parcours des repertoires sphères

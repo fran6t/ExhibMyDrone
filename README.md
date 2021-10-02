@@ -109,10 +109,16 @@ We create a sub-directory named src to place the 26 DJI_0001.jpg files which giv
 /Sphere/My-Maison/dji-maison.d/src/DJI_0025.jpg
 /Sphere/My-Maison/dji-maison.d/src/DJI_0026.jpg
 
-
+Optional
 We create a sub-directory named tiles to place the 128 tiles which gives
 /Sphere/My-Maison/dji-maison.d/tiles/tile_0000.jpg
 /Sphere/My-Maison/dji-maison.d/tiles/tile_0001.jpg
+
+Optional
+We create a sub-directory named thmb to place the thumbnails
+/Sphere/My-Maison/dji-maison.d/thmb/DJI_0000.jpg
+/Sphere/My-Maison/dji-maison.d/thmb/DJI_0001.jpg
+
 
 ## Sphere with tiles
 
@@ -123,7 +129,7 @@ Prochainement un tutoriel sera mis à disposition, pour l'instant le principe et
 You must then cut this image, to achieve this imagick allows you to do it by launching the command :
 Il faut ensuite découper cette image, pour réaliser cela imagick permet de le faire en lançant la commande :
 
-convert -crop 1000x1000 dji-maison.jpg tile_%04d.jpg
+convert -crop 1024x1024 dji-maison.jpg tile_%04d.jpg
 
 Result: 128 images obtained must be placed in the tiles sub-directory
 On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
@@ -146,6 +152,7 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 ## various
 
 __Change log__:
+- 02/09/2021 Update view original jpg if thumbnails exists
 - 28/09/2021 For big sphere add possibility loading with mode tile, now directory name-of-sphere.d contain directory src and tiles and thumbnail
 - 24/09/2021 Update Longitude Lattitude Poi when panorama is assembled by Hugin or obtain with function "Share Dji app Album"
 - 19/09/2021 Correction of translation, and bug in search, addition of index.html when calling gest-form.php to prevent browsing of spheres directories
