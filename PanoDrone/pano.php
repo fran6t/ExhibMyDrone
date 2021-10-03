@@ -165,7 +165,7 @@ if (rtrim($legende_long!="")){
     $legende_long_js_function .= "  }\n";
     $legende_long_js_function .= "});\n";
 
-    $legende_long_js_inner .= "<script type='html/template' id='panel-content'>\n";
+    $legende_long_js_inner = "<script type='html/template' id='panel-content'>\n";
     $legende_long_js_inner .= $legende_long;
     $legende_long_js_inner .= "</script>";
 
