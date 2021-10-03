@@ -128,6 +128,8 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 
 
 ## Reste à faire :
+- Simplifier l'installation en abandonnant les compatibilités avec les anciennes versions
+- Deplacer pano.db dans l'aborescence des sphères ainsi la sauvegarde inclura toutes les "données vivantes"
 - Mettre à jour le côté vidéo pour qu'il fonctionne avec parametre.php
 - Ajouter lien pour permettre un partage dans une frame;
 - Petit doc d'explications (wiki ou readme etendu..);

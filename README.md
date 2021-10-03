@@ -137,6 +137,8 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 
 
 ## Todo list :
+- Simplify the installation by abandoning the compatibilities with the old versions
+- Move pano.db in the tree structure of the spheres so the backup will include all "live data"
 - Update side video for use parameter.php
 - Add link to allow sharing in a frame;
 - Small explanatory documentation (wiki or extended readme ..);
