@@ -38,6 +38,7 @@ if (!DB_table_exists('lespanos')){
 		'fichier' VARCHAR(500)  NULL,
 		'titre' VARCHAR(500)  NULL,
 		'legende' TEXT  NULL,
+		'legende_long' BLOB NULL,
 		'hashfic' VARCHAR(100)  NULL
 	);";
 	$pdo->exec($SqlString);
@@ -66,6 +67,12 @@ if (!DB_column_exists('lespanos','short_code')){
 	$pdo->exec($SqlString);
 	$SqlString = "CREATE INDEX [IDX_lespanos_short_code] ON [lespanos]([short_code]  ASC);";
     $pdo->exec($SqlString);
+}
+
+// If Col named legende_long not exist then add to the table
+if (!DB_column_exists('lespanos','legende_long')){
+	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [legende_long] BLOB";
+	$pdo->exec($SqlString);
 }
 
 // If Col named marker_center not exist then add to the table

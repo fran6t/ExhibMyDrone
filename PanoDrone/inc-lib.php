@@ -625,7 +625,7 @@ function listimg($nom_img,$sphere_origin,$tile){
 	$jmarqueur.="\t width    : 32,\n";
 	$jmarqueur.="\t height   : 32,\n";
 	$jmarqueur.="\t anchor   : 'bottom center',\n";
-	//$jmarqueur.="\t hideList : 'true',\n";					// Only icon + on sphere is showing, links in right panel are hidden
+	$jmarqueur.="\t hideList : 'true',\n";					// Only icon + on sphere is showing, links in right panel are hidden
 	$jmarqueur.="});\n";
 	$jmarqueur.="console.log('".$choice."')\n";
 	return $jmarqueur;

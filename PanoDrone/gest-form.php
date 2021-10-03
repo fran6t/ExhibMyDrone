@@ -39,9 +39,10 @@ $contenu="";
 if (isset($_POST["v"])){
   $quelfic = stripSlashes($_POST["p"]);
   // we update with the file key which allows to have a different title and legend depending on where the file is located, however the markers will be common
-  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, hashfic = :hashfic, sphere_origin = :sphere_origin WHERE fichier = :fichier');
+  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, legende_long = :legende_long, hashfic = :hashfic, sphere_origin = :sphere_origin WHERE fichier = :fichier');
   $stmt->bindValue(':titre', rtrim($_POST['titre']), PDO::PARAM_STR);
   $stmt->bindValue(':legende', rtrim($_POST['legende']), PDO::PARAM_STR);
+  $stmt->bindValue(':legende_long', rtrim($_POST['legende_long']), PDO::PARAM_STR);
   $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), PDO::PARAM_STR);
   $stmt->bindValue(':sphere_origin', rtrim($_POST['sphere_origin']), PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
@@ -83,13 +84,14 @@ if (isset($_POST["v"])){
 fBrowsingProtect($browsingProtect,$quelfic);  // We protecct or not directory by an empty file name index.php
 
 // Read details markers
-$statement = $pdo->prepare('SELECT titre,legende,hashfic,short_code,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$statement = $pdo->prepare('SELECT titre,legende,legende_long,hashfic,short_code,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
 $statement->execute();
 $hashfic=$titre=$legende=$short_code="";
 while ($row = $statement->fetch()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
+  $legende_long = $row['legende_long'];
   $hashfic = $row['hashfic'];
   $short_code = $row['short_code'];
   $sphere_origin = $row['sphere_origin'];
@@ -208,6 +210,9 @@ imageResize($quelfic,600);
     </fieldset>
     <fieldset>
       <textarea placeholder="<?php echo $t->display("Additional Info (list)..."); ?>" name="legende"><?php echo $legende; ?></textarea>
+    </fieldset>
+    <fieldset>
+      <textarea placeholder="<?php echo $t->display("Long legend"); ?>" name="legende_long" class="ckeditor"><?php echo $legende_long; ?></textarea>
     </fieldset>
     <fieldset>
       <?php echo $t->display("Assembled by"); ?> :

@@ -143,6 +143,7 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 ## divers
 
 __Change log__:
+- 03/09/2021 Ajout d'un bouton dans la navbar pour lire la legende longue d'une sphère 
 - 02/09/2021 Amélioration vue fichiers originaux si les vignettes sont présentes
 - 28/09/2021 Pour les spheres en haute définition il est possible d'utiliser un système de tuiles, le repertoire nom-de-la-spher.d contiendra tous les fichiers de la sphere.
 - 24/09/2021 Adapatation Longitude Lattitude Poi quand le panorama est assemblé par Hugin ou obtenu pas la fonction "Share Dji app Album"

@@ -1,4 +1,14 @@
 <?php
+/*
+*
+*
+*
+* panel-content for legend picture inspired by mistic100 example https://jsfiddle.net/mistic100/9170wgfk/ 
+*
+*/
+
+
+
 include('inc-config.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
@@ -49,8 +59,8 @@ if (!file_exists($quelfic)){
 	return;
 }
 $goMarker = ""; 
-$titre=$legende=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitudebleu=$descmarqueurbleu="";
-$statement = $pdo->prepare('SELECT hashfic,titre,legende,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
+$titre=$legende=$legende_long=$titrerouge=$latituderouge=$descmarqueurrouge=$titrebleu=$latitudebleu=$descmarqueurbleu="";
+$statement = $pdo->prepare('SELECT hashfic,titre,legende,legende_long,sphere_origin FROM lespanos WHERE fichier = :fichier LIMIT 1;');
 $statement->bindValue(':fichier', $quelfic);
 $statement->execute();
 
@@ -58,6 +68,7 @@ $hashfic=$titre=$legende=$sphere_origin="";
 while ($row = $statement->fetch()) {
   $titre = $row['titre'];
   $legende = $row['legende'];
+  $legende_long = $row['legende_long'];
   $hashfic = $row['hashfic'];
   $sphere_origin = $row['sphere_origin'];
 }
@@ -120,6 +131,47 @@ if (isset($_GET['m'])){
   $goMarker .= "  markers.toggleAllTooltips();\n";
   $goMarker .= "  });\n";
   $goMarker .= "});\n";
+}
+
+if (rtrim($legende_long!="")){
+    $legende_long_js_declaration  = "var buttonId = 'panel-button';\n";
+    $legende_long_js_declaration .= "var panelId = 'custom-panel';\n";
+
+    $legende_long_js_navbar = "{\n";
+    $legende_long_js_navbar .= "    id: buttonId,\n";
+    $legende_long_js_navbar .= "    title: 'Toggle panel',\n";
+    $legende_long_js_navbar .= "    content: '&#128220;',\n";
+    $legende_long_js_navbar .= "    onClick: function() {\n";
+    $legende_long_js_navbar .= "        if (PSV.panel.isVisible(panelId)) {\n";
+    $legende_long_js_navbar .= "            PSV.panel.hide();\n";
+    $legende_long_js_navbar .= "        } else {\n";
+    $legende_long_js_navbar .= "            PSV.panel.show({\n";
+    $legende_long_js_navbar .= "            id: panelId,\n";
+    $legende_long_js_navbar .= "            width: '60%',\n";
+    $legende_long_js_navbar .= "            content: document.querySelector('#panel-content').innerHTML,\n";
+    $legende_long_js_navbar .= "            });\n";
+    $legende_long_js_navbar .= "        }\n";
+    $legende_long_js_navbar .= "    },\n";
+    $legende_long_js_navbar .= "},\n";
+  
+    $legende_long_js_function  = "PSV.on('open-panel', function(e, id) {\n";
+    $legende_long_js_function .= "  if (id === panelId) {\n";
+    $legende_long_js_function .= "      PSV.navbar.getButton(buttonId).toggleActive(true);\n";
+    $legende_long_js_function .= "  }\n";
+    $legende_long_js_function .= "});\n";
+    $legende_long_js_function .= "PSV.on('close-panel', function(e, id) {\n";
+    $legende_long_js_function .= "  if (id === panelId) {\n";
+    $legende_long_js_function .= "      PSV.navbar.getButton(buttonId).toggleActive(false);\n";
+    $legende_long_js_function .= "  }\n";
+    $legende_long_js_function .= "});\n";
+
+      
+    $legende_long_js_inner .= "";
+    $legende_long_js_inner .= "<script type='html/template' id='panel-content'>\n";
+    $legende_long_js_inner .= $legende_long;
+    $legende_long_js_inner .= "</script>";
+
+
 }
 ?>
 <!DOCTYPE html>
@@ -202,9 +254,17 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
   echo $descri[$inner]."\n";
   echo "</script>\n";
 }
+ 
+if (rtrim($legende_long!="")){
+    echo $legende_long_js_inner;
+}
 ?>
-
 <script>
+  <?php 
+  if (rtrim($legende_long!="")){
+    echo $legende_long_js_declaration;
+  }
+  ?>  
   const PSV = new PhotoSphereViewer.Viewer({
     container : 'photosphere',
     caption    : '<?php echo addslashes($titre); ?>',
@@ -247,6 +307,11 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
           markers.toggleAllTooltips();
         }
       },
+      <?php 
+      if (rtrim($legende_long!="")){
+        echo $legende_long_js_navbar;
+      }
+      ?>  
       'caption', 'gyroscope', 'fullscreen',
     ],
     plugins   : [
@@ -273,6 +338,13 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
       }]
     ]
   });
+
+<?php 
+if (rtrim($legende_long!="")){
+    echo $legende_long_js_function;
+}
+?>
+
   var markers = PSV.getPlugin(PhotoSphereViewer.MarkersPlugin);
   
   markers.on('select-marker', function (e, marker, data) {
