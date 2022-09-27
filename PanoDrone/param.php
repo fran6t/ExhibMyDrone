@@ -52,8 +52,8 @@ if (isset($_POST["v"])){
     $strFic .= "user=".$user."\n";
     $strFic .= "pass=".$pass."\n";
     $strFic .= "port=".$port."\n";
-    if (@!is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
-      @mkdir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir);
+    if (!is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
+      mkdir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir);
     }
     if (@is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
       if ($fp = fopen($config_file, 'w')){
