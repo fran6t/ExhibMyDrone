@@ -3,8 +3,8 @@ if (isset($_GET['c'])){
   header('Location:pano.php?c='.$_GET['c']);
   return;
 }
-
 include('inc-config.php');
+include('inc-session.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
 	$langue = $ini['langue'];

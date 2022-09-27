@@ -3,15 +3,18 @@
 // Vous serez automatiquement redirigé vers un formulaire de mises à jour de ces variables. 
 // Les nouvelles valeurs que vous aurez saisies vont l'emporter sur celle de ce fichier
 // Elles seront mémorisées dans le fichier inc-config-perso.ini.php
+$langue = "fr";                         // en for English
 
 $dir = "Spheres";						// Important dans scan.php sert au debut et a la fin pour le json
 
-$monDomaine = "http://www.wse.fr";      // Va servir pour construire un lien court vers la sphère directement
+$hosttmp = $_SERVER['HTTP_HOST'];
+$protocoltmp=$_SERVER['PROTOCOL'] = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http';
+$monDomaine = $protocoltmp."://".$hosttmp; // Va servir pour construire un lien court vers la sphère directement exemple https://d.wse.fr
 
 // Pour tinyfilemanager il faut completer le chemin (c'est utilisé dans son config.php)
 // Exemple les sphères sont sont visibles ou accessibles sous l'URL http://www.mondomaine.xx/PanoDrone/Spheres
 // Alors ont renseigne comme ci-dessous la variable $dir completea cette info
-$root_complement = "ExhibMyDrone/PanoDrone";
+$root_complement = substr(dirname($_SERVER['PHP_SELF']),1);      // Le chemin sans le premier / exemple francis/PanoDrone
 
 $keyok = "Azerty001";       // Si votre php est trop ancien l'usage de tinyfilemanager pour gerer l'accès est impossible
                             // vous pourrez néanmoins gerer les point d'interets en appelant l'interface de gestion manuellement de la façon suivante
@@ -25,6 +28,9 @@ $auth_users = array(
     'user' => '$2y$10$Fg6Dz8oH9fPoZ2jJan5tZuv6Z4Kp7avtQ9bDfrdRntXtPeiMAZyGO' //12345
 );
 
+$admin = "admin@123";
+
+$browsingProtect = "Y";     // Placera un index.php vide dans chaque sous repertoire du repertoire Spheres permettant d'interdire le parcours des repertoires
 
 $bddtype = 'sqlite';					    // sqlite ou mysql
 $host = '127.0.0.1';

@@ -52,6 +52,9 @@ if (isset($_POST["v"])){
     $strFic .= "user=".$user."\n";
     $strFic .= "pass=".$pass."\n";
     $strFic .= "port=".$port."\n";
+    if (@!is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
+      @mkdir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir);
+    }
     if (@is_dir($_SERVER['DOCUMENT_ROOT']."/".$root_complement."/".$dir)){
       if ($fp = fopen($config_file, 'w')){
         fwrite($fp, $strFic);
@@ -92,17 +95,19 @@ if (is_readable($config_file)) {
     if ( $keyok == "Azerty001" )  $msgerror = $t->display("You must customize the manual access key!");
     $lienAdmin=$monDomaine."/".$root_complement."/gest.php?k=".$keyok;
   }
+  if ($keyok == "Azerty001"){
+    $msgerror = $t->display("Please change the access key it must not be equal to Azerty001 in production");
+  }
+  if ( password_verify("admin@123", $ini['admin'])){
+    $msgerror = $t->display("Please change the administration password it must not be equal to admin@123 in production");
+  }
 } else {
   if ($msgerror==""){
+    $t->setLanguage($langue);
     $msgerror = $t->display("File")." <b>".$config_file."</b> ".$t->display("Missing file, creation after validation of this form !");
   }  
 }
-if ($keyok == "Azerty001"){
-  $msgerror = $t->display("Please change the access key it must not be equal to Azerty001 in production");
-}
-if ( password_verify("admin@123", $ini['admin'])){
-  $msgerror = $t->display("Please change the administration password it must not be equal to admin@123 in production");
-}
+
 
 ?>
 <!DOCTYPE html>
