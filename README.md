@@ -79,7 +79,9 @@ Once unzipped on your computer, transfer the ExhibMyDrone directory and its sub 
 The transfer is complete if you have transferred the directory to the root of your site then http: //myomaine.xx/ExhibMyDrone must work
 At the bottom of the screen below the credits you will find the link for the admin
 
-At the first launch you will have to change the manual access key and the password
+At the first launch you will have to change the manual access key and the password, you must be redirected to a form
+
+See wiki for more information  https://github.com/fran6t/ExhibMyDrone/wiki/Installation-or-upgrade
 
 Do not hesitate to contact me if I can help you it is with pleasure trautmann@wse.fr
 
