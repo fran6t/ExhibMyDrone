@@ -4,7 +4,6 @@ if (isset($_GET['c'])){
   return;
 }
 include('inc-config.php');
-include('inc-session.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
 	$langue = $ini['langue'];
@@ -19,7 +18,7 @@ if (is_readable($config_file)) {
 	$pass = $ini['pass'];
 	$port = $ini['port'];
 } else {
-  echo "Fichier parametres manquant";
+	header('Location: param.php');
   return;
 }
 include('inc-lib.php');
