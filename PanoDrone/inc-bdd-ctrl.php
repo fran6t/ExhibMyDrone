@@ -39,7 +39,10 @@ if (!DB_table_exists('lespanos')){
 		'titre' VARCHAR(500)  NULL,
 		'legende' TEXT  NULL,
 		'legende_long' BLOB NULL,
-		'hashfic' VARCHAR(100)  NULL
+		'hashfic' VARCHAR(100)  NULL,
+		'short_code' VARCHAR(25),
+		'sphere_origin' VARCHAR(1),
+		'date_update' DATETIME DEFAULT CURRENT_TIME
 	);";
 	$pdo->exec($SqlString);
 	$SqlString = "CREATE INDEX 'IDX_lespanos_fichier' ON 'lespanos' ('fichier')";
@@ -86,6 +89,12 @@ if (!DB_column_exists('lespanos_details','marker_center')){
 // 1 Sphere create with Hugin and dji_assistant
 if (!DB_column_exists('lespanos','sphere_origin')){
 	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [sphere_origin] VARCHAR(1)";
+	$pdo->exec($SqlString);
+}
+
+// If Col named date_update not exist then add to the table it's use to import export sphere
+if (!DB_column_exists('lespanos','date_update')){
+	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [date_update] DATETIME DEFAULT CURRENT_TIME";
 	$pdo->exec($SqlString);
 }
 
