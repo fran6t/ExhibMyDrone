@@ -94,8 +94,34 @@ if (!DB_column_exists('lespanos','sphere_origin')){
 
 // If Col named date_update not exist then add to the table it's use to import export sphere
 if (!DB_column_exists('lespanos','date_update')){
-	$SqlString ="ALTER TABLE [lespanos] ADD COLUMN [date_update] DATETIME DEFAULT CURRENT_TIME";
+	// $SqlString ="ALTER TABLE [lespanos] ADD COLUMN [date_update] DATETIME DEFAULT CURRENT_TIME";
+	// Patch $SqlString generate Error Cannot add a column with non-constant default
+	// We must pass by a temprary table
+	$SqlString = "CREATE TABLE 'lespanos_new' (
+		'fichier' VARCHAR(500)  NULL,
+		'titre' VARCHAR(500)  NULL,
+		'legende' TEXT  NULL,
+		'legende_long' BLOB NULL,
+		'hashfic' VARCHAR(100)  NULL,
+		'short_code' VARCHAR(25),
+		'sphere_origin' VARCHAR(1),
+		'date_update' DATETIME DEFAULT CURRENT_TIME
+	);";
 	$pdo->exec($SqlString);
+
+
+	$SqlString = "INSERT INTO 'lespanos_new' ('fichier','titre','legende','legende_long','hashfic','short_code','sphere_origin') SELECT fichier,titre,legende,legende_long,hashfic,short_code,sphere_origin FROM 'lespanos';";
+	$pdo->exec($SqlString);
+	
+	$SqlString = "drop table 'lespanos';";
+	$pdo->exec($SqlString);
+
+	$SqlString = "alter table 'lespanos_new' rename to 'lespanos';";
+	$pdo->exec($SqlString);
+
+	$SqlString = "CREATE INDEX 'IDX_lespanos_fichier' ON 'lespanos' ('fichier')";
+	$pdo->exec($SqlString);
+	
 }
 
 // Si la column existe pas on l'ajoute à la table
