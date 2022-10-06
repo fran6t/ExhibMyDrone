@@ -39,10 +39,10 @@ $contenu="";
 if (isset($_POST["v"])){
   $quelfic = stripSlashes($_POST["p"]);
   // we update with the file key which allows to have a different title and legend depending on where the file is located, however the markers will be common
-  $stmt = $pdo->prepare('UPDATE lespanos SET titre = :titre , legende = :legende, legende_long = :legende_long, hashfic = :hashfic, sphere_origin = :sphere_origin WHERE fichier = :fichier');
-  $stmt->bindValue(':titre', rtrim($_POST['titre']), PDO::PARAM_STR);
-  $stmt->bindValue(':legende', rtrim($_POST['legende']), PDO::PARAM_STR);
-  $stmt->bindValue(':legende_long', rtrim($_POST['legende_long']), PDO::PARAM_STR);
+  $stmt = $pdo->prepare("UPDATE lespanos SET titre = :titre , legende = :legende, legende_long = :legende_long, hashfic = :hashfic, sphere_origin = :sphere_origin, date_update = datetime('now') WHERE fichier = :fichier");
+  $stmt->bindValue(':titre', str_replace('"','',rtrim($_POST['titre'])), PDO::PARAM_STR);
+  $stmt->bindValue(':legende', str_replace('"','',rtrim($_POST['legende'])), PDO::PARAM_STR);
+  $stmt->bindValue(':legende_long', str_replace('"','',rtrim($_POST['legende_long'])), PDO::PARAM_STR);
   $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), PDO::PARAM_STR);
   $stmt->bindValue(':sphere_origin', rtrim($_POST['sphere_origin']), PDO::PARAM_STR);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
@@ -64,11 +64,11 @@ if (isset($_POST["v"])){
       if (rtrim($_POST['formu'][$a]['longitude']) == "") $_POST['formu'][$a]['longitude'] = 0; 
 	    $statement->bindValue(':fichier', $quelfic);
       $statement->bindValue(':hashfic', $_POST['hashfic']);
-      $statement->bindValue(':nom_marqueur', $_POST['formu'][$a]['nom_marqueur']);
+      $statement->bindValue(':nom_marqueur', str_replace('"','',$_POST['formu'][$a]['nom_marqueur']));
       $statement->bindValue(':couleur', $_POST['formu'][$a]['couleur']);
       $statement->bindValue(':latitude', $_POST['formu'][$a]['latitude']);
       $statement->bindValue(':longitude', $_POST['formu'][$a]['longitude']);
-      $statement->bindValue(':descri', $_POST['formu'][$a]['descri']);
+      $statement->bindValue(':descri', str_replace('"','',$_POST['formu'][$a]['descri']));
       $statement->bindValue(':marker_center', $_POST['formu'][$a]['marker_center']);
 	    $result = $statement->execute();
       // Construct liste of POI for export longitude latitude
