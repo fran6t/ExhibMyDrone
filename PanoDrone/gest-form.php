@@ -108,6 +108,22 @@ if (rtrim($hashfic) == ""){
   $result = $stmt->execute();
 }
 
+// Ok now hasfic id found or calculate we retrieve data for this hashfic
+$statement = $pdo->prepare('SELECT titre,legende,legende_long,hashfic,short_code,sphere_origin FROM lespanos WHERE hashfic = :hashfic LIMIT 1;');
+$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+$statement->execute();
+$hashfic=$titre=$legende=$short_code="";
+while ($row = $statement->fetch()) {
+  $titre = $row['titre'];
+  $legende = $row['legende'];
+  $legende_long = $row['legende_long'];
+  $hashfic = $row['hashfic'];
+  $short_code = $row['short_code'];
+  $sphere_origin = $row['sphere_origin'];
+}
+
+
+
 if (rtrim($short_code)==""){  // short_code is used to share small url
   $short_code = generateRandomString(6); 
   $stmt = $pdo->prepare('UPDATE lespanos SET short_code = :short_code WHERE fichier = :fichier');
