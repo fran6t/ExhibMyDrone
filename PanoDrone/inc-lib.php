@@ -47,6 +47,74 @@ function createThumb($spath, $dpath, $maxd) {
 	}
 }
 
+
+/**
+ * Test if column of table exist 
+ * 
+ * Affiche dans une combo les repertoire et sous-repertoire où se trouve des spheres
+ *
+ * @param string Repertoire racine des spheres
+ * 
+ * @return string for html combo
+ *      Return true if column exist 
+ * 
+ * Initiale fonction from Pevara https://stackoverflow.com/questions/25067241/how-to-list-all-files-in-folders-and-sub-folders-using-scandir-and-display-them
+**/
+
+function dirToOptions($path = __DIR__, $level = 0) {
+	global $comboDest;
+    $items = scandir($path);
+    foreach($items as $item) {
+        // ignore items strating with a dot (= hidden or nav)
+        if (strpos($item, '.') === 0 ||  pathinfo($item, PATHINFO_EXTENSION) == "d" || pathinfo($item, PATHINFO_EXTENSION) == "jpg" || pathinfo($item, PATHINFO_EXTENSION) == "html") {
+        //if (strpos($item, '.') === 0) {
+            continue;
+        }
+
+        $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+        // add some whitespace to better mimic the file structure
+        $item = str_repeat('&nbsp;', $level * 3) . $item;
+        // file
+        if (is_file($fullPath)) {
+            // echo "<option>$item</option>";
+        }
+        // dir
+        else if (is_dir($fullPath)) {
+            // immediatly close the optgroup to prevent (invalid) nested optgroups
+            //echo "<optgroup label='$item'></optgroup>";
+            //echo "<option>$item</option>";  // On affiche pas directement sinon ça oblige a utiliser la fonction au milieu du html
+			$comboDest .= "<option value=\"".$fullPath."\">$item</option>\n";
+            // recursive call to self to add the subitems
+            dirToOptions($fullPath, $level + 1);
+        }
+    }
+
+}
+
+/**
+ * Display wwarning or information message
+ * 
+ *
+ * @param string $msg
+ * 
+ *
+ * @return html string
+ * 
+**/
+function display_msg($msg){
+	GLOBAL $t;
+	
+	$msgDisplay = "";
+	if($msg!=""){
+		$msgDisplay = "<fieldset>";
+		$msgDisplay.= '<legend> '.$t->display("General information").' </legend>';
+		$msgDisplay.= '<p>'.$msg.'</p>'; 
+		$msgDisplay.= "</fieldset>";
+	}
+	return $msgDisplay;
+}
+
+
 /**
  * Test if column of table exist 
  * 
@@ -136,6 +204,58 @@ function display_Frontend_Error($quelError){
  * @return 
  *      create file picture with name concatenation of $quelfic + -MinX0 + $after_width + jpg 
 **/
+
+
+/**
+ * Recursive copy move or delete 
+ * 
+ *
+ * @param string $src $dest
+ * 
+ * 		
+
+ *
+ * @return
+ * 
+ * Source https://stackoverflow.com/questions/9835492/move-all-files-and-folders-in-a-folder-to-another by chybeat
+ *       
+**/
+
+defined('DS') ? NULL : define('DS',DIRECTORY_SEPARATOR);
+
+function full_move($src, $dst){
+    full_copy($src, $dst);
+    full_remove($src);
+}
+
+function full_copy($src, $dst) {
+    if (is_dir($src)) {
+        @mkdir( $dst, 0777 ,TRUE);
+        $files = scandir($src);
+        foreach($files as $file){
+            if ($file != "." && $file != ".."){
+                full_copy("$src".DS."$file", "$dst".DS."$file");
+            }
+        }
+    } else if (file_exists($src)){
+        copy($src, $dst);
+    }
+}
+
+function full_remove($dir) {
+    if (is_dir($dir)) {
+        $files = scandir($dir);
+        foreach ($files as $file){
+            if ($file != "." && $file != ".."){
+                full_remove("$dir".DS."$file");
+            }
+        }
+        rmdir($dir);
+    }else if (file_exists($dir)){
+        unlink($dir);
+    }
+}
+
 
 function imageResize($quelfic,$after_width){
 	$name_thumbnail = nameThumbnail($quelfic,$after_width);
@@ -386,7 +506,7 @@ function listimg($nom_img,$sphere_origin,$tile){
 	}
 
 	$choice = "MiniAir2_".$sphere_origin."_".$tile;
-
+	//echo "<br />".$choice."<br />";
 	switch($choice){
 		case "MiniAir2_Origin_withoutTiles":
 			// For panorama obtain by share from dji gallery application
@@ -557,58 +677,78 @@ function listimg($nom_img,$sphere_origin,$tile){
 			break;
 		case "MiniAir2_Hugin_withTiles":
 			// For panorama obtain by Hugin display mode tile (format 1/2)
-			$array_latitude['DJI_0001.jpg']='-0.03642408475783232'; //DJI_0001.jpg
-			$array_longitude['DJI_0001.jpg']='1.3029502583882626';
-			$array_latitude['DJI_0002.jpg']='0.41802797449718065'; //DJI_0002.jpg
-			$array_longitude['DJI_0002.jpg']='1.3012644921883374';
-			$array_latitude['DJI_0003.jpg']='-0.3479333488682208'; //DJI_0003.jpg
-			$array_longitude['DJI_0003.jpg']='1.316089800003878';
-			$array_latitude['DJI_0004.jpg']='-1.0122914907365717'; //DJI_0004.jpg
-			$array_longitude['DJI_0004.jpg']='1.3254225416811236';
-			$array_latitude['DJI_0005.jpg']='-1.5528409952543627'; //DJI_0005.jpg
-			$array_longitude['DJI_0005.jpg']='5.174792988803333';
-			$array_latitude['DJI_0006.jpg']='-0.9158820300714949'; //DJI_0006.jpg
-			$array_longitude['DJI_0006.jpg']='0.5085866871256626';
-			$array_latitude['DJI_0007.jpg']='-0.39227012251587157'; //DJI_0007.jpg
-			$array_longitude['DJI_0007.jpg']='0.5379117579336068';
-			$array_latitude['DJI_0008.jpg']='0.11205605191817902'; //DJI_0008.jpg
-			$array_longitude['DJI_0008.jpg']='0.547223225651063';
-			$array_latitude['DJI_0009.jpg']='0.29130023999785726'; //DJI_0009.jpg
-			$array_longitude['DJI_0009.jpg']='5.997441616566143';
-			$array_latitude['DJI_0010.jpg']='-0.35412563914228246'; //DJI_0010.jpg
-			$array_longitude['DJI_0010.jpg']='6.027006123573356';
-			$array_latitude['DJI_0011.jpg']='-0.9563436477905904'; //DJI_0011.jpg
-			$array_longitude['DJI_0011.jpg']='5.925481213338923';
-			$array_latitude['DJI_0012.jpg']='-0.9586970951108129'; //DJI_0012.jpg
-			$array_longitude['DJI_0012.jpg']='5.200881825955657';
-			$array_latitude['DJI_0013.jpg']='-0.37269936014379734'; //DJI_0013.jpg
-			$array_longitude['DJI_0013.jpg']='5.320123473989385';
-			$array_latitude['DJI_0014.jpg']='0.023756441302952513'; //DJI_0014jpg
-			$array_longitude['DJI_0014.jpg']='5.336914483985275';
-			$array_latitude['DJI_0015.jpg']='0.01861830511308571'; //DJI_0015.jpg
-			$array_longitude['DJI_0015.jpg']='4.4905119049615365';
-			$array_latitude['DJI_0016.jpg']='-0.36277240945031597'; //DJI_0016.jpg
-			$array_longitude['DJI_0016.jpg']='4.4494829010751875';
-			$array_latitude['DJI_0017.jpg']='-0.9442873259308486'; //DJI_0017.jpg
-			$array_longitude['DJI_0017.jpg']='4.410195896898944';
-			$array_latitude['DJI_0018.jpg']='-0.9114097410185895'; //DJI_0018.jpg
-			$array_longitude['DJI_0018.jpg']='3.581898944796255';
-			$array_latitude['DJI_0019.jpg']='-0.35291866162066454'; //DJI_0019.jpg
-			$array_longitude['DJI_0019.jpg']='3.5953925801180135';
-			$array_latitude['DJI_0020.jpg']='0.007178088823265316'; //DJI_0020.jpg
-			$array_longitude['DJI_0020.jpg']='3.773572418796416';
-			$array_latitude['DJI_0021.jpg']='0.013470866484330823'; //DJI_0021.jpg
-			$array_longitude['DJI_0021.jpg']='2.7940510973030603';
-			$array_latitude['DJI_0022.jpg']='-0.29945408508978755'; //DJI_0022.jpg
-			$array_longitude['DJI_0022.jpg']='2.834928862798277';
-			$array_latitude['DJI_0023.jpg']='-0.8423018315248152'; //DJI_0023.jpg
-			$array_longitude['DJI_0023.jpg']='2.6731214678313515';
-			$array_latitude['DJI_0024.jpg']='-0.8635942765409199'; //DJI_0024.jpg
-			$array_longitude['DJI_0024.jpg']='2.098871297596804';
-			$array_latitude['DJI_0025.jpg']='-0.4000962018455878'; //DJI_0025.jpg
-			$array_longitude['DJI_0025.jpg']='2.032824545338504';
-			$array_latitude['DJI_0026.jpg']='0.016733696692202038'; //DJI_0026.jpg
-			$array_longitude['DJI_0026.jpg']='2.0629417060069537';
+			$array_latitude['DJI_0001.jpg']='0.008967974697416947'; //DJI_0001.jpg
+			$array_longitude['DJI_0001.jpg']='5.0889947190292775';
+			$array_latitude['DJI_0002.jpg']='0.22773936535909023'; //DJI_0002.jpg
+			$array_longitude['DJI_0002.jpg']='5.110513070426429';
+			$array_latitude['DJI_0003.jpg']='-0.3396948468831038'; //DJI_0003.jpg
+			$array_longitude['DJI_0003.jpg']='5.1814259177884665';
+			$array_latitude['DJI_0004.jpg']='-0.8747986662918383'; //DJI_0004.jpg
+			$array_longitude['DJI_0004.jpg']='5.280936731429585';
+			$array_latitude['DJI_0005.jpg']='-1.4904039818859336'; //DJI_0005.jpg
+			$array_longitude['DJI_0005.jpg']='4.8896591829808775';
+			$array_latitude['DJI_0006.jpg']='-0.7952452849305613'; //DJI_0006.jpg
+			$array_longitude['DJI_0006.jpg']='4.424596775494944';
+
+			$array_latitude['DJI_0007.jpg']='-0.3154269953500064'; //DJI_0007.jpg
+			$array_longitude['DJI_0007.jpg']='4.377986274811221';
+
+			$array_latitude['DJI_0008.jpg']='0.2700166808094029'; //DJI_0008.jpg
+			$array_longitude['DJI_0008.jpg']='4.31699451200415';
+
+			$array_latitude['DJI_0009.jpg']='0.2472831946405465'; //DJI_0009.jpg
+			$array_longitude['DJI_0009.jpg']='3.5203185278134423';
+
+			$array_latitude['DJI_0010.jpg']='-0.3906012198884059'; //DJI_0010.jpg
+			$array_longitude['DJI_0010.jpg']='3.507393354281541';
+
+			$array_latitude['DJI_0011.jpg']='-0.9682058798984614'; //DJI_0011.jpg
+			$array_longitude['DJI_0011.jpg']='3.5154456931930462';
+
+			$array_latitude['DJI_0012.jpg']='-0.96570523045557'; //DJI_0012.jpg
+			$array_longitude['DJI_0012.jpg']='2.702343710657582';
+
+			$array_latitude['DJI_0013.jpg']='-0.37303458876364504'; //DJI_0013.jpg
+			$array_longitude['DJI_0013.jpg']='2.8118763405632485';
+
+			$array_latitude['DJI_0014.jpg']='0.294783815546253'; //DJI_0014jpg
+			$array_longitude['DJI_0014.jpg']='2.867018919322091';
+
+			$array_latitude['DJI_0015.jpg']='0.2465790480280634'; //DJI_0015.jpg
+			$array_longitude['DJI_0015.jpg']='1.8481583356328843';
+
+			$array_latitude['DJI_0016.jpg']='-0.3404028001768151'; //DJI_0016.jpg
+			$array_longitude['DJI_0016.jpg']='1.9636478251139409';
+
+			$array_latitude['DJI_0017.jpg']='-0.8649957664408308'; //DJI_0017.jpg
+			$array_longitude['DJI_0017.jpg']='1.915519337803427';
+
+			$array_latitude['DJI_0018.jpg']='-0.9281497613200411'; //DJI_0018.jpg
+			$array_longitude['DJI_0018.jpg']='1.219063385561155';
+
+			$array_latitude['DJI_0019.jpg']='-0.3693138161827596'; //DJI_0019.jpg
+			$array_longitude['DJI_0019.jpg']='1.1959015239129402';
+
+			$array_latitude['DJI_0020.jpg']='0.15137531284078642'; //DJI_0020.jpg
+			$array_longitude['DJI_0020.jpg']='0.6256303847861546';
+
+			$array_latitude['DJI_0021.jpg']='0.18960090573857524'; //DJI_0021.jpg
+			$array_longitude['DJI_0021.jpg']='0.4289265763070863';
+
+			$array_latitude['DJI_0022.jpg']='-0.352591764461363'; //DJI_0022.jpg
+			$array_longitude['DJI_0022.jpg']='0.4103722686309854';
+
+			$array_latitude['DJI_0023.jpg']='-0.9109537493278612'; //DJI_0023.jpg
+			$array_longitude['DJI_0023.jpg']='0.385317686213223';
+
+			$array_latitude['DJI_0024.jpg']='-0.8669910700024062'; //DJI_0024.jpg
+			$array_longitude['DJI_0024.jpg']='5.928902872080257';
+
+			$array_latitude['DJI_0025.jpg']='-0.3759656966856393'; //DJI_0025.jpg
+			$array_longitude['DJI_0025.jpg']='5.9366970531955126';
+
+			$array_latitude['DJI_0026.jpg']='0.2402713997938748'; //DJI_0026.jpg
+			$array_longitude['DJI_0026.jpg']='5.9317015256733745';
 			break;	
 	}
 	
@@ -630,7 +770,6 @@ function listimg($nom_img,$sphere_origin,$tile){
 	$jmarqueur.="console.log('".$choice."')\n";
 	return $jmarqueur;
 }
-
 
 /**
  * Scan the files folder recursively, and builds a large array for json and database
@@ -654,7 +793,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html" || pathinfo($f, PATHINFO_EXTENSION )=="sql") {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html" || pathinfo($f, PATHINFO_EXTENSION )=="sql" || pathinfo($f, PATHINFO_EXTENSION )=="txt") {
 				continue; // Ignore hidden files
 			}
 
@@ -709,7 +848,136 @@ function scan($dir){
 	return $files;
 }
 
+/**
+ * Sphere Delete 
+ *
+ *	Fisrt step With the hasfic, find and delete all record in table lespanos and lespanos_details 
+ *  Second step delete all file and directory for this sphere
+ *
+ * @param string $hashfic
+ * 
+ * 		delete all file for sphere corresponding hasfic and enr in database
 
+ *
+ * @return 	false if error
+ * 			true if ok
+ *       
+**/
+
+function SphereEfface($hashfic){
+	global $pdo;
+
+	// On commence par retrouver la sphere dans la table panos
+	$statement = $pdo->prepare('SELECT fichier FROM lespanos WHERE hashfic = :hashfic LIMIT 1;');
+    $statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+    $statement->execute();
+	$fichier = "";
+    while ($row = $statement->fetch()) {
+        $fichier = $row['fichier'];
+    }
+    if ($fichier!=""){
+		// On efface des deux tables tous les enregistrements qui match avec fichier
+		
+		
+		$statement = $pdo->prepare('DELETE FROM lespanos WHERE hashfic = :hashfic;');
+    	$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+    	$statement->execute();
+
+		$statement = $pdo->prepare('DELETE FROM lespanos_details WHERE hashfic = :hashfic LIMIT 1;');
+    	$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+    	$statement->execute();
+		
+
+		// Maintenant les fichiers
+		unlink($fichier);
+		$repertoire = dirname($fichier)."/".pathinfo($fichier, PATHINFO_FILENAME).".d";
+		full_remove($repertoire);
+		return true;
+	} else {
+		return false;
+	}    
+
+}
+
+
+/**
+ * Sphere Import 
+ * 
+ *
+ * @param string $hashfic
+ * 
+ * 		
+
+ *
+ * @return 	false if error
+ * 			true if ok
+ *       
+**/
+
+function SphereImport($hashfic,$nom_Sphere,$destination){
+
+	global $pdo;
+
+	if (DB_table_exists('lespanos_import')){
+		$SqlString = "drop table 'lespanos_import';";
+		$pdo->exec($SqlString);
+	}
+	if (DB_table_exists('lespanos_details_import')){
+		$SqlString = "drop table 'lespanos_details_import';";
+		$pdo->exec($SqlString);
+	}
+
+	// On importe le .sql dans les table d'import
+    
+    $SqlString = createTable('lespanos_import');
+	$pdo->exec($SqlString);
+    $SqlString = createTable('lespanos_details_import');
+	$pdo->exec($SqlString);
+
+    //Ok maintenant nous avons nos table temporaire d'import nous pouvons importer le .sql
+    $ficsql = 'export-import/import/'.$nom_Sphere.'.d/'.$nom_Sphere.'.sql';
+    $SqlString =file_get_contents($ficsql);
+    $pdo->exec($SqlString);
+
+	//Maintenant on fusionne les tables import dans les tables reelles
+	$SqlString = "INSERT INTO 'lespanos' ('fichier','titre','legende','legende_long','hashfic','short_code','sphere_origin') 
+						SELECT fichier,titre,legende,legende_long,hashfic,short_code,sphere_origin FROM 'lespanos_import';";
+	$pdo->exec($SqlString);
+
+	$SqlString = "INSERT INTO 'lespanos_details' ('fichier','hashfic','nom_marqueur','couleur','latitude','longitude','descri','marker_center') 
+						SELECT fichier,hashfic,nom_marqueur,couleur,latitude,longitude,descri,marker_center FROM 'lespanos_details_import';";
+	$pdo->exec($SqlString);
+
+
+    //Nous n'avons plus besoins des table d'import
+    $SqlString = "drop table 'lespanos_import';";
+	$pdo->exec($SqlString);
+    $SqlString = "drop table 'lespanos_details_import';";
+	$pdo->exec($SqlString);
+
+	// On met à jour le champs fichier
+	$fichier=$destination."/".$nom_Sphere.".jpg";
+	$statement = $pdo->prepare("UPDATE 'lespanos' SET fichier=:fichier WHERE hashfic=:hashfic");
+	$statement->bindValue(':fichier', $fichier, PDO::PARAM_STR);
+	$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+	$statement->execute();
+
+	$statement = $pdo->prepare("UPDATE 'lespanos_details' SET fichier=:fichier WHERE hashfic=:hashfic");
+	$statement->bindValue(':fichier', $fichier, PDO::PARAM_STR);
+	$statement->bindValue(':hashfic', $hashfic, PDO::PARAM_STR);
+	$statement->execute();
+
+	// Maintenant on deplace ce qui a été dezippé dans la nouvelle destination
+	full_move('export-import/import/'.$nom_Sphere.'.d', $destination."/".$nom_Sphere.'.d');
+
+	// On deplace le .jpg
+	rename('export-import/import/'.$nom_Sphere.'.jpg' , $destination."/".$nom_Sphere.'.jpg');
+	unlink('export-import/import/'.$nom_Sphere.'.zip');
+	unlink($destination."/".$nom_Sphere.'.d/'.$nom_Sphere.'.txt');
+	unlink($destination."/".$nom_Sphere.'.d/'.$nom_Sphere.'.sql');
+
+	
+}
 
 /**
  * TRADUCTOR 1.0
