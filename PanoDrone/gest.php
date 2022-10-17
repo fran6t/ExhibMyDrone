@@ -57,6 +57,7 @@ $montab = "<table>\n";
 $montab .= "<tr>";
 $montab .= "        <th>".$t->display("Sel.")."</th>";
 $montab .= "        <th>".$t->display("Private")."</th>";
+$montab .= "        <th>".$t->display("Export")."</th>";
 $montab .= "        <th>".$t->display("File")."</th>";
 $montab .= "        <th>".$t->display("Title")."</th>";
 $montab .= "        <th>".$t->display("Legend")."</th>";
@@ -88,12 +89,14 @@ while ($row = $statement->fetch()) {
 	if ($checkBox <> "checked"){
 		$titreTmp = '<a href="gest-form.php?p='.urlencode($row['fichier']).'">'.$titreTmp.'</a>';
 	}
+	$titreExport = '<a href="export.php?p='.urlencode($row['fichier']).'" title="'.$t->display("Sphere Export").'">Z</a>';
 	
 	$montab .= "<tr".$backgroungColor.">";
 	$montab .= '		<td><input type="checkbox" name="C_'.$i.'" value="Ok"'.$checkBox.'>';
 	$montab .= '			<input type="hidden" name="FIC_'.$i.'" value="'.$row['fichier'].'">';
 	$montab .= "		</td>";
 	$montab .= "        <td>".$priv."</td>";
+	$montab .= "        <td>".$titreExport."</td>";
 	$montab .= "        <td>".$row['fichier']."</td>";
 	$montab .= "        <td>".$titreTmp."</td>";
 	$montab .= "        <td>".$row['legende']."</td>";
@@ -137,6 +140,7 @@ $montab .= "</table>\n";
 		?>
 		<li><a href="tinyfilemanagergest/tinyfilemanager.php"><?php echo $t->display("Add/Delete files"); ?></a></li>
 		<li><a href="param.php"><?php echo $t->display("Parameters"); ?></a></li>
+		<li><a href="import.php" title="<?php echo $t->display("Import Form"); ?>"><?php echo $t->display("Import"); ?></a></li>
 		<?php 
 		} 
 		?>
