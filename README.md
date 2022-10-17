@@ -21,7 +21,8 @@ Useful software to make 4K spheres from DJI mini air 2 :
     - Addition of points of interest with additional text (via simple form);
     - Centering when opening on a point of interest;
     - Private sphere;
-    - Link for direct sharing.
+    - Link for direct sharing;
+    - Import export spheres.
 - Viewing droonies and rushes from a drone :
     - Added deletion of videos (integrated file manager).
 
@@ -156,6 +157,7 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 ## various
 
 __Change log__:
+- 17/10/2022 Add import export sphere
 - 03/09/2021 Add button in navbar to show long legend of sphere in panel
 - 02/09/2021 Update view original jpg if thumbnails exists
 - 28/09/2021 For big sphere add possibility loading with mode tile, now directory name-of-sphere.d contain directory src and tiles and thumbnail

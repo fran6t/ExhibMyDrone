@@ -21,7 +21,8 @@ En option pour des sphères 4K depuis DJI mini air 2
     - Ajout de points d'intérêts avec texte complémentaire (via simple formulaire);
     - Centrage à l'ouverture sur un point d'intérêt;
     - Sphère privée;
-    - Lien pour partage direct.
+    - Lien pour partage direct;
+    - Import Export sphères.
 - Visualisation des droonies et rushs d'un drone
     - Ajout suppression de vidéos (gestionnaire fichiers intégré).
 
@@ -145,6 +146,7 @@ On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
 ## divers
 
 __Change log__:
+- 17/10/2022 Ajout import export sphères
 - 03/09/2021 Ajout d'un bouton dans la navbar pour lire la legende longue d'une sphère 
 - 02/09/2021 Amélioration vue fichiers originaux si les vignettes sont présentes
 - 28/09/2021 Pour les spheres en haute définition il est possible d'utiliser un système de tuiles, le repertoire nom-de-la-spher.d contiendra tous les fichiers de la sphere.
