@@ -1,4 +1,40 @@
 <?php
+
+function createTable($table_name){
+	if ($table_name=="lespanos" || $table_name=="lespanos_new" || $table_name=="lespanos_import"){
+		$SqlString = "CREATE TABLE '".$table_name."' (
+			'fichier' VARCHAR(500)  NULL,
+			'titre' VARCHAR(500)  NULL,
+			'legende' TEXT  NULL,
+			'legende_long' BLOB NULL,
+			'hashfic' VARCHAR(100)  NULL,
+			'short_code' VARCHAR(25),
+			'sphere_origin' VARCHAR(1),
+			'date_update' DATETIME DEFAULT CURRENT_TIMESTAMP	
+		);";
+	}
+
+	if ($table_name=="lespanos_details" || $table_name=="lespanos_details_new" || $table_name=="lespanos_details_import"){
+		$SqlString = "CREATE TABLE '".$table_name."' (
+			'fichier' VARCHAR(500)  NULL,
+			'hashfic' VARCHAR(100)  NULL,
+			'nom_marqueur' VARCHAR(100)  NULL,
+			'couleur' VARCHAR(10)  NULL,
+			'latitude' VARCHAR(20)  NULL,
+			'longitude' VARCHAR(20)  NULL,
+			'descri' TEXT  NULL,
+			'marker_center' VARCHAR(1)
+			);";
+	}
+
+	if (!isset($SqlString)) $SqlString = "Major error table_name not found";
+
+	return $SqlString;
+
+}
+
+
+
 $frontend = true;				// By default we considere all file, if $frontend = true then private file are not show 
 								// If script php need accepte private file  set $frontend = false, for example in  gest.php
 
@@ -34,31 +70,14 @@ $pdo->exec($SqlString);
 */
 
 if (!DB_table_exists('lespanos')){
-	$SqlString = "CREATE TABLE 'lespanos' (
-		'fichier' VARCHAR(500)  NULL,
-		'titre' VARCHAR(500)  NULL,
-		'legende' TEXT  NULL,
-		'legende_long' BLOB NULL,
-		'hashfic' VARCHAR(100)  NULL,
-		'short_code' VARCHAR(25),
-		'sphere_origin' VARCHAR(1),
-		'date_update' DATETIME DEFAULT CURRENT_TIME
-	);";
+	$SqlString = createTable('lespanos');
 	$pdo->exec($SqlString);
 	$SqlString = "CREATE INDEX 'IDX_lespanos_fichier' ON 'lespanos' ('fichier')";
 	$pdo->exec($SqlString);
 }
 
 if (!DB_table_exists('lespanos_details')){
-    $SqlString = "CREATE TABLE [lespanos_details] (
-        [fichier] VARCHAR(500)  NULL,
-        [hashfic] VARCHAR(100)  NULL,
-        [nom_marqueur] VARCHAR(100)  NULL,
-        [couleur] VARCHAR(10)  NULL,
-        [latitude] VARCHAR(20)  NULL,
-        [longitude] VARCHAR(20)  NULL,
-        [descri] TEXT  NULL
-        );";
+	$SqlString = createTable('lespanos_details');
     $pdo->exec($SqlString);
     $SqlString = "CREATE INDEX [IDX_lespanos_DETAILS_hashfic] ON [lespanos_details] ([hashfic])";
     $pdo->exec($SqlString);
@@ -97,16 +116,7 @@ if (!DB_column_exists('lespanos','date_update')){
 	// $SqlString ="ALTER TABLE [lespanos] ADD COLUMN [date_update] DATETIME DEFAULT CURRENT_TIME";
 	// Patch $SqlString generate Error Cannot add a column with non-constant default
 	// We must pass by a temprary table
-	$SqlString = "CREATE TABLE 'lespanos_new' (
-		'fichier' VARCHAR(500)  NULL,
-		'titre' VARCHAR(500)  NULL,
-		'legende' TEXT  NULL,
-		'legende_long' BLOB NULL,
-		'hashfic' VARCHAR(100)  NULL,
-		'short_code' VARCHAR(25),
-		'sphere_origin' VARCHAR(1),
-		'date_update' DATETIME DEFAULT CURRENT_TIME
-	);";
+	$SqlString = createTable('lespanos_new');
 	$pdo->exec($SqlString);
 
 
@@ -118,16 +128,6 @@ if (!DB_column_exists('lespanos','date_update')){
 
 	$SqlString = "alter table 'lespanos_new' rename to 'lespanos';";
 	$pdo->exec($SqlString);
-
-	$SqlString = "CREATE INDEX 'IDX_lespanos_fichier' ON 'lespanos' ('fichier')";
-	$pdo->exec($SqlString);
-	
 }
 
-// Si la column existe pas on l'ajoute à la table
-// Ce champs vaudra Standard,URL ou IMG
-//if (!DB_column_exists('lespanos_details','marker_type')){
-//	$SqlString ="ALTER TABLE [lespanos_details] ADD COLUMN [marker_type] VARCHAR(8)";
-//	$pdo->exec($SqlString);
-//}
 ?>
