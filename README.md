@@ -125,17 +125,31 @@ We create a sub-directory named thmb to place the thumbnails
 
 ## Sphere with tiles
 
-Soon a tutorial will be made available, for the moment the principle is to limit the sphere to 1600 pixels because of the characteristics of the Dji mini air 2 the top of the sphere is missing. It is therefore necessary to complete the height of the image in order to obtain an image of 16000x8000 pixels.
+The principle is to build a very low resolution image of 2000x1000 pixels which is the fast representation of the sphere.
+This image will then be covered by 128 tiles, these correspond to the cutting of the high resolution image of the assembly either of the original photos or of the photos in raw format
 
-Prochainement un tutoriel sera mis à disposition, pour l'instant le principe et de limiter la sphère a 1600 pixels en raison des caractéstique du Dji mini air 2 le dessus de la sphère est manquant. Il faut donc compléter la hauteur de l'image afin d'obtenir une image de 16000x8000 pixels.
+The advantage is to be able to present a high or very high resolution sphere in a very progressive way. Only the tiles visible on the screen are downloaded by the internet browser.
 
-You must then cut this image, to achieve this imagick allows you to do it by launching the command :
-Il faut ensuite découper cette image, pour réaliser cela imagick permet de le faire en lançant la commande :
+We therefore have two possibilities for publishing a sphere (if you have not taken raw there is only one)
 
-convert -crop 1024x1024 dji-maison.jpg tile_%04d.jpg
+In the case of shooting with raw, we therefore have 26 files with a resolution of 4000x3000 pixels (4K) and 26 .jpg files with 2000x1500 pixels.
 
-Result: 128 images obtained must be placed in the tiles sub-directory
-On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
+1st case taken from the sphere without the raw mode:
+
+    - you will assemble 26 images of 2000x1500 pixels with hugin and obtain a sphere of around 8500x3000 pixels which will therefore be cut into 128 tiles of 528x528 pixels
+
+2nd case taken from the sphere with the raw mode:
+
+    - you will assemble 26 images of 4000x3000 pixels with hugin and obtain a sphere of around 17000x6000 pixels which will be cut into 128 tiles of 1024x1024 pixels
+
+
+Three raw scripts (no tests only a sequence of commands) are available to build the tree structure:
+
+    - mini_dji.sh
+
+    - minix8000.sh
+
+    - minix17000.sh
 
 
 

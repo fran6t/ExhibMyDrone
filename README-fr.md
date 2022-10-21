@@ -118,14 +118,29 @@ Dans un sous repertoire thmb nous plaçons les vignettes representatives des ima
 
 ## Sphere avec des tuiles
 
-Prochainement un tutoriel sera mis à disposition, pour l'instant le principe et de limiter la sphère a 1600 pixels en raison des caractéstique du Dji mini air 2 le dessus de la sphère est manquant. Il faut donc compléter la hauteur de l'image afin d'obtenir une image de 16000x8000 pixels.
+Le principe est de contruire une image très basse résolution de 2000x1000 pixels qui est la representation rapide de la sphère. 
+Cette image va alors être couverte par 128 tuiles celles-ci correspondent au découpage de l'image haute résolution de l'assemblage soit des photos d'origines soit des photos au format raw
 
-Il faut ensuite découper cette image, pour réaliser cela imagick permet de le faire en lançant la commande :
+L'avantage et de pouvoir présenter une sphère haute ou très haute résolution de façon très progressive seule les tuiles visibles à l'écran sont téléchargés par le navigateur internet.
 
-convert -crop 1000x1000 dji-maison.jpg tile_%04d.jpg
+Nous avons donc deux possibilités de publication d'une sphère (si vous n'avez pas pris de raw il n'y a qu'une seule)
 
-On lance ensuite les 128 images obtenu dans le sous-repertoire tiles
+Cas de la prise de vue avec raw, nous disposons donc de 26 fichiers d'une résolution de 4000x3000 pixels (4K) et de 26 fichiers .jpg de 2000x1500 pixels. 
 
+1er cas prise de la sphère sans le mode raw :
+
+    - vous allez assembler 26 images de 2000x1500 pixels et obtenir une sphère d'environs 8500x3000 pixels qui sera donc découpée en 128 tuiles de 528x528 pixels 
+
+2eme cas prise de la sphère avec le mode raw :
+
+    - vous allez assembler 26 imagess de 4000x3000 pixels et obtenir une sphère de d'environs 17000x6000 pixels qui sera découpé en 128 tuiles de 1024x1024 pixels
+
+
+Trois scripts brut (pas de tests uniquement un enchainement de commandes) sont disponilbes  pour constuire l'arborescence:
+
+    - mini_dji.sh   
+    - minix8000.sh
+    - minix17000.sh
 
 
 ## Reste à faire :
