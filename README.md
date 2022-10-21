@@ -90,37 +90,51 @@ Do not hesitate to contact me if I can help you it is with pleasure trautmann@ws
 
 For the spheres, it suffices to place the files in the desired directories and subdirectories, however :
 
-    - Directory names ending in .d are reserved for source images of spheres of the same name in .jpg
-    - The names of spheres with the character string -p- will only be visible by a shared link
-    - Thumbnails are generated automatically invisible in the admin but visible by the manager tinyfilemanager or equivalent filezilla
+- Directory names ending in .d are reserved for source images of spheres of the same name in .jpg
+- The names of spheres with the character string -p- will only be visible by a shared link
+- Thumbnails are generated automatically invisible in the admin but visible by the manager tinyfilemanager or equivalent filezilla
 
 Example of a sphere whose file name is dji-maison.jpg placed in a Sphere / My-Maison directory with the original images that have been assembled we will have:
 
-/Sphere/My-Maison/dji-maison.jpg
+/Sphere/My-Maison/dji-maison_small.jpg
 
-We create a directory 
-/Sphere/My-Maison/dji-maison.d  (this directory mus contain all files of a sphere)
+Example Sphere HD with tiles
 
-The following thumbnails will be created automatically in directory .d
-/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0200.jpg
-/Sphere/My-Maison/dji-maison.d/dji-maison-MinX0600.jpg
+```
+dji-maison_small.jpg
+└── dji-maison.d
+    ├── src (optional)
+    │   ├── DJI_0001.jpg
+    │   ├── ...
+    │   └── DJI_0026.jpg
+    ├── thmb (optional)
+    │   ├── DJI_0001.jpg
+    │   ├── ...
+    │   └── DJI_0026.jpg
+    └── tiles (required)
+        ├── tile_0000.jpg
+        ├── ...
+        └── tile_0127.jpg
 
-We create a sub-directory named src to place the 26 DJI_0001.jpg files which gives
-/Sphere/My-Maison/dji-maison.d/src/DJI_0001.jpg
-/Sphere/My-Maison/dji-maison.d/src/DJI_0002.jpg
-...
-/Sphere/My-Maison/dji-maison.d/src/DJI_0025.jpg
-/Sphere/My-Maison/dji-maison.d/src/DJI_0026.jpg
 
-Optional
-We create a sub-directory named tiles to place the 128 tiles which gives
-/Sphere/My-Maison/dji-maison.d/tiles/tile_0000.jpg
-/Sphere/My-Maison/dji-maison.d/tiles/tile_0001.jpg
+```
 
-Optional
-We create a sub-directory named thmb to place the thumbnails
-/Sphere/My-Maison/dji-maison.d/thmb/DJI_0000.jpg
-/Sphere/My-Maison/dji-maison.d/thmb/DJI_0001.jpg
+Example Sphere DJI without tiles
+
+```
+dji-maison.jpg
+└── dji-maison.d
+    ├── src (optional)
+    │   ├── DJI_0001.jpg
+    │   ├── ...
+    │   └── DJI_0026.jpg
+    ├── thmb (optional)
+        ├── DJI_0001.jpg
+        ├── ...
+        └── DJI_0026.jpg
+```
+[Result can be view here](https://d.wse.fr/ExhibMyDrone/PanoDrone/pano.php?p=Spheres%2FTest-Raw-Hugin%2FHow-To%2FDJI_0001-DJI_0026.small.jpg)
+
 
 
 ## Sphere with tiles
@@ -136,20 +150,19 @@ In the case of shooting with raw, we therefore have 26 files with a resolution o
 
 1st case taken from the sphere without the raw mode:
 
-    - you will assemble 26 images of 2000x1500 pixels with hugin and obtain a sphere of around 8500x3000 pixels which will therefore be cut into 128 tiles of 528x528 pixels
+- you will assemble 26 images of 2000x1500 pixels with hugin and obtain a sphere of around 8500x3000 pixels which will therefore be cut into 128 tiles of 528x528 pixels
 
 2nd case taken from the sphere with the raw mode:
 
-    - you will assemble 26 images of 4000x3000 pixels with hugin and obtain a sphere of around 17000x6000 pixels which will be cut into 128 tiles of 1024x1024 pixels
+- you will assemble 26 images of 4000x3000 pixels with hugin and obtain a sphere of around 17000x6000 pixels which will be cut into 128 tiles of 1024x1024 pixels
 
 
-Three raw scripts (no tests only a sequence of commands) are available to build the tree structure:
+[Three raw scripts](https://github.com/fran6t/ExhibMyDrone/wiki/Batch-or-script-generate-publishing-sphere) (no tests only a sequence of commands) are available to build the tree structure:
 
-    - mini_dji.sh
 
-    - minix8000.sh
-
-    - minix17000.sh
+- mini_dji.sh
+- minix8000.sh
+- minix17000.sh
 
 
 
@@ -171,6 +184,7 @@ Three raw scripts (no tests only a sequence of commands) are available to build 
 ## various
 
 __Change log__:
+- 21/10/2022 Add shell generate sphere and explications on [wiki](https://github.com/fran6t/ExhibMyDrone/wiki)
 - 17/10/2022 Add import export sphere
 - 03/09/2021 Add button in navbar to show long legend of sphere in panel
 - 02/09/2021 Update view original jpg if thumbnails exists
