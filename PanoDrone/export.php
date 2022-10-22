@@ -1,12 +1,15 @@
 <?php
 include('inc-config.php');
+include('inc-lib.php');
+include('inc-bdd-ctrl.php');
+include('inc-session.php');
 
 
 $quelfic = stripSlashes($_GET["p"]);
 $quelficPath = dirname($quelfic);
 $zipname = basename($quelfic);
 $nameSphereWithExt = basename($quelfic);
-$nameSphereWithoutExt = pathinfo($nameSphereWithExt, PATHINFO_FILENAME);
+$nameSphereWithoutExt = kill_extension($nameSphereWithExt,".jpg");
 $lien_tlch= "export-import/".$nameSphereWithoutExt.".zip";
 
 // Si le repertoire export-import existe pas alors create
@@ -16,27 +19,6 @@ if (!is_dir($path_import_export)){
     touch($path_import_export."/index.php");        //Pour eviter les curieux on place un index.php vide
 }
 
-if (is_readable($config_file)) {
-	$ini =  parse_ini_file($config_file);
-    $langue = $ini['langue'];
-	$dir = $ini['dir'];
-	$monDomaine = $ini['monDomaine'];
-	$root_complement = $ini['root_complement'];
-	$keyok = $ini['keyok'];
-	$auth_users['admin'] = $ini['admin'];
-	$bddtype = $ini['bddtype'];
-	$host = $ini['host'];
-	$user = $ini['user'];
-	$pass = $ini['pass'];
-	$port = $ini['port'];
-} else {
-  echo $t->display("Parameter file missing");
-  return;
-}
-include('inc-session.php');
-include('inc-lib.php');
-include('inc-bdd-ctrl.php');
-
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
 $t->setLanguage($langue);
@@ -45,7 +27,7 @@ $t->setLanguage($langue);
 // Si la sphère est a base de tuiles, ou si elle a fait l'objet de creation de miniature ce reeroire existe déjà
 // Nous aurons ainsi dans le zip le fichier image de la spheres et dans le sous-repertoire avec l'extension .d tout les éléements necessaire à la sphere
 
-$nameDir = nameDirD($quelfic);
+$nameDir = kill_extension($quelfic,".jpg").".d";
 if (!is_dir($nameDir)){
     mkdir($nameDir);
 }
