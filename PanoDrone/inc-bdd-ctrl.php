@@ -1,42 +1,25 @@
 <?php
-
-function createTable($table_name){
-	if ($table_name=="lespanos" || $table_name=="lespanos_new" || $table_name=="lespanos_import"){
-		$SqlString = "CREATE TABLE '".$table_name."' (
-			'fichier' VARCHAR(500)  NULL,
-			'titre' VARCHAR(500)  NULL,
-			'legende' TEXT  NULL,
-			'legende_long' BLOB NULL,
-			'hashfic' VARCHAR(100)  NULL,
-			'short_code' VARCHAR(25),
-			'sphere_origin' VARCHAR(1),
-			'date_update' DATETIME DEFAULT CURRENT_TIMESTAMP	
-		);";
-	}
-
-	if ($table_name=="lespanos_details" || $table_name=="lespanos_details_new" || $table_name=="lespanos_details_import"){
-		$SqlString = "CREATE TABLE '".$table_name."' (
-			'fichier' VARCHAR(500)  NULL,
-			'hashfic' VARCHAR(100)  NULL,
-			'nom_marqueur' VARCHAR(100)  NULL,
-			'couleur' VARCHAR(10)  NULL,
-			'latitude' VARCHAR(20)  NULL,
-			'longitude' VARCHAR(20)  NULL,
-			'descri' TEXT  NULL,
-			'marker_center' VARCHAR(1)
-			);";
-	}
-
-	if (!isset($SqlString)) $SqlString = "Major error table_name not found";
-
-	return $SqlString;
-
-}
-
-
-
 $frontend = true;				// By default we considere all file, if $frontend = true then private file are not show 
 								// If script php need accepte private file  set $frontend = false, for example in  gest.php
+
+// Since v0.1 db sqlite and inc-config-perso.ini.php must be in directory sphere
+// The reason : All personal data or work is now in directory sphere
+// Save directory sphere ($dir) = save all your work the file out directory and subdirectoeyr is program and could be erase by update
+If (isset($version)){
+	//Before 0.1 ther is no version number .db and inc-config-perso.ini.php is a them level .php
+	//Since 0.1 file .db and inc-config-perso.ini.php must be placed in directory pointed by $dir (spheres)
+	if (file_exists($db)){
+		// on deplace le fichier db
+		rename($db, $dir."/".$db);
+	}
+	if (file_exists($config_file)){
+		// on deplace le fichier inc-config-perso.ini.php
+		rename($config_file, $dir."/".'inc-config-perso.ini.php');
+		
+	}
+	$db = $dir."/".$db;
+	$config_file = $dir."/".'inc-config-perso.ini.php';
+}
 
 if ($bddtype=='mysql'){
 	$dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";

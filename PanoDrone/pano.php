@@ -6,10 +6,10 @@
 * panel-content for legend picture inspired by mistic100 example https://jsfiddle.net/mistic100/9170wgfk/ 
 *
 */
-
-
-
 include('inc-config.php');
+include('inc-lib.php');
+include('inc-bdd-ctrl.php');
+
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
   $langue = $ini['langue'];
@@ -27,8 +27,7 @@ if (is_readable($config_file)) {
   echo $t->display("Parameter file missing");
   return;
 }
-include('inc-lib.php');
-include('inc-bdd-ctrl.php');
+
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
 $t->setLanguage($langue);

@@ -133,6 +133,9 @@ if (is_readable($config_file)) {
 }
 // Après l'include $config_file vaut la valeur de celui qui est dans ../inc-config.php
 // On re ecrase par un supplementaire si il existe (le sous sous include en raison des chemins dans inc-config.php ne fonctionnant pas)
+// Et maintenant si il y a un numero de version alors le fichier config personnalisé est maintenant dans $dir
+if (isset($version)) $config_file = $dir."/".'inc-config-perso.ini.php';
+
 if (is_readable("../".$config_file)) {
 	$ini =  parse_ini_file("../".$config_file);
 	$dir = $ini['dir'];

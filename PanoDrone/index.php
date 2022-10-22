@@ -4,6 +4,8 @@ if (isset($_GET['c'])){
   return;
 }
 include('inc-config.php');
+include('inc-lib.php');
+include('inc-bdd-ctrl.php');
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
 	$langue = $ini['langue'];
@@ -21,7 +23,7 @@ if (is_readable($config_file)) {
 	header('Location: param.php');
   return;
 }
-include('inc-lib.php');
+
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
 $t->setLanguage($langue);
@@ -59,7 +61,7 @@ $t->setLanguage($langue);
 	</div>
 
 	<footer>
-        <div class="namefile"><a href="../">[<?php echo $t->display("Back"); ?>]</a> / <a href="gest.php">[<?php echo $t->display("Administration"); ?>]</a> |  <a href="https://github.com/fran6t/ExhibMyDrone"><?php echo $t->display("Shared on Github"); ?></a><br /><?php echo $t->display("Credits"); ?>: <a href="http://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php/">Cute File Browser with jQuery, AJAX and PHP</a> & <a href="https://photo-sphere-viewer.js.org/">Photo Sphere Viewer</a> & <a href="https://tinyfilemanager.github.io/">TinyFileManager</a></div>
+        <div class="namefile"><a href="../">[<?php echo $t->display("Back"); ?>]</a> / <a href="gest.php">[<?php echo $t->display("Administration"); ?>]</a> |  <a href="https://github.com/fran6t/ExhibMyDrone"><?php echo $t->display("Shared on Github"); ?></a> Version <?php echo $version ?><br /><?php echo $t->display("Credits"); ?>: <a href="http://tutorialzine.com/2014/09/cute-file-browser-jquery-ajax-php/">Cute File Browser with jQuery, AJAX and PHP</a> & <a href="https://photo-sphere-viewer.js.org/">Photo Sphere Viewer</a> & <a href="https://tinyfilemanager.github.io/">TinyFileManager</a></div>
         <div id="tzine-actions"></div>
         <!-- <span class="close"></span> -->
     </footer>

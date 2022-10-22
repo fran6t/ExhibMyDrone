@@ -1,6 +1,53 @@
 <?php
 // Function php used in all script order by aphabetic name
 
+
+
+/**
+ * Return string for sql create table
+ * 
+ *
+ * @param string $table_name
+ * 
+ *
+ * @return string
+ *      Return string format sql for create table
+**/
+
+function createTable($table_name){
+	if ($table_name=="lespanos" || $table_name=="lespanos_new" || $table_name=="lespanos_import"){
+		$SqlString = "CREATE TABLE '".$table_name."' (
+			'fichier' VARCHAR(500)  NULL,
+			'titre' VARCHAR(500)  NULL,
+			'legende' TEXT  NULL,
+			'legende_long' BLOB NULL,
+			'hashfic' VARCHAR(100)  NULL,
+			'short_code' VARCHAR(25),
+			'sphere_origin' VARCHAR(1),
+			'date_update' DATETIME DEFAULT CURRENT_TIMESTAMP	
+		);";
+	}
+
+	if ($table_name=="lespanos_details" || $table_name=="lespanos_details_new" || $table_name=="lespanos_details_import"){
+		$SqlString = "CREATE TABLE '".$table_name."' (
+			'fichier' VARCHAR(500)  NULL,
+			'hashfic' VARCHAR(100)  NULL,
+			'nom_marqueur' VARCHAR(100)  NULL,
+			'couleur' VARCHAR(10)  NULL,
+			'latitude' VARCHAR(20)  NULL,
+			'longitude' VARCHAR(20)  NULL,
+			'descri' TEXT  NULL,
+			'marker_center' VARCHAR(1)
+			);";
+	}
+
+	if (!isset($SqlString)) $SqlString = "Major error table_name not found";
+
+	return $SqlString;
+
+}
+
+
 /**
  * Test if column of table exist 
  * 
@@ -66,7 +113,7 @@ function dirToOptions($path = __DIR__, $level = 0) {
     $items = scandir($path);
     foreach($items as $item) {
         // ignore items strating with a dot (= hidden or nav)
-        if (strpos($item, '.') === 0 ||  pathinfo($item, PATHINFO_EXTENSION) == "d" || pathinfo($item, PATHINFO_EXTENSION) == "jpg" || pathinfo($item, PATHINFO_EXTENSION) == "html") {
+        if (strpos($item, '.') === 0 ||  pathinfo($item, PATHINFO_EXTENSION) == "db" ||  pathinfo($item, PATHINFO_EXTENSION) == "d" || pathinfo($item, PATHINFO_EXTENSION) == "jpg" || pathinfo($item, PATHINFO_EXTENSION) == "html") {
         //if (strpos($item, '.') === 0) {
             continue;
         }
@@ -716,7 +763,7 @@ function scan($dir){
 	
 		foreach(scandir($dir) as $f) {
 		
-			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html" || pathinfo($f, PATHINFO_EXTENSION )=="sql" || pathinfo($f, PATHINFO_EXTENSION )=="txt") {
+			if(!$f || $f[0] == '.' || pathinfo($f, PATHINFO_EXTENSION )=="db" || pathinfo($f, PATHINFO_EXTENSION )=="xml" || isPrivate($f) || isDirectoryHD($f) || pathinfo($f, PATHINFO_EXTENSION )=="php" || pathinfo($f, PATHINFO_EXTENSION )=="html" || pathinfo($f, PATHINFO_EXTENSION )=="sql" || pathinfo($f, PATHINFO_EXTENSION )=="txt") {
 				continue; // Ignore hidden files
 			}
 

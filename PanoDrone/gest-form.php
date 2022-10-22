@@ -1,14 +1,14 @@
 <?php
 $t0 = microtime(true);
+
 include('inc-config.php');
+include('inc-lib.php');
+include('inc-bdd-ctrl.php');
+include('inc-session.php');
+
 if (is_readable($config_file)) {
 	$ini =  parse_ini_file($config_file);
-  $langue = $ini['langue'];
-  if (!isset($ini['browsingProtect'])){
-    $browsingProtect = "Y";   // By default when gest-form.php is called we create a index.php empty in directory to avoid browsing file
-  } else {
-    $browsingProtect = $ini['browsingProtect'];
-  }
+  	$langue = $ini['langue'];
 	$dir = $ini['dir'];
 	$monDomaine = $ini['monDomaine'];
 	$root_complement = $ini['root_complement'];
@@ -23,9 +23,6 @@ if (is_readable($config_file)) {
   echo $t->display("Parameter file missing");
   return;
 }
-include('inc-session.php');
-include('inc-lib.php');
-include('inc-bdd-ctrl.php');
 
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
