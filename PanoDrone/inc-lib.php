@@ -495,21 +495,19 @@ function generateRandomString($length){
 **/
 function listimg($nom_img,$sphere_origin,$tile){
 	if ($sphere_origin==0){
-		$sphere_origin = "Origin";
-	} else {
-		$sphere_origin = "Hugin";
+		$choice = "Origin";
 	}
-	if ($tile){
-		$tile = "withTiles";
-	} else {
-		$tile = "withoutTiles";
+	if ($sphere_origin==1){
+		$choice = "x17000";
+	}
+	if ($sphere_origin==2){
+		$choice = "x8000";
 	}
 
-	$choice = "MiniAir2_".$sphere_origin."_".$tile;
 	//echo "<br />".$choice."<br />";
 	switch($choice){
-		case "MiniAir2_Origin_withoutTiles":
-			// For panorama obtain by share from dji gallery application
+		case "Origin":
+			// For panorama obtain by share from dji gallery application no tiles
 			$array_latitude['DJI_0001.jpg']='-0.004289027394785538';
 			$array_longitude['DJI_0001.jpg']='6.270889710111523';
 			$array_latitude['DJI_0002.jpg']='0.3013313870042622';
@@ -564,119 +562,64 @@ function listimg($nom_img,$sphere_origin,$tile){
 			$array_longitude['DJI_0026.jpg']='0.7756130501397881';
 			break;
 		
-		case "MiniAir2_Origin_withTiles":
-			// For panorama obtain by share from dji gallery application display mode tile (format 1/2)
-			$array_latitude['DJI_0001.jpg']='-0.004289027394785538';
-			$array_longitude['DJI_0001.jpg']='6.270889710111523';
-			$array_latitude['DJI_0002.jpg']='0.3013313870042622';
-			$array_longitude['DJI_0002.jpg']=$array_longitude['DJI_0001.jpg'];
-			$array_latitude['DJI_0003.jpg']='-0.37412795455540393';
-			$array_longitude['DJI_0003.jpg']=$array_longitude['DJI_0001.jpg'];
-			$array_latitude['DJI_0004.jpg']='-0.9984770290397127';
-			$array_longitude['DJI_0004.jpg']=$array_longitude['DJI_0001.jpg'];
-			$array_latitude['DJI_0005.jpg']='-1.5515819483700128';
-			$array_longitude['DJI_0005.jpg']='4.805821724249035';
-			$array_latitude['DJI_0006.jpg']='-0.9441718419815546';
-			$array_longitude['DJI_0006.jpg']='5.508066608297477';
-			$array_latitude['DJI_0007.jpg']='-0.379117102340472';
-			$array_longitude['DJI_0007.jpg']=$array_longitude['DJI_0006.jpg'];
-			$array_latitude['DJI_0008.jpg']='0.15706505774670565';
-			$array_longitude['DJI_0008.jpg']=$array_longitude['DJI_0006.jpg'];
-			$array_latitude['DJI_0009.jpg']='0.3218122427214245';
-			$array_longitude['DJI_0009.jpg']='4.702715033629989';
-			$array_latitude['DJI_0010.jpg']='-0.34339358135409603';
-			$array_longitude['DJI_0010.jpg']='4.7159519648892605';
-			$array_latitude['DJI_0011.jpg']='-0.9749973860648611';
-			$array_longitude['DJI_0011.jpg']='4.701757751170412';
-			$array_latitude['DJI_0012.jpg']='-0.9339941096918665';
-			$array_longitude['DJI_0012.jpg']='3.879978004038964';
-			$array_latitude['DJI_0013.jpg']='-0.3791113578841814';
-			$array_longitude['DJI_0013.jpg']='4.003540131510434';
-			$array_latitude['DJI_0014.jpg']='0.0516956220605842';
-			$array_longitude['DJI_0014.jpg']='3.921213994602778';
-			$array_latitude['DJI_0015.jpg']='0.017818705162738757';
-			$array_longitude['DJI_0015.jpg']='3.145644035406239';
-			$array_latitude['DJI_0016.jpg']='-0.3576854666765099';
-			$array_longitude['DJI_0016.jpg']='3.144716598158034';
-			$array_latitude['DJI_0017.jpg']='-0.9492733044471433';
-			$array_longitude['DJI_0017.jpg']='3.123834924588665';
-			$array_latitude['DJI_0018.jpg']='-0.918862968275767';
-			$array_longitude['DJI_0018.jpg']='2.2789628296836844';
-			$array_latitude['DJI_0019.jpg']='-0.35609755768594265';
-			$array_longitude['DJI_0019.jpg']='2.285192730090629';
-			$array_latitude['DJI_0020.jpg']='0.003939075409890247';
-			$array_longitude['DJI_0020.jpg']='2.460332835203131';
-			$array_latitude['DJI_0021.jpg']='0.031604646893518495';
-			$array_longitude['DJI_0021.jpg']='1.5262695520367295';
-			$array_latitude['DJI_0022.jpg']='-0.29361429884169077';
-			$array_longitude['DJI_0022.jpg']='1.5332463426195047';
-			$array_latitude['DJI_0023.jpg']='-0.845293098201418';
-			$array_longitude['DJI_0023.jpg']='1.4026881634682018';
-			$array_latitude['DJI_0024.jpg']='-0.9246040107043139';
-			$array_longitude['DJI_0024.jpg']='0.739180226759827';
-			$array_latitude['DJI_0025.jpg']='-0.4023236804092969';
-			$array_longitude['DJI_0025.jpg']='0.7238443462199831';
-			$array_latitude['DJI_0026.jpg']='0.10871059434518116';
-			$array_longitude['DJI_0026.jpg']='0.7756130501397881';
+		case "x8000":
+			// For panorama obtain by hugin 8000x4000 pixels display mode tile (format 1/2)
+			$array_latitude['DJI_0001.jpg']='-0.023760355615198847';
+			$array_longitude['DJI_0001.jpg']='1.0287609507774766';
+			$array_latitude['DJI_0002.jpg']='0.29818518695013907';
+			$array_longitude['DJI_0002.jpg']='1.0198323728996794';
+			$array_latitude['DJI_0003.jpg']='-0.39087380436366903';
+			$array_longitude['DJI_0003.jpg']='1.1284213853534941';
+			$array_latitude['DJI_0004.jpg']='-1.0086060458587873';
+			$array_longitude['DJI_0004.jpg']='1.295021633387777';
+			$array_latitude['DJI_0005.jpg']='-1.5404403164411162';
+			$array_longitude['DJI_0005.jpg']='5.238634969031125';
+			$array_latitude['DJI_0006.jpg']='-0.9543740634264375';
+			$array_longitude['DJI_0006.jpg']='0.21662540890500814';
+			$array_latitude['DJI_0007.jpg']='-0.3832837824745148';
+			$array_longitude['DJI_0007.jpg']='0.21851746244170883';
+			$array_latitude['DJI_0008.jpg']='0.2545794042943368';
+			$array_longitude['DJI_0008.jpg']='0.3265112590579908';
+			$array_latitude['DJI_0009.jpg']='0.2557770589795265';
+			$array_longitude['DJI_0009.jpg']='6.03282215691589';
+			$array_latitude['DJI_0010.jpg']='-0.4215225242418752';
+			$array_longitude['DJI_0010.jpg']='5.868150735328409';
+			$array_latitude['DJI_0011.jpg']='-0.9283846160164333';
+			$array_longitude['DJI_0011.jpg']='5.892352760194571';
+			$array_latitude['DJI_0012.jpg']='-1.092160861446268';
+			$array_longitude['DJI_0012.jpg']='4.771364735621435';
+			$array_latitude['DJI_0013.jpg']='-0.4881905518960741';
+			$array_longitude['DJI_0013.jpg']='5.041099583323765';
+			$array_latitude['DJI_0014.jpg']='0.030604164298322134';
+			$array_longitude['DJI_0014.jpg']='4.934266388999964';
+			$array_latitude['DJI_0015.jpg']='0.11102038858674734';
+			$array_longitude['DJI_0015.jpg']='4.21528829433074';
+			$array_latitude['DJI_0016.jpg']='-0.41578959977846086';
+			$array_longitude['DJI_0016.jpg']='4.157292075483124';
+			$array_latitude['DJI_0017.jpg']='-1.0024303913777803';
+			$array_longitude['DJI_0017.jpg']='3.985621353205736';
+			$array_latitude['DJI_0018.jpg']='-0.9421580658371513';
+			$array_longitude['DJI_0018.jpg']='3.5974111501583836';
+			$array_latitude['DJI_0019.jpg']='-0.3543993446946603';
+			$array_longitude['DJI_0019.jpg']='3.5531202647408526';
+			$array_latitude['DJI_0020.jpg']='0.12240673650502165';
+			$array_longitude['DJI_0020.jpg']='3.420412891914962';
+			$array_latitude['DJI_0021.jpg']='0.14815229291558651';
+			$array_longitude['DJI_0021.jpg']='2.6928424374862914';
+			$array_latitude['DJI_0022.jpg']='-0.36955061520703447';
+			$array_longitude['DJI_0022.jpg']='2.631730798405637';
+			$array_latitude['DJI_0023.jpg']='-0.9439272529773404';
+			$array_longitude['DJI_0023.jpg']='2.6839975967967815';
+			$array_latitude['DJI_0024.jpg']='-1.0621494069683424';
+			$array_longitude['DJI_0024.jpg']='1.8038985288839868';
+			$array_latitude['DJI_0025.jpg']='-0.4041158963385807';
+			$array_longitude['DJI_0025.jpg']='1.849555517396198';
+			$array_latitude['DJI_0026.jpg']='0.26759115845061876';
+			$array_longitude['DJI_0026.jpg']='1.8236936538064574';
 			break;
 		
-		case "MiniAir2_Hugin_withoutTiles":
-			// For panorama assembly by hugin and script DJI_assistant for find gimbal angle
-			$array_latitude['DJI_0001.jpg']='-0.023129741203452348';
-			$array_longitude['DJI_0001.jpg']='1.294224560923339';
-			$array_latitude['DJI_0002.jpg']='0.2679818382924857';
-			$array_longitude['DJI_0002.jpg']=$array_longitude['DJI_0001.jpg'];
-			$array_latitude['DJI_0003.jpg']='-0.36455648486698133';
-			$array_longitude['DJI_0003.jpg']='1.3081719154037335';
-			$array_latitude['DJI_0004.jpg']='-0.9861030460664333';
-			$array_longitude['DJI_0004.jpg']='1.3442387965488791';
-			$array_latitude['DJI_0005.jpg']='-1.5698908146146549';
-			$array_longitude['DJI_0005.jpg']='2.0008531012105912';
-			$array_latitude['DJI_0006.jpg']='-0.979075097264245';
-			$array_longitude['DJI_0006.jpg']='0.5268581720717227';
-			$array_latitude['DJI_0007.jpg']='-0.36708593620045593';
-			$array_longitude['DJI_0007.jpg']='0.5167905639184484';
-			$array_latitude['DJI_0008.jpg']='0.28125475789140086';
-			$array_longitude['DJI_0008.jpg']='0.5104873425627767';
-			$array_latitude['DJI_0009.jpg']='0.2696912859988263';
-			$array_longitude['DJI_0009.jpg']='6.063012918826523';
-			$array_latitude['DJI_0010.jpg']='-0.3692607210596708';
-			$array_longitude['DJI_0010.jpg']='6.039504913200643';
-			$array_latitude['DJI_0011.jpg']='-0.9778826286578055';
-			$array_longitude['DJI_0011.jpg']='6.038034656810654';
-			$array_latitude['DJI_0012.jpg']='-1.060514737516296';
-			$array_longitude['DJI_0012.jpg']='5.265785363227322';
-			$array_latitude['DJI_0013.jpg']='-0.37051905114975536';
-			$array_longitude['DJI_0013.jpg']='5.247316173047778';
-			$array_latitude['DJI_0014.jpg']='0.19625116619238003';
-			$array_longitude['DJI_0014.jpg']='5.265834181556693';
-			$array_latitude['DJI_0015.jpg']='0.2649858680990891';
-			$array_longitude['DJI_0015.jpg']='4.447265861687228';
-			$array_latitude['DJI_0016.jpg']='-0.3714859116137259';
-			$array_longitude['DJI_0016.jpg']='4.467730762155975';
-			$array_latitude['DJI_0017.jpg']='-0.9694774955136607';
-			$array_longitude['DJI_0017.jpg']='4.437365104146282';
-			$array_latitude['DJI_0018.jpg']='-0.9886890462181959';
-			$array_longitude['DJI_0018.jpg']='3.672301841259361';
-			$array_latitude['DJI_0019.jpg']='-0.37344103691521635';
-			$array_longitude['DJI_0019.jpg']='3.636414689935509';
-			$array_latitude['DJI_0020.jpg']='0.28063744205892593';
-			$array_longitude['DJI_0020.jpg']='3.6769850808489237';
-			$array_latitude['DJI_0021.jpg']='0.2649042427542665';
-			$array_longitude['DJI_0021.jpg']='2.8740664793193194';
-			$array_latitude['DJI_0022.jpg']='-0.370796262619026';
-			$array_longitude['DJI_0022.jpg']='2.884102995244064';
-			$array_latitude['DJI_0023.jpg']='-1.0477200487861076';
-			$array_longitude['DJI_0023.jpg']='2.7581406197077287';
-			$array_latitude['DJI_0024.jpg']='-1.0237430074406175';
-			$array_longitude['DJI_0024.jpg']='1.9711228062910162';
-			$array_latitude['DJI_0025.jpg']='-0.3764765172308504';
-			$array_longitude['DJI_0025.jpg']='2.0736756054154943';
-			$array_latitude['DJI_0026.jpg']='0.24008054993753003';
-			$array_longitude['DJI_0026.jpg']='2.0789165517628305';
-			break;
-		case "MiniAir2_Hugin_withTiles":
-			// For panorama obtain by Hugin display mode tile (format 1/2)
+		case "x17000":
+			// For panorama obtain by Hugin HD 17000x8000 pixels display mode tile (format 1/2)
 			$array_latitude['DJI_0001.jpg']='0.008967974697416947'; //DJI_0001.jpg
 			$array_longitude['DJI_0001.jpg']='5.0889947190292775';
 			$array_latitude['DJI_0002.jpg']='0.22773936535909023'; //DJI_0002.jpg
@@ -689,64 +632,44 @@ function listimg($nom_img,$sphere_origin,$tile){
 			$array_longitude['DJI_0005.jpg']='4.8896591829808775';
 			$array_latitude['DJI_0006.jpg']='-0.7952452849305613'; //DJI_0006.jpg
 			$array_longitude['DJI_0006.jpg']='4.424596775494944';
-
 			$array_latitude['DJI_0007.jpg']='-0.3154269953500064'; //DJI_0007.jpg
 			$array_longitude['DJI_0007.jpg']='4.377986274811221';
-
 			$array_latitude['DJI_0008.jpg']='0.2700166808094029'; //DJI_0008.jpg
 			$array_longitude['DJI_0008.jpg']='4.31699451200415';
-
 			$array_latitude['DJI_0009.jpg']='0.2472831946405465'; //DJI_0009.jpg
 			$array_longitude['DJI_0009.jpg']='3.5203185278134423';
-
 			$array_latitude['DJI_0010.jpg']='-0.3906012198884059'; //DJI_0010.jpg
 			$array_longitude['DJI_0010.jpg']='3.507393354281541';
-
 			$array_latitude['DJI_0011.jpg']='-0.9682058798984614'; //DJI_0011.jpg
 			$array_longitude['DJI_0011.jpg']='3.5154456931930462';
-
 			$array_latitude['DJI_0012.jpg']='-0.96570523045557'; //DJI_0012.jpg
 			$array_longitude['DJI_0012.jpg']='2.702343710657582';
-
 			$array_latitude['DJI_0013.jpg']='-0.37303458876364504'; //DJI_0013.jpg
 			$array_longitude['DJI_0013.jpg']='2.8118763405632485';
-
 			$array_latitude['DJI_0014.jpg']='0.294783815546253'; //DJI_0014jpg
 			$array_longitude['DJI_0014.jpg']='2.867018919322091';
-
 			$array_latitude['DJI_0015.jpg']='0.2465790480280634'; //DJI_0015.jpg
 			$array_longitude['DJI_0015.jpg']='1.8481583356328843';
-
 			$array_latitude['DJI_0016.jpg']='-0.3404028001768151'; //DJI_0016.jpg
 			$array_longitude['DJI_0016.jpg']='1.9636478251139409';
-
 			$array_latitude['DJI_0017.jpg']='-0.8649957664408308'; //DJI_0017.jpg
 			$array_longitude['DJI_0017.jpg']='1.915519337803427';
-
 			$array_latitude['DJI_0018.jpg']='-0.9281497613200411'; //DJI_0018.jpg
 			$array_longitude['DJI_0018.jpg']='1.219063385561155';
-
 			$array_latitude['DJI_0019.jpg']='-0.3693138161827596'; //DJI_0019.jpg
 			$array_longitude['DJI_0019.jpg']='1.1959015239129402';
-
 			$array_latitude['DJI_0020.jpg']='0.15137531284078642'; //DJI_0020.jpg
 			$array_longitude['DJI_0020.jpg']='0.6256303847861546';
-
 			$array_latitude['DJI_0021.jpg']='0.18960090573857524'; //DJI_0021.jpg
 			$array_longitude['DJI_0021.jpg']='0.4289265763070863';
-
 			$array_latitude['DJI_0022.jpg']='-0.352591764461363'; //DJI_0022.jpg
 			$array_longitude['DJI_0022.jpg']='0.4103722686309854';
-
 			$array_latitude['DJI_0023.jpg']='-0.9109537493278612'; //DJI_0023.jpg
 			$array_longitude['DJI_0023.jpg']='0.385317686213223';
-
 			$array_latitude['DJI_0024.jpg']='-0.8669910700024062'; //DJI_0024.jpg
 			$array_longitude['DJI_0024.jpg']='5.928902872080257';
-
 			$array_latitude['DJI_0025.jpg']='-0.3759656966856393'; //DJI_0025.jpg
 			$array_longitude['DJI_0025.jpg']='5.9366970531955126';
-
 			$array_latitude['DJI_0026.jpg']='0.2402713997938748'; //DJI_0026.jpg
 			$array_longitude['DJI_0026.jpg']='5.9317015256733745';
 			break;	
@@ -767,7 +690,7 @@ function listimg($nom_img,$sphere_origin,$tile){
 	$jmarqueur.="\t anchor   : 'bottom center',\n";
 	$jmarqueur.="\t hideList : 'true',\n";					// Only icon + on sphere is showing, links in right panel are hidden
 	$jmarqueur.="});\n";
-	$jmarqueur.="console.log('".$choice."')\n";
+	$jmarqueur.="console.log('Choice=".$choice."')\n";
 	return $jmarqueur;
 }
 
