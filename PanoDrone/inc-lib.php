@@ -96,9 +96,8 @@ function createThumb($spath, $dpath, $maxd) {
 
 
 /**
- * Test if column of table exist 
  * 
- * Affiche dans une combo les repertoire et sous-repertoire où se trouve des spheres
+ * Affiche dans une combo les repertoire et sous-repertoire où se trouve des spheres (utilisé par exemple dans le formulaire d'import d'une sphere)
  *
  * @param string Repertoire racine des spheres
  * 
@@ -740,6 +739,25 @@ function listimg($nom_img,$sphere_origin,$tile){
 	$jmarqueur.="console.log('Choice=".$choice."')\n";
 	return $jmarqueur;
 }
+
+/**
+ * Retire de la chaine une chaine majuscule ou minuscule
+ * 
+ *
+ * @param string $name_Fic
+ * @param string $subExtension
+ * 
+ *
+ * @return string
+**/
+function kill_extension($name_Fic,$subExtension){
+	$subExtension = strtoupper($subExtension); 
+	$result = str_replace($subExtension,"",$name_Fic);
+	$subExtension = strtolower($subExtension);
+	$result = str_replace($subExtension,"",$result);
+	return $result;
+}
+
 
 /**
  * Scan the files folder recursively, and builds a large array for json and database

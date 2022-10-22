@@ -48,4 +48,8 @@ $max_upload_size_bytes = 5000;
 
 // Attention si vous changez le nom de ce fichier veillez à ce qu'il soit bien en .php sinon il y a risque de visualisation de son contenu
 $config_file = 'inc-config-perso.ini.php';
+
+// Don't show with tinyfilemanager Files and folders to excluded from listing
+// e.g. array('myfile.html', 'personal-folder', '*.php', ...)
+$exclude_items = array('*.php','*.db');
 ?>

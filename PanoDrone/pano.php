@@ -266,11 +266,11 @@ if (rtrim($legende_long!="")){
     container : 'photosphere',
     caption    : '<?php echo addslashes($titre); ?>',
     <?php
-    if (removeSmall($quelfic) <> ""){
+    if ($sphere_origin != "0"){       //0 sphere sans tuile, 1 sphere avec tuile 8kx4k, 2 sphere avec tuile 16kx8k
       // It's a big sphere run mode tile
       $tile = true;
-      $path_tiles=nameDirD($quelfic)."/tiles/";
-      $path_hd=nameDirD($quelfic)."/src/";
+      $path_tiles=kill_extension($quelfic,".jpg").".d/tiles/";
+      $path_hd=kill_extension($quelfic,".jpg").".d/src/";
     ?>
       adapter: PhotoSphereViewer.EquirectangularTilesAdapter,
       panorama: {
@@ -322,7 +322,7 @@ if (rtrim($legende_long!="")){
             // If file UHD exist then add a fictif marker for open jpg
             // For example for Sphere/Aquitaine/dji_soulac-sur-mer.jpg  we search if directory Sphere/Aquitaine/dji_soulac-sur-mer.d exist
             if (!isset($path_hd)){   
-              $path_hd = nameDirD($quelfic)."/src";
+              $path_hd = kill_extension($quelfic,".jpg").".d/src";
             }
             if (is_dir($path_hd)){
               for ($iImg=1; $iImg <= 26; $iImg++){      // For 26 picture of the sphere taken by DJI mini air 2

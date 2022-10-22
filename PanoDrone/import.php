@@ -1,5 +1,8 @@
 <?php
 include('inc-config.php');
+include('inc-lib.php');
+include('inc-bdd-ctrl.php');
+include('inc-session.php');
 
 // Si le repertoire export-import existe pas alors create
 $path_import_export = $_SERVER['DOCUMENT_ROOT']."/".$root_complement."/export-import";
@@ -12,27 +15,6 @@ if (!is_dir($path_import_export."/import")){    // C dans ce repertoire que le z
     mkdir($path_import_export."/import");
     touch($path_import_export."/import/index.php");        //Pour eviter les curieux on place un index.php vide
 }
-
-if (is_readable($config_file)) {
-	$ini =  parse_ini_file($config_file);
-    $langue = $ini['langue'];
-	$dir = $ini['dir'];
-	$monDomaine = $ini['monDomaine'];
-	$root_complement = $ini['root_complement'];
-	$keyok = $ini['keyok'];
-	$auth_users['admin'] = $ini['admin'];
-	$bddtype = $ini['bddtype'];
-	$host = $ini['host'];
-	$user = $ini['user'];
-	$pass = $ini['pass'];
-	$port = $ini['port'];
-} else {
-  echo $t->display("Parameter file missing");
-  return;
-}
-include('inc-session.php');
-include('inc-lib.php');
-include('inc-bdd-ctrl.php');
 
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();
@@ -63,37 +45,44 @@ if (isset($_POST['quelForm'])){
             }
             // On recupere maintenant l'information de date des dernières modifiations de saisie sur la sphère
             // Le fichier txt doit se trouver dans le sous repertoire .d portant le meme nom que le zip
-            $nom_Sphere = pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME);     // On retire le .zip 
-            $nom_Sphere_Without_Ext = pathinfo($nom_Sphere, PATHINFO_FILENAME);     // On retire le .jpg 
+            $nom_Sphere = kill_extension($_FILES["file"]["name"], ".zip"); // On retire le .zip   On utilise plus path_info car cela pose probleme avec un nom comme mysphere.small.zip 
+            //$nom_Sphere_Without_Ext = pathinfo($nom_Sphere, PATHINFO_FILENAME);     // On retire le .jpg 
+            $nom_Sphere_Without_Ext = kill_extension($nom_Sphere,".jpg");
             $fictxt = 'export-import/import/'.$nom_Sphere.'.d/'.$nom_Sphere_Without_Ext.'.txt';
-            $handle = fopen($fictxt, 'rb');
-            $tab_hashfic = explode(";",fread($handle, filesize($fictxt)));
-            // Maintenant une recherche si une sphere de ce nom existe déjà
-            $statement = $pdo->prepare('SELECT fichier,titre,legende,legende_long,hashfic,short_code,sphere_origin,date_update FROM lespanos WHERE hashfic = :hashfic LIMIT 1;');
-            $statement->bindValue(':hashfic', $tab_hashfic[0], PDO::PARAM_STR);
-            $statement->execute();
-            $hashfic=$titre=$legende=$short_code="";
-            while ($row = $statement->fetch()) {
-                $fichier = $row['fichier'];
-                $titre = $row['titre'];
-                $legende = $row['legende'];
-                $legende_long = $row['legende_long'];
-                $hashfic = $row['hashfic'];
-                $short_code = $row['short_code'];
-                $sphere_origin = $row['sphere_origin'];
-                $date_update = $row['date_update'];
-            }
-            if ($hashfic!=""){
-                $msg.= "<br />".$t->display("Carefully a Sphere already exist !!!!");
-                //On memorise le nouvel emplacement pour le formulaire de confirmation
-                $new_Name = $_POST['destination']."/".$nom_Sphere.".jpg";
+            echo $fictxt;
+            if (file_exists($fictxt)){      // Nous sommes bien en presence d'un fichier d'import et non d'un zip simple
+                $handle = fopen($fictxt, 'rb');
+                $tab_hashfic = explode(";",fread($handle, filesize($fictxt)));
+                // Maintenant une recherche si une sphere de ce nom existe déjà
+                $statement = $pdo->prepare('SELECT fichier,titre,legende,legende_long,hashfic,short_code,sphere_origin,date_update FROM lespanos WHERE hashfic = :hashfic LIMIT 1;');
+                $statement->bindValue(':hashfic', $tab_hashfic[0], PDO::PARAM_STR);
+                $statement->execute();
+                $hashfic=$titre=$legende=$short_code="";
+                while ($row = $statement->fetch()) {
+                    $fichier = $row['fichier'];
+                    $titre = $row['titre'];
+                    $legende = $row['legende'];
+                    $legende_long = $row['legende_long'];
+                    $hashfic = $row['hashfic'];
+                    $short_code = $row['short_code'];
+                    $sphere_origin = $row['sphere_origin'];
+                    $date_update = $row['date_update'];
+                }
+                if ($hashfic!=""){
+                    $msg.= "<br />".$t->display("Carefully a Sphere already exist !!!!");
+                    //On memorise le nouvel emplacement pour le formulaire de confirmation
+                    $new_Name = $_POST['destination']."/".$nom_Sphere.".jpg";
+                } else {
+                    //On neutralise quelform pour ne pas presenter le formulaire de confirmation
+                    $_POST['quelForm']="";
+                    //La sphere n'existe pas on peu donc faire les insertions et la copie sans passer par le deuxieme formulaire
+                    //echo "appel SphereImport avec param :".$tab_hashfic[0].",".$nom_Sphere.",".$_POST['destination'];
+                    SphereImport($tab_hashfic[0],$nom_Sphere,$_POST['destination']);
+                    $msg.= "<br />".$t->display("Import successful");
+                }
             } else {
-                //On neutralise quelform pour ne pas presenter le formulaire de confirmation
-                $_POST['quelForm']="";
-                //La sphere n'existe pas on peu donc faire les insertions et la copie sans passer par le deuxieme formulaire
-                //echo "appel SphereImport avec param :".$tab_hashfic[0].",".$nom_Sphere.",".$_POST['destination'];
-                SphereImport($tab_hashfic[0],$nom_Sphere,$_POST['destination']);
-                $msg.= "<br />".$t->display("Import successful");
+                $_POST['quelForm']="";  // Pour pas que le second formulaire s'affiche
+                $msg.= "<br />".$t->display("Format Import incorrect it's a simple zip, use directly tinyfilemanager please !");
             }   
         }
     // C'est le formulaire de confirmation    
@@ -173,7 +162,7 @@ if (isset($_POST['quelForm'])){
             <br />
             <?php
             // On construit l'arbre pour remplissage de la combo du choix 
-            $comboDest = '<select name="destination" id="destination">';
+            $comboDest = '<select name="destination" id="destination"><option value="'.$dir.'">/</option>';
             dirToOptions($dir);
             $comboDest .= '</select>';
             echo $comboDest;

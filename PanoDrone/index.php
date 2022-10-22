@@ -6,23 +6,6 @@ if (isset($_GET['c'])){
 include('inc-config.php');
 include('inc-lib.php');
 include('inc-bdd-ctrl.php');
-if (is_readable($config_file)) {
-	$ini =  parse_ini_file($config_file);
-	$langue = $ini['langue'];
-	$dir = $ini['dir'];
-	$monDomaine = $ini['monDomaine'];
-	$root_complement = $ini['root_complement'];
-	$keyok = $ini['keyok'];
-	$auth_users['admin'] = $ini['admin'];
-	$bddtype = $ini['bddtype'];
-	$host = $ini['host'];
-	$user = $ini['user'];
-	$pass = $ini['pass'];
-	$port = $ini['port'];
-} else {
-	header('Location: param.php');
-  return;
-}
 
 if (!isset($langue)) $langue = "en";
 $t = new Traductor();

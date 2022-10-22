@@ -2,6 +2,7 @@
 $frontend = true;				// By default we considere all file, if $frontend = true then private file are not show 
 								// If script php need accepte private file  set $frontend = false, for example in  gest.php
 
+								
 // Since v0.1 db sqlite and inc-config-perso.ini.php must be in directory sphere
 // The reason : All personal data or work is now in directory sphere
 // Save directory sphere ($dir) = save all your work the file out directory and subdirectoeyr is program and could be erase by update
@@ -19,6 +20,23 @@ If (isset($version)){
 	}
 	$db = $dir."/".$db;
 	$config_file = $dir."/".'inc-config-perso.ini.php';
+}
+
+if (is_readable($config_file) && is_dir($dir)) {	// Si le fichier de config est ok et que le repertoire d'accueils des spheres est ok
+	$ini =  parse_ini_file($config_file);
+	$langue = $ini['langue'];
+	$dir = $ini['dir'];
+	$monDomaine = $ini['monDomaine'];
+	$root_complement = $ini['root_complement'];
+	$keyok = $ini['keyok'];
+	$auth_users['admin'] = $ini['admin'];
+	$bddtype = $ini['bddtype'];
+	$host = $ini['host'];
+	$user = $ini['user'];
+	$pass = $ini['pass'];
+	$port = $ini['port'];
+} else {											// Sommes dans le cas d'un installation il faut remplir les parametres
+	header('Location: param.php');
 }
 
 if ($bddtype=='mysql'){
