@@ -409,10 +409,10 @@ for($inner = 1; $inner <= $nb_marqueur; $inner++) {
     container : 'photosphere',
     caption    : '<?php echo $titre; ?>',
     <?php
-    if (removeSmall($quelfic) <> ""){
+    if ($sphere_origin != "0"){       //0 sphere sans tuile, 1 sphere avec tuile 8kx4k, 2 sphere avec tuile 16kx8k
       // It's a big sphere run mode tile
-      $path_tiles=nameDirD($quelfic)."/tiles/";
-      $path_hd=nameDirD($quelfic)."/src/";
+      $path_tiles=kill_extension($quelfic,".jpg").".d/tiles/";
+      $path_hd=kill_extension($quelfic,".jpg").".d/src/";
     ?>
       adapter: PhotoSphereViewer.EquirectangularTilesAdapter,
       panorama: {
