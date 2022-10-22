@@ -234,7 +234,8 @@ imageResize($quelfic,600);
       <?php echo $t->display("Assembled by"); ?> :
       <select name="sphere_origin" id="sphere_origin">
                                           <option value="0"  <?php if ($sphere_origin=="0") echo "SELECTED"; ?>><?php echo $t->display("Share of Dji app Album"); ?></option>
-                                          <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Hugin"); ?></option>
+                                          <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Huginx17000"); ?></option>
+                                          <option value="2" <?php if ($sphere_origin=="2") echo "SELECTED"; ?>><?php echo $t->display("Huginx8000"); ?></option>
       </select>
     </fieldset>
     <?php
