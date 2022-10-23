@@ -17,7 +17,6 @@ $msgError ="";
 if (!file_exists($quelfic)){
 	$msgError .= "<br />Pano manquants !!!!";
 }
-if (removeSmall($quelfic)<>"") $quelfic = removeSmall($quelfic); 
 $path_parts = pathinfo($quelfic);
 $repHD = $path_parts['dirname']."/".$path_parts['filename'].".d/src";
 $repTHMB = $path_parts['dirname']."/".$path_parts['filename'].".d/thmb";
