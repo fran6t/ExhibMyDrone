@@ -41,7 +41,7 @@ if (isset($_POST["v"])){
   $stmt->bindValue(':legende', str_replace('"','',rtrim($_POST['legende'])), PDO::PARAM_STR);
   $stmt->bindValue(':legende_long', str_replace('"','',rtrim($_POST['legende_long'])), PDO::PARAM_STR);
   $stmt->bindValue(':hashfic', rtrim($_POST['hashfic']), PDO::PARAM_STR);
-  $stmt->bindValue(':sphere_origin', rtrim($_POST['sphere_origin']), PDO::PARAM_STR);
+  $stmt->bindValue(':sphere_origin', rtrim($_POST['sphere_origin']), PDO::PARAM_INT);
   $stmt->bindValue(':fichier', $quelfic, PDO::PARAM_STR);
   $result = $stmt->execute();
 
@@ -231,9 +231,9 @@ imageResize($quelfic,600);
       <?php echo $t->display("Assembled by"); ?> :
       <select name="sphere_origin" id="sphere_origin">
                                           <option value="0"  <?php if ($sphere_origin=="0") echo "SELECTED"; ?>><?php echo $t->display("Share of Dji app Album"); ?></option>
-                                          <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Huginx17000"); ?></option>
-                                          <option value="2" <?php if ($sphere_origin=="2") echo "SELECTED"; ?>><?php echo $t->display("Huginx8000"); ?></option>
-      </select>
+                                          <option value="1" <?php if ($sphere_origin=="1") echo "SELECTED"; ?>><?php echo $t->display("Huginx8000"); ?></option>
+                                          <option value="2" <?php if ($sphere_origin=="2") echo "SELECTED"; ?>><?php echo $t->display("Huginx17000"); ?></option>
+      </select> <?php echo detectTypeOfSphere($quelfic); ?>
     </fieldset>
     <?php
     for ($i = 1; $i <= $nb_marqueur; $i++) {

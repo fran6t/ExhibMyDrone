@@ -3,7 +3,7 @@
 // Vous serez automatiquement redirigé vers un formulaire de mises à jour de ces variables. 
 // Les nouvelles valeurs que vous aurez saisies vont l'emporter sur celle de ce fichier
 // Elles seront mémorisées dans le fichier inc-config-perso.ini.php
-$version = "0.11";
+$version = "0.12";
 
 $langue = "fr";                         // en for English
 

@@ -3,6 +3,36 @@
 
 
 
+
+/**
+ * Return string 2K for originalexport dji album, 8k for hugin jpg native assembly, 16k for hugin .raw assembly
+ * 
+ *
+ * @param string $sphere_origin
+ * 
+ *
+ * @return string
+ *      Return string format 2K or 8K or 16K
+**/
+
+function affiche_res($resolution){
+
+	$result = "?";
+	switch($resolution){
+		case 0:
+			$result = "2K";
+			break;
+		case 1:
+			$result = "8K";
+			break;
+		case 2:
+			$result = "17K";
+			break;
+	}
+
+	return $result;
+}
+
 /**
  * Return string for sql create table
  * 
@@ -92,6 +122,36 @@ function createThumb($spath, $dpath, $maxd) {
   		imagejpeg($thumb, $dpath);
 	  	return true;
 	}
+}
+
+/**
+ * 
+ * Affiche dans gest_form.php l'information sur le type de sphere
+ *
+ * @param string Nom dufichier
+ * 
+ * @return string Type de sphere
+ * 
+ 
+**/
+
+function detectTypeOfSphere($nom_sphere) {
+	$result = "Sphere Dji app";
+	$path_tiles = kill_extension($nom_sphere,".jpg").".d/tiles";
+	// On test si nous sommes en presence de tuile (repertoire tiles existant)
+	if (is_dir($path_tiles)){
+		
+		// On cherche maintenant la taille de la tuile
+		list($width, $height, $type, $attr) = getimagesize($path_tiles."/tile_0000.jpg");
+		if ($width == 528){
+			$result = "Sphere x8000 tiles";
+		}
+		if ($width==1024){
+			$result = "Sphere x17000 tiles";
+		}
+	}
+	return $result;
+	
 }
 
 
@@ -543,13 +603,14 @@ function listimg($nom_img,$sphere_origin,$tile){
 	if ($sphere_origin==0){
 		$choice = "Origin";
 	}
+	
 	if ($sphere_origin==1){
-		$choice = "x17000";
-	}
-	if ($sphere_origin==2){
 		$choice = "x8000";
 	}
 
+	if ($sphere_origin==2){
+		$choice = "x17000";
+	}
 	//echo "<br />".$choice."<br />";
 	switch($choice){
 		case "Origin":

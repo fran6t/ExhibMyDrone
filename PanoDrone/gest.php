@@ -62,6 +62,7 @@ $montab .= "        <th>".$t->display("Export")."</th>";
 $montab .= "        <th>".$t->display("File")."</th>";
 $montab .= "        <th>".$t->display("Title")."</th>";
 $montab .= "        <th>".$t->display("Legend")."</th>";
+$montab .= "        <th>".$t->display("Res.")."</th>";
 $montab .= "        <th>".$t->display("Hash")."</th>";
 $montab .= "</tr>\n";
 $i=0;
@@ -101,6 +102,7 @@ while ($row = $statement->fetch()) {
 	$montab .= "        <td>".$row['fichier']."</td>";
 	$montab .= "        <td>".$titreTmp."</td>";
 	$montab .= "        <td>".$row['legende']."</td>";
+	$montab .= "        <td>".affiche_res($row['sphere_origin'])."</td>";
 	$montab .= "        <td>".$row['hashfic']."</td>";
 	$montab .= "</tr>\n";
 }
