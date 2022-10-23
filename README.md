@@ -168,7 +168,6 @@ In the case of shooting with raw, we therefore have 26 files with a resolution o
 
 ## Todo list :
 - Simplify the installation by abandoning the compatibilities with the old versions
-- Move pano.db in the tree structure of the spheres so the backup will include all "live data"
 - Update side video for use parameter.php
 - Add link to allow sharing in a frame;
 - Small explanatory documentation (wiki or extended readme ..);
@@ -184,6 +183,7 @@ In the case of shooting with raw, we therefore have 26 files with a resolution o
 ## various
 
 __Change log__:
+- 23/10/2022 V 0.11 Bug correction
 - 21/10/2022 Add shell generate sphere and explications on [wiki](https://github.com/fran6t/ExhibMyDrone/wiki)
 - 17/10/2022 Add import export sphere
 - 03/09/2021 Add button in navbar to show long legend of sphere in panel

@@ -145,7 +145,6 @@ Trois scripts brut (pas de tests uniquement un enchainement de commandes) sont d
 
 ## Reste à faire :
 - Simplifier l'installation en abandonnant les compatibilités avec les anciennes versions
-- Deplacer pano.db dans l'aborescence des sphères ainsi la sauvegarde inclura toutes les "données vivantes"
 - Mettre à jour le côté vidéo pour qu'il fonctionne avec parametre.php
 - Ajouter lien pour permettre un partage dans une frame;
 - Petit doc d'explications (wiki ou readme etendu..);
@@ -161,6 +160,7 @@ Trois scripts brut (pas de tests uniquement un enchainement de commandes) sont d
 ## divers
 
 __Change log__:
+- 23/10/2022 V 0.11 Corrections Bug
 - 17/10/2022 Ajout import export sphères
 - 03/09/2021 Ajout d'un bouton dans la navbar pour lire la legende longue d'une sphère 
 - 02/09/2021 Amélioration vue fichiers originaux si les vignettes sont présentes
