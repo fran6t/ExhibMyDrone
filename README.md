@@ -183,6 +183,7 @@ In the case of shooting with raw, we therefore have 26 files with a resolution o
 ## various
 
 __Change log__:
+- 24/10/2022 V 0.13 When we are connected add link to gest-form.php for manage POI or Sphere from display file browser
 - 23/10/2022 V 0.11 Bug correction
 - 21/10/2022 Add shell generate sphere and explications on [wiki](https://github.com/fran6t/ExhibMyDrone/wiki)
 - 17/10/2022 Add import export sphere

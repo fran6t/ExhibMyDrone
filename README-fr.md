@@ -160,6 +160,7 @@ Trois scripts brut (pas de tests uniquement un enchainement de commandes) sont d
 ## divers
 
 __Change log__:
+- 24/10/2022 V 0.13 Ajout d'un lien direct vers gest-form.php quand nous sommes connecté pour gérer les POI ou la sphere
 - 23/10/2022 V 0.11 Corrections Bug
 - 17/10/2022 Ajout import export sphères
 - 03/09/2021 Ajout d'un bouton dans la navbar pour lire la legende longue d'une sphère 
