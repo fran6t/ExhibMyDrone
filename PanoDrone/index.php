@@ -22,6 +22,12 @@ $t->setLanguage($langue);
 
 	<!-- Include our stylesheet -->
 	<link href="assets/css/styles.css" rel="stylesheet"/>
+	<style>
+		.detailsfile a {
+			position: static !important;
+			color: white;
+		}
+	</style>
 
 </head>
 <body>
@@ -50,6 +56,22 @@ $t->setLanguage($langue);
     </footer>
 
 	<!-- Include our script files -->
+	<script>
+	<?php 
+	// On active une variable four faire connaitre que nous sommes en session donc administrateur afin d'avoir un lien 
+	// direct vers le formulaire de gestion de spahere
+	if ( !defined( 'FM_SESSION_ID')) {
+		define('FM_SESSION_ID', 'filemanager');
+	}
+	session_name(FM_SESSION_ID );	// On pointe la session de tinyfilemanager
+	session_start();
+	if (isset($_SESSION[FM_SESSION_ID]['logged'])){
+		echo 'let maSession = true;';	
+	} else {
+		echo 'let maSession = false;';	
+	}
+	?>
+	</script>
 	<script src="assets/js/jquery-1.11.0.min.js"></script>
 	<script src="assets/js/script.js"></script>
 

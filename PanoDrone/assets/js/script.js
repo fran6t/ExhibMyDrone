@@ -337,7 +337,11 @@ $(function(){
 
 					// Je vire l'info de la taille
 					// var file = $('<li class="files"><a href=pano.php?p='+ encodeURIComponent(f.path) +' title="'+ f.titre +'" class="files">'+icon+'<span class="name">'+ f.titre +'</span> <span class="details">'+fileSize+'</span></a></li>');
-					var file = $('<li class="files"><div class="namefile"><a href="pano.php?p='+ encodeURIComponent(f.path) +'" title="'+ f.titre +'">'+icon + f.titre +'</a></div><hr /><div class="detailsfile">' + f.legende + '</div></li>');
+					var lienAdmin = "";
+					if (maSession){
+						lienAdmin = '<hr /><a href="gest-form.php?p='+ encodeURIComponent(f.path) + '" title="' + f.titre + '">[Admin]</a>';
+					}
+					var file = $('<li class="files"><div class="namefile"><a href="pano.php?p='+ encodeURIComponent(f.path) +'" title="'+ f.titre +'">'+icon + f.titre +'</a></div><hr /><div class="detailsfile">' + f.legende +  lienAdmin + '</div></li>');
 					file.appendTo(fileList);
 				});
 
